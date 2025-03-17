@@ -367,8 +367,8 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
     $this->path = $manager->getCatPath(0, false, $this->parent_id, $this->alias, false, false);
     $this->path = $filesystem->cleanPath($this->path, '/');
 
-    // Create static_path if compatibility mode is activated
-    if($this->getComponent()->getConfig()->get('jg_compatibility_mode', 0))
+    // Create static_path if compatibility mode is activated and we are not in migration
+    if(!$this->is_migration && $this->getComponent()->getConfig()->get('jg_compatibility_mode', 0))
     {
       $this->static_path = $manager->getCatPath(0, false, $this->parent_id, $this->alias, false, true);
       $this->static_path = $filesystem->cleanPath($this->static_path, '/');
