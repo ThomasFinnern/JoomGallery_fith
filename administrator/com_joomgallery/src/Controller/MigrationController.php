@@ -828,7 +828,6 @@ class MigrationController extends BaseController implements FormFactoryAwareInte
     // Check if json was decoded properly
     if($json === null)
     {
-      // No record id given. Show error message.
       $response = $this->createRespond(null, false, Text::_('JSON decoding error!'));
       $this->component->addLog('Error decoding JSON: ' . json_last_error_msg(), 'error', 'jerror');
       $this->ajaxRespond($response, $format);
