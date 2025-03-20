@@ -374,8 +374,8 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
       $static_name = \basename($this->static_path);
       if(\preg_match('/_([0-9]+)$/', $static_name))
       {
-        // We found a numeric value at the end of the folder name e.g alias_6
-        // Therefore we use the static folder name
+        // We found a numeric value at the end of the folder name: e.g alias_6
+        // Therefore we use the static folder name instead
         $alias = $static_name;
       }
 
