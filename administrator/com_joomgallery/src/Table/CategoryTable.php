@@ -431,7 +431,10 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
    */
   public function setLocation($referenceId, $position = 'after')
   {
-    parent::setLocation($referenceId, $position);
+    if(!empty($position))
+    {
+      parent::setLocation($referenceId, $position);
+    }
 
     if($referenceId !== 0 && !empty($this->id))
     {
