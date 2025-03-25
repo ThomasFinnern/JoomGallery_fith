@@ -542,9 +542,17 @@ class CategoryModel extends JoomAdminModel
         // Filesystem changes
 			  $filesystem_success = true;
 
-        if( (!$isNew && $catMoved) || (!$isNew && $aliasChanged) )
+        if(!$isNew && ($catMoved || $aliasChanged))
         {
-          // Action will be performed after storing
+          // Moving and renaming of folders will happen after storing the DB
+          if($catMoved && ($aliasChanged || ($table->alias != $old_table->alias)))
+          {
+            // Moving and renaming folders at the same time is not possible
+            $this->setError(Text::_('COM_JOOMGALLERY_ERROR_CAT_RENAME_AND_MOVE'));
+            $this->component->addLog(Text::_('COM_JOOMGALLERY_ERROR_CAT_RENAME_AND_MOVE'), 'error', 'jerror');
+
+            return false;
+          }
         }
         elseif($isNew || !$this->component->getConfig()->get('jg_compatibility_mode', 0))
         {
