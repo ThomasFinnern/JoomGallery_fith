@@ -546,7 +546,7 @@ class CategoryModel extends JoomAdminModel
         {
           // Action will be performed after storing
         }
-        elseif($isNew)
+        elseif($isNew || !$this->component->getConfig()->get('jg_compatibility_mode', 0))
         {
           // Create folders
           $filesystem_success = $manager->createCategory($table->alias, $table->parent_id);
