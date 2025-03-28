@@ -152,11 +152,10 @@ class TUSUploader extends BaseUploader implements UploaderInterface
       $this->component->getTusServer()->loadUpload($uuid);
 
       // Override title with tus metadata
-      if( $title = $this->component->getTusServer()->getMetaDataValue('jtitle') && 
-          !$this->component->getConfig()->get('jg_useorigfilename')
-        )
+      if($title = $this->component->getTusServer()->getMetaDataValue('jtitle'))
       {
         $data['title'] = $title;
+        $data['alias'] = $data['title'];
       }
 
       // Override description with tus metadata
