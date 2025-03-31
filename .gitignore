@@ -17,3 +17,5 @@
 /administrator/com_joomgallery/vendor
 node_modules
 joomgallery_old.xml
+/administrator/com_joomgallery/vendor
+/.vscode
