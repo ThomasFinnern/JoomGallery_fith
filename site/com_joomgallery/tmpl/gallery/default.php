@@ -15,9 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
-// Gallery params
-$gallery_description     = $this->params['configs']->get('jg_gallery_view_description','', 'STRING');
-
 // Image params
 $image_type              = $this->params['configs']->get('jg_gallery_view_type_image', 'thumbnail', 'STRING');
 $gallery_class           = $this->params['configs']->get('jg_gallery_view_class', 'masonry', 'STRING');
@@ -77,7 +74,7 @@ $wa->useScript('com_joomgallery.joomgrid');
   <?php endif; ?>
 
   <div class="gallery-header">
-    <?php echo HTMLHelper::_('content.prepare', $gallery_description); ?>
+    <?php echo HTMLHelper::_('content.prepare', $this->item->description); ?>
   </div>
 
   <?php // Link to category overview ?>
