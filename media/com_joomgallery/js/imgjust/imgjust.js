@@ -1,6 +1,5 @@
 class ImgJust {
 	idealHeight = 150
-	maxRowImgs = 16
 	rowGap = 0
 	columnGap = 0
 	paddingLeft = 0
@@ -28,7 +27,7 @@ class ImgJust {
 		var badness = new Map();
 		var start = new Map();
 		var totalWidth = -this.columnGap;
-		for (var end = 0; end < imgs.length && end < this.maxRowImgs; end++) {
+		for (var end = 0; end < imgs.length; end++) {
 			totalWidth += idealImgWidths[end] + this.columnGap;
 			const dif = totalWidth - containerWidth;
 			badness.set(end, dif * dif);
@@ -43,8 +42,8 @@ class ImgJust {
 			start = new Map();
 
 			// for each possible terminating image
-			for (var end = row; end < imgs.length && end < row + this.maxRowImgs; end++) {
-			
+			for (var end = row; end < imgs.length; end++) {
+
 				// compute best starting image
 				totalWidth = idealImgWidths[end];
 				const dif = totalWidth - containerWidth;
@@ -67,9 +66,7 @@ class ImgJust {
 		}
 
 		// Find best terminating row
-		var row = rowBadness.length - this.maxRowImgs;
-		if (row < 0)
-			row = 0;
+		var row = 0;
 		var bestLastRow = row;
 		var minBad = rowBadness[row].get(imgs.length - 1);
 		for (row++; row < rowBadness.length; row++) {
@@ -79,7 +76,7 @@ class ImgJust {
 				bestLastRow = row;
 			}
 		}
-		
+
 		// Assign start and stop index to each row
 		var rowRanges = [];
 		var prevRowStart = imgs.length;
@@ -97,7 +94,7 @@ class ImgJust {
 				totalImgWidth += idealImgWidths[i];
 				imgs[i].style.marginBottom = this.rowGap + "px";
 			}
-			const containerWidthSpace = containerWidth - (range.end - range.start)*this.columnGap;
+			const containerWidthSpace = containerWidth - (range.end - range.start) * this.columnGap;
 			const newHeight = Math.round(this.idealHeight * containerWidthSpace / totalImgWidth);
 			var newRowWidth = 0;
 			for (var i = range.start; i < range.end; i++) {
@@ -119,13 +116,15 @@ class ImgJust {
 		for (const img of imgs)
 			img.style.display = "block";
 	}
+
 	addImages(imgs) {
 		for (const img of imgs) {
 			img.style.display = "none";
 			this.imgs.push(img);
 		}
 	}
-	constructor(container, imgs=[], options={}) {
+
+	constructor(container, imgs = [], options = {}) {
 		for (var [key, val] of Object.entries(options))
 			this[key] = val;
 		if (!container)

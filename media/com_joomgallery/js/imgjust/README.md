@@ -1,4 +1,8 @@
 # ImgJust
+## Credits
+Thanks to the original repository of this library:
+https://github.com/hikir1/ImgJust
+
 ## Justified Image Wall Generator
 Use ImgJust to create a wall of images on your website.
 It's based on the LaTex paragraph justifying algorithm.
@@ -38,7 +42,6 @@ addEventListener("load", _ => {
 ## Options & Defaults
 
 - idealHeight: 150
-- maxRowImgs = 16
 - rowGap = 0
 - columnGap = 0
 - paddingLeft = 0
@@ -92,7 +95,3 @@ elements.
   ...
 </div>
 ```
-
-## Example Site
-
-See an [example](https://hikir1.github.io/ImgJust/example-site/index.html).
