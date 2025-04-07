@@ -74,7 +74,7 @@ $wa->useScript('com_joomgallery.joomgrid');
   <?php endif; ?>
 
   <div class="gallery-header">
-    <?php echo HTMLHelper::_('content.prepare', $this->item->description); ?>
+    <?php echo HTMLHelper::_('content.prepare', $this->item->description, '', 'com_joomgallery.gallery'); ?>
   </div>
 
   <?php // Link to category overview ?>
