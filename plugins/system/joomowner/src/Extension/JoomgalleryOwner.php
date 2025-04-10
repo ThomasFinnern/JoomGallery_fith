@@ -170,13 +170,13 @@ final class JoomgalleryOwner extends CMSPlugin implements SubscriberInterface
     if(\version_compare(JVERSION, '5.0.0', '<'))
     {
       // Joomla 4
-      [$context, &$table] = $event->getArguments();
+      [$context, $table] = $event->getArguments();
     }
     else
     {
       // Joomla 5 or newer
       extract($event->getArguments());
-      $table = &$event->getItem();
+      $table = $event->getItem();
     }
 
     if(\strpos($context, 'com_joomgallery') !== 0)
@@ -220,13 +220,13 @@ final class JoomgalleryOwner extends CMSPlugin implements SubscriberInterface
     if(\version_compare(JVERSION, '5.0.0', '<'))
     {
       // Joomla 4
-      [$context, &$table, $isNew, $data] = $event->getArguments();
+      [$context, $table, $isNew, $data] = $event->getArguments();
     }
     else
     {
       // Joomla 5 or newer
       extract($event->getArguments());
-      $table = &$event->getItem(); 
+      $table = $event->getItem();
     }
 
     if($context == 'com_plugins.plugin' && $table->name == 'plg_system_joomowner')
