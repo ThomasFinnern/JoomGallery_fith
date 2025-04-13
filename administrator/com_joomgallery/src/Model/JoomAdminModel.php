@@ -195,7 +195,7 @@ abstract class JoomAdminModel extends AdminModel
       $table->load($pk);
 
       // Check if the state was changed
-      if($table->published != $data['published'])
+      if($table->published != $data['published'] && isset($data['published']))
       {
         if(!$this->getAcl()->checkACL('core.edit.state', $this->type, $table->id))
         {
