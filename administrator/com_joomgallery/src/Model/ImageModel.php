@@ -1242,7 +1242,7 @@ class ImageModel extends JoomAdminModel
 	  // Perform the save using the metadata/filesystem service
 	  if ($filesystem != 'local-images')
 	  {
-		$data = $this->component->getMetadata()->writeMetadata($path, $registry, true, true);
+		$data = $this->component->getMetadata()->writeMetadata($path, $registry, false);
 	  } else
 	  {
 		$data = $this->component->getMetadata()->writeMetadata($path, $registry);

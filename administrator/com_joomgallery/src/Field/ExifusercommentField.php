@@ -21,7 +21,8 @@ use \Joomla\Registry\Registry;
 use \Joomgallery\Component\Joomgallery\Administrator\Helper\ConfigHelper;
 
 /**
- * Text field with useglobal option based on config service 
+ * UserComment Field for EXIF in imgmetadata.
+ * This field exists to keep the same format UserComment was saved in before PEL was integrated.
  * 
  * @since  4.0.0
  */

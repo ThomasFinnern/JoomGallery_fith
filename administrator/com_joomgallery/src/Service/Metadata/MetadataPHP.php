@@ -28,6 +28,7 @@ use lsolesen\pel\PelEntryCopyright;
 use lsolesen\pel\PelEntryRational;
 use lsolesen\pel\PelEntrySRational;
 use lsolesen\pel\PelEntryTime;
+use lsolesen\pel\PelEntryUserComment;
 use \lsolesen\pel\PelExif;
 use \lsolesen\pel\PelFormat;
 use \lsolesen\pel\PelIfd;
@@ -103,29 +104,34 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
   public function __construct() 
   {
     $this->getApp();
+    $this->getComponent();
   }
 
-  public function writeMetadata($img, $imgmetadata, $is_stream = false, $base64 = false): mixed
+  public function writeMetadata($img, $imgmetadata, $local_source=true): mixed
   {
     $tmpFolder = $this->app->get('tmp_path');
-    if (!$is_stream) {
+    $file = "";
+    $isStream = false;
+    if (\is_resource($img)) {
+      $file = $img;
+      $isStream = true;
+    } elseif (\is_string($img) && !$local_source && \strpos($this->component->getFilesystem()->getFilesystem(), 'local') === false) {
+      // The path is pointing to an external filesystem
+      list($file_info, $file) = $this->component->getFilesystem()->getResource($img);
+      $isStream = true;
+    } elseif (\is_string($img) && ($local_source || \strpos($this->component->getFilesystem()->getFilesystem(), 'local') !== false)) {
+      // The path is pointing to the local filesystem
       $img = Path::clean($img);
 
       if (!\file_exists($img)) {
+        // Add root to the path
         $img = JPATH_ROOT . \DIRECTORY_SEPARATOR . $img;
 
         $img = Path::clean($img);
       }
       $file = file_get_contents($img);
-      $tmpPath = $tmpFolder . '/' . basename($img);
     }
 
-    if ($is_stream && $base64) {
-      $file = \base64_decode($img);
-      $tmpPath = $tmpFolder . "/tmp_imagefile.jpg";
-    }
-
-    $tmpFolder = $this->app->get('tmp_path');
     $tmpPath = $tmpFolder . '/' . basename($img);
 
     file_put_contents($tmpPath, $file);
@@ -348,6 +354,8 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
       return $entry->getText(true);
     } elseif ($entry instanceof PelEntryTime) {
       return $entry->getValue(PelEntryTime::EXIF_STRING);
+    } elseif ($entry instanceof PelEntryUserComment) {
+      return str_pad('ASCII', 8, chr(0)) . $entry->getValue();
     } else {
       return $entry->getValue();
     }

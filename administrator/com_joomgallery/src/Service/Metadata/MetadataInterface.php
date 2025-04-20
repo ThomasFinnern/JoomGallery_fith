@@ -44,12 +44,13 @@ interface MetadataInterface
   /**
    * Writes the stored metadata to the specified image
    * 
-   * @param  string $file         Path to source file
+   * @param  string $img          Path to source file or resource
    * @param  mixed  $imgmetadata  Stored image metadata
+   * @param  bool   $local_source True if source is a file located in a local folder
    * 
    * @return mixed                Image data to be stored with Filemanager
    */
-  public function writeMetadata($img, $imgmetadata, $is_stream, $base64);
+  public function writeMetadata($img, $imgmetadata, $local_source);
 
   /**
    * Writes a list of values to the exif metadata of an image

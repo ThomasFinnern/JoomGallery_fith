@@ -67,6 +67,7 @@ class PelDataEditor {
                 $entry->setValue($data[0], $data[1]);
             }
         } else if ($tag == PelTag::USER_COMMENT) {
+            // We need to strip the first 8 characters to comply with UserComments saved before PEL.
             if ($entry == null) {
                 $entry = new PelEntryUserComment(substr($data, 8));
                 $ifd->addEntry($entry);
