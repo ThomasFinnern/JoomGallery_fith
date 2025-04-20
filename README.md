@@ -1,6 +1,6 @@
 # JoomGallery
 
-![JoomGalleryfriends Logo](https://www.joomgalleryfriends.net/images/logo-joomgalleryfriends.png)
+![](https://www.joomgalleryfriends.net/images/logo-joomgalleryfriends.png)
 
 This is the repository of the JoomGallery component for Joomla! 4 and newer.
 
