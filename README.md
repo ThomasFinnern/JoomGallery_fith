@@ -1,6 +1,6 @@
 # JoomGallery
 
-<img src="https://www.joomgalleryfriends.net/images/modulbilder/logo-joomgalleryfriends.png" width="400" title="JoomGalleryfriends Logo">
+<img src="https://www.joomgalleryfriends.net/images/modulbilder/logo-joomgalleryfriends.svg" width="700" title="JoomGalleryfriends Logo">
 
 This is the repository of the JoomGallery component for Joomla! 4 and newer.
 
