@@ -27,7 +27,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
             method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="needs-validation"
             novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_IMAGES_UPLOAD', true); ?>" >
 
-    <h3>COM_JOOMGALLERY_USER_CATEGORIES</h3>
+        <h3><?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?></h3>
 
     <button type="button" class="btn btn-default jg-cancel">
         <span class="icon-"></span> <?php echo Text::_(''); ?>

@@ -13,6 +13,7 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userupload;
 //use Joomla\CMS\Factory;
 //use Joomla\CMS\Helper\TagsHelper;
 //use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
@@ -65,6 +66,12 @@ class HtmlView extends BaseHtmlView
     protected $params;
 
     /**
+     * @var    \Joomla\Registry\Registry
+     * @since  4.0.0
+     */
+    protected $config;
+
+    /**
      * Execute and display a template script.
      *
      * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -76,13 +83,14 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-//        $user = $this->getCurrentUser();
-//        $app  = Factory::getApplication();
-//
-//        // Get model data.
-//        $this->state       = $this->get('State');
-//        $this->item        = $this->get('Item');
+        $user = $this->getCurrentUser();
+        $app  = Factory::getApplication();
+
+        // Get model data.
+        $this->state       = $this->get('State');
+        //$this->item        = $this->get('Item');
         $this->form        = $this->get('Form');
+        $this->params      = $this->get('Params');
 //        $this->return_page = $this->get('ReturnPage');
 //
 //        if (empty($this->item->id)) {
@@ -113,9 +121,9 @@ class HtmlView extends BaseHtmlView
 //            return false;
 //        }
 //
-//        // Create a shortcut to the parameters.
-//        $this->params = $this->state->params;
-//
+
+        $this->config     = $this->params['configs'];
+
 //        // Escape strings for HTML output
 //        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx', ''));
 //

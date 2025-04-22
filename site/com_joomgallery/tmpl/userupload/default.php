@@ -31,7 +31,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
         method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="needs-validation"
         novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_IMAGES_UPLOAD', true); ?>" >
 
-        <h3>COM_JOOMGALLERY_USER_UPLOAD</h3>
+        <h3><?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?></h3>
 
         <?php if (empty($isHasAccess)): ?>
       <div>
@@ -46,6 +46,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
           </a>
       </div>
 	<?php else: ?>
+            <div class="form-group">
 
             <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
                 <span class="icon-images"></span>
@@ -61,57 +62,59 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
                 <span class="icon-home"></span>
 			        <?php echo Text::_('user panel'); ?>
             </a>
-
-<!--            <div class="row align-items-start">-->
-<!--                <div class="col-md-6 mb">-->
-<!--                    <div class="card">-->
-<!--                        <div class="card-header">-->
-<!--                            <h2>--><?php //echo Text::_('COM_JOOMGALLERY_IMAGE_SELECTION'); ?><!--</h2>-->
-<!--                        </div>-->
-<!--                        <div id="drag-drop-area">-->
-<!--                            <div class="card-body">--><?php //echo Text::_('COM_JOOMGALLERY_INFO_UPLOAD_FORM_NOT_LOADED'); ?><!--</div>-->
-<!--                        </div>-->
-<!--                        <hr />-->
-<!--                        <div class="card-body">-->
-<!--                            --><?php //// ToDo: echo $this->form->renderField('debug'); ?>
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col card">-->
-<!--                    <div class="card-header">-->
-<!--                        <h2>--><?php //echo Text::_('JOPTIONS'); ?><!--</h2>-->
-<!--                    </div>-->
-<!--                    <div class="card-body">-->
-<!--                        <<p>-->
-<!--                            --><?php
-//                            $displayData = [
-//                                'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
-//                                'id'          => 'adminForm-desc',
-//                                'small'       => true
-//                            ];
-//                            $renderer = new FileLayout('joomgallery.tip');
-//                            ?>
-<!--                            --><?php //echo $renderer->render($displayData); ?>
-<!--                        </p>-->
-<!--                        --><?php //echo $this->form->renderField('catid'); ?>
-<!--                        --><?php //if(!$this->config->get('jg_useorigfilename')): ?>
+        </div>
+        <div class="form-group">
+            <div class="row align-items-start">
+                <div class="col-md-6 mb">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><?php echo Text::_('COM_JOOMGALLERY_IMAGE_SELECTION'); ?></h2>
+                        </div>
+                        <div id="drag-drop-area">
+                            <div class="card-body"><?php echo Text::_('COM_JOOMGALLERY_INFO_UPLOAD_FORM_NOT_LOADED'); ?></div>
+                        </div>
+                        <hr />
+                        <div class="card-body ToDo:yyyy">
+                            <?php $this->form->renderField('debug'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col card">
+                    <div class="card-header">
+                        <h2><?php echo Text::_('JOPTIONS'); ?></h2>
+                    </div>
+                    <div class="card-body">
+                        <<p>
+                            <?php
+                            $displayData = [
+                                'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
+                                'id'          => 'adminForm-desc',
+                                'small'       => true
+                            ];
+                            $renderer = new FileLayout('joomgallery.tip');
+                            ?>
+                            <?php echo $renderer->render($displayData); ?>
+                        </p>
+                        <?php echo $this->form->renderField('catid'); ?>
+<!--                        --><?php //if(!empty($this->config->get('jg_useorigfilename'))): ?>
 <!--                            --><?php //echo $this->form->renderField('title'); ?>
-<!--                            --><?php //if($this->config->get('jg_filenamenumber')): ?>
+<!--                            --><?php //if(empty($this->config->get('jg_filenamenumber'))): ?>
 <!--                                --><?php //echo $this->form->renderField('nmb_start'); ?>
 <!--                            --><?php //endif; ?>
 <!--                        --><?php //endif; ?>
-<!--                        --><?php //echo $this->form->renderField('author'); ?>
-<!--                        --><?php //echo $this->form->renderField('published'); ?>
-<!--                        --><?php //echo $this->form->renderField('access'); ?>
-<!--                        --><?php //echo $this->form->renderField('language'); ?>
-<!--                        <fieldset class="adminform">-->
-<!--                        --><?php //echo $this->form->getLabel('description'); ?>
-<!--                        --><?php //echo $this->form->getInput('description'); ?>
-<!--                        </fieldset>-->
-<!--                        <input type="text" id="jform_id" class="hidden form-control readonly" name="jform[id]" value="" readonly/>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+                        <?php echo $this->form->renderField('author'); ?>
+                        <?php echo $this->form->renderField('published'); ?>
+                        <?php echo $this->form->renderField('access'); ?>
+                        <?php echo $this->form->renderField('language'); ?>
+                        <fieldset class="adminform">
+                        <?php echo $this->form->getLabel('description'); ?>
+                        <?php echo $this->form->getInput('description'); ?>
+                        </fieldset>
+                        <input type="text" id="jform_id" class="hidden form-control readonly" name="jform[id]" value="" readonly/>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <?php endif; ?>

@@ -123,6 +123,18 @@ class DefaultRouter extends RouterView
     $imageform->setKey('id');
     $this->registerView($imageform);
 
+    $userpanel = new RouterViewConfiguration('userpanel');
+    // $userpanel->setKey('id');
+    $this->registerView($userpanel);
+
+    $userupload = new RouterViewConfiguration('userupload');
+    // $userupload->setKey('id');
+    $this->registerView($userupload);
+
+    $usercategories = new RouterViewConfiguration('usercategories');
+    // $usercategories->setKey('id');
+    $this->registerView($usercategories);
+
 		$this->attachRule(new MenuRules($this));
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
