@@ -13,6 +13,7 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userupload;
 //use Joomla\CMS\Factory;
 //use Joomla\CMS\Helper\TagsHelper;
 //use Joomla\CMS\Language\Multilanguage;
+use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -27,7 +28,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  *
  * @since  4.0.0
  */
-class HtmlView extends BaseHtmlView
+class HtmlView extends JoomGalleryView // BaseHtmlView
 {
     /**
      * @var    \Joomla\CMS\Form\Form
@@ -92,6 +93,27 @@ class HtmlView extends BaseHtmlView
         $this->form        = $this->get('Form');
         $this->params      = $this->get('Params');
 //        $this->return_page = $this->get('ReturnPage');
+
+	    $this->config     = $this->params['configs'];
+
+
+	    // Add variables to JavaScript
+	    $js_vars               = new \stdClass();
+	    $js_vars->maxFileSize  = (100 * 1073741824); // 100GB
+	    $js_vars->TUSlocation  = $this->getTusLocation (); // $this->item->tus_location;
+
+	    $js_vars->allowedTypes = $this->getAllowedTypes();
+
+	    $js_vars->uppyTarget   = '#drag-drop-area';          // Id of the DOM element to apply the uppy form
+	    $js_vars->uppyLimit    = 5;                          // Number of concurrent tus upploads (only file upload)
+	    $js_vars->uppyDelays   = array(0, 1000, 3000, 5000); // Delay in ms between upload retrys
+
+	    $js_vars->semaCalls    = $this->config->get('jg_parallelprocesses', 1); // Number of concurrent async calls to save the record to DB (including image processing)
+	    $js_vars->semaTokens   = 100;                                           // Prealloc space for 100 tokens
+
+	    $this->js_vars = $js_vars;
+
+
 //
 //        if (empty($this->item->id)) {
 //            $authorised = $user->authorise('core.create', 'com_contact') || count($user->getAuthorisedCategories('com_contact', 'core.create'));
@@ -121,8 +143,6 @@ class HtmlView extends BaseHtmlView
 //            return false;
 //        }
 //
-
-        $this->config     = $this->params['configs'];
 
 //        // Escape strings for HTML output
 //        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx', ''));
@@ -183,4 +203,57 @@ class HtmlView extends BaseHtmlView
 //            $this->getDocument()->setMetaData('robots', $this->params->get('robots'));
 //        }
 //    }
-}
+
+	/**
+	 * Get array of all allowed filetypes based on the config parameter jg_imagetypes.
+	 *
+	 * @return  array  List with all allowed filetypes
+	 *
+	 */
+	protected function getAllowedTypes()
+	{
+		$types = \explode(',', $this->config->get('jg_imagetypes'));
+
+		// add different types of jpg files
+		$jpg_array = array('jpg', 'jpeg', 'jpe', 'jfif');
+		if (\in_array('jpg', $types) || \in_array('jpeg', $types) || \in_array('jpe', $types) || \in_array('jfif', $types))
+		{
+			foreach ($jpg_array as $jpg)
+			{
+				if(!\in_array($jpg, $types))
+				{
+					\array_push($types, $jpg);
+				}
+			}
+		}
+
+		// add point to types
+		foreach ($types as $key => $type)
+		{
+			if(\substr($type, 0, 1) !== '.')
+			{
+				$types[$key] = '.'. \strtolower($type);
+			}
+			else
+			{
+				$types[$key] = \strtolower($type);
+			}
+		}
+
+		return $types;
+	}
+
+	private function getTusLocation()
+	{
+
+		// Create tus server
+		$this->component->createTusServer();
+		$server = $this->component->getTusServer();
+
+		$tus_location = $server->getLocation();
+
+		return $tus_location;
+	}
+
+
+} // class
