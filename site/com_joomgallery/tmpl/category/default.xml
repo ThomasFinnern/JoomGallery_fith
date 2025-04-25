@@ -84,9 +84,10 @@
                 min="0"
                 max="999"
                 step="1"
+                validate="number"
+                filter="integer"
                 label="COM_JOOMGALLERY_CONFIG_NUMB_SUBCATEGORIES"
                 description="COM_JOOMGALLERY_CONFIG_NUMB_SUBCATEGORIES_DESC"
-                filter="int"
             />
             <field
                 name="jg_category_view_subcategories_pagination"
@@ -173,10 +174,11 @@
                 min="1"
                 max="9999"
                 step="1"
+                validate="number"
+                filter="integer"
                 parentclass="span-3"
                 label="COM_JOOMGALLERY_MENU_JUSTIFIED_HEIGHT"
                 description="COM_JOOMGALLERY_MENU_JUSTIFIED_HEIGHT_NOTE_DESC"
-                filter="int"
                 showon="jg_category_view_class!:columns[AND]jg_category_view_class!:masonry"
             />
             <field
@@ -186,10 +188,11 @@
                 min="0"
                 max="999"
                 step="1"
+                validate="number"
+                filter="integer"
                 parentclass="span-3"
                 label="COM_JOOMGALLERY_MENU_JUSTIFIED_GAP"
                 description="COM_JOOMGALLERY_MENU_JUSTIFIED_GAP_NOTE_DESC"
-                filter="int"
                 showon="jg_category_view_class!:columns[AND]jg_category_view_class!:masonry"
             />
             <field
@@ -213,9 +216,10 @@
                 min="1"
                 max="9999"
                 step="1"
+                validate="number"
+                filter="integer"
                 label="COM_JOOMGALLERY_CONFIG_NUMB_IMAGES"
                 description="COM_JOOMGALLERY_CONFIG_NUMB_IMAGES_DESC"
-                filter="int"
             />
             <field
                 name="jg_category_view_pagination"
@@ -238,9 +242,10 @@
                 min="1"
                 max="9999"
                 step="1"
+                validate="number"
+                filter="integer"
                 label="COM_JOOMGALLERY_MENU_CATEGORY_VIEW_NUMBER_OF_RELOADED_IMAGES_LABEL"
                 description="COM_JOOMGALLERY_MENU_CATEGORY_VIEW_NUMBER_OF_RELOADED_IMAGES_DESC"
-                filter="int"
                 showon="jg_category_view_pagination:2"
             />
             <field
