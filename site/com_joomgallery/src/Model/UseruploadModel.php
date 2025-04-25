@@ -50,8 +50,8 @@ class UseruploadModel extends FormModel
 	 * @access  protected
 	 * @var     string
 	 */
-//	protected $typeAlias = 'com_joomgallery.userupload';
-	protected $typeAlias = '';
+	protected $typeAlias = 'com_joomgallery.userupload';
+//	protected $typeAlias = '';
 
     /**
      * Constructor
@@ -90,10 +90,10 @@ class UseruploadModel extends FormModel
 		// List state information.
 		parent::populateState($ordering, $direction);
 
-    // Set filters based on how the view is used.
-    // e.g. user list of categories: $this->setState('filter.created_by', Factory::getApplication()->getIdentity());
+	    // Set filters based on how the view is used.
+	    // e.g. user list of categories: $this->setState('filter.created_by', Factory::getApplication()->getIdentity());
 
-    $this->loadComponentParams();
+	    $this->loadComponentParams();
 	}
 
 //	/**
@@ -171,7 +171,8 @@ class UseruploadModel extends FormModel
         // Load the configs from config service
         $id = ($id === 0) ? null : $id;
 
-        $this->component->createConfig(_JOOM_OPTION.'.'.$this->type, $id, true);
+        // $this->component->createConfig(_JOOM_OPTION.'.'.$this->type, $id, true);
+        $this->component->createConfig(_JOOM_OPTION, $id, true);
         $configArray = $this->component->getConfig()->getProperties();
         $configs     = new Registry($configArray);
 

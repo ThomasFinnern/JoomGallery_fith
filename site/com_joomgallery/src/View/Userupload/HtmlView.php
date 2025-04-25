@@ -17,6 +17,8 @@ use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Database\DatabaseInterface;
+
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -72,6 +74,19 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
      */
     protected $config;
 
+	/**
+	 * @var    bool
+	 * @since  4.0.0
+	 */
+	protected $isUserLoggedIn = false;
+	/**
+	 * @var    bool
+	 * @since  4.0.0
+	 */
+	protected $isUserHasCategory = false;
+
+	protected $isUserCoreManager = false;
+
     /**
      * Execute and display a template script.
      *
@@ -87,15 +102,32 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
         $user = $this->getCurrentUser();
         $app  = Factory::getApplication();
 
-        // Get model data.
-        $this->state       = $this->get('State');
-        //$this->item        = $this->get('Item');
-        $this->form        = $this->get('Form');
-        $this->params      = $this->get('Params');
-//        $this->return_page = $this->get('ReturnPage');
+        // Get model data
+	    $model             = $this->getModel();
+	    $this->state       = $model->getState();
+        $this->form        = $model->getForm();
+        $this->params      = $model->getParams();
+//      $this->return_page = $this->getReturnPage();
 
 	    $this->config     = $this->params['configs'];
 
+		//	user must be logged in and have one 'master/base' category
+	    $this->isUserLoggedIn = true;
+		if ($user->guest) {
+			$this->isUserLoggedIn = false;
+		}
+
+		// one category is eed for upload view
+		$this->isUserHasCategory = $this->getUserHasACategory($user);
+
+	    // Get access service
+	    // Access service class
+	    $this->component->createAccess();
+	    $this->acl = $this->component->getAccess();
+	    $acl       = $this->component->getAccess();
+
+		// Needed for JgcategoryField
+	    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 
 	    // Add variables to JavaScript
 	    $js_vars               = new \stdClass();

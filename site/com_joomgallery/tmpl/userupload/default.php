@@ -23,15 +23,14 @@ use Joomgallery\Component\Joomgallery\Administrator\Field;
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
-	->useScript('form.validate')
+//	->useScript('form.validate')
    ->useScript('com_joomgallery.uppy-uploader')
    ->useScript('bootstrap.modal')
    ->useStyle('com_joomgallery.uppy')
    ->useStyle('com_joomgallery.admin');
 	;
 
-// $isHasAccess = false;
-$isHasAccess = true;
+$isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUserCoreManager;
 
 $panelView = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
@@ -80,17 +79,38 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
         <h3><?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?></h3>
 
         <?php if (empty($isHasAccess)): ?>
-          <div>
-            <?php // ToDo: discuss link to 'goto login' ?>
-              <button type="button" class="btn btn-primary jg-no-access">
-                <span class="icon-key"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
-              </button>
-              <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+            <div>
+                <?php // ToDo: discuss link to 'goto login' ?>
+                <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
                   <span class="icon-home"></span>
                   <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-              </a>
-          </div>
+                </a>
+                <?php if ( ! $this->isUserLoggedIn): ?>
+                  <p>
+                      <div class="alert alert-warning" role="alert">
+                          <span class="icon-key"></span>
+                          <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
+                      </div>
+                  </p>
+                <?php else: ?>
+                  <?php if ( ! $this->isUserHasCategory): ?>
+                      <p>
+                          <div class="alert alert-warning" role="alert">
+                              <span class="icon-images"></span>
+                              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
+                          </div>
+                      </p>
+                  <?php endif; ?>
+                  <?php if ( ! $this->isUserCoreManager): ?>
+                      <p>
+                          <div class="alert alert-warning" role="alert">
+                              <span class="icon-lamp"></span>
+                              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
+                          </div>
+                      </p>
+                  <?php endif; ?>
+                <?php endif; ?>
+            </div>
     	<?php else: ?>
             <div class="form-group">
 
