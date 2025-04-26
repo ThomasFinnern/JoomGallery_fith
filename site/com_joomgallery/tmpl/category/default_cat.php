@@ -283,12 +283,12 @@ $returnURL  = base64_encode(JoomHelper::getViewRoute('category', $this->item->id
 <?php endif; ?>
 
 <script>
-  if(window.joomGrid.layout != 'justified') {
+  if(window.joomGrid["1-<?php echo $this->item->id; ?>"].layout != 'justified') {
     var loadImg = function() {
-      this.closest('.' + window.joomGrid.imgboxclass).classList.add('loaded');
+      this.closest('.' + window.joomGrid["1-<?php echo $this->item->id; ?>"].imgboxclass).classList.add('loaded');
     }
 
-    let images = Array.from(document.getElementsByClassName(window.joomGrid.imgclass));
+    let images = Array.from(document.getElementsByClassName(window.joomGrid["1-<?php echo $this->item->id; ?>"].imgclass));
     images.forEach(image => {
       image.addEventListener('load', loadImg);
     });
