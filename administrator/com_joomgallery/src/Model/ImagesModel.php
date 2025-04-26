@@ -185,7 +185,7 @@ class ImagesModel extends JoomListModel
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select($this->getState('list.select', 'DISTINCT a.*'));
+		$query->select($this->getState('list.select', 'a.*'));
     $query->from($db->quoteName('#__joomgallery', 'a'));
 
 		// Join over the users for the checked out user
