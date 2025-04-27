@@ -384,6 +384,192 @@ class CategoriesModel extends JoomListModel
 		return $query;
 	}
 
+  /**
+   * Build an SQL query to load the list data for counting.
+   *
+   * @return  DatabaseQuery
+   *
+   * @since   4.1.0
+   */
+  protected function getCountListQuery()
+  {
+    // Create a new query object.
+    $db    = $this->getDbo();
+    $query = $db->getQuery(true);
+
+    // Select the required fields from the table.
+    $query->select($this->getState('list.select', 'a.*'));
+    $query->from($db->quoteName('#__joomgallery_categories', 'a'));
+
+    // Join over the users for the checked out user
+    $query->select($db->quoteName('uc.name', 'uEditor'));
+    $query->join('LEFT', $db->quoteName('#__users', 'uc'), $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out'));
+    $query->where($db->quoteName('a.level') . ' <> 0');
+
+    // Join over the access level field 'access'
+    $query->select($db->quoteName('ag.title', 'access'));
+    $query->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
+
+    // Join over the user field 'created_by'
+    $query->select(array($db->quoteName('ua.name', 'created_by'), $db->quoteName('ua.id', 'created_by_id')));
+    $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
+
+    // Join over the user field 'modified_by'
+    $query->select($db->quoteName('um.name', 'modified_by'));
+    $query->join('LEFT', $db->quoteName('#__users', 'um'), $db->quoteName('um.id') . ' = ' . $db->quoteName('a.modified_by'));
+
+    // Join over the category field 'parent_title'
+    $query->select($db->quoteName('parent.title', 'parent_title'));
+    $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('a.parent_id'));
+
+    // Join over the language fields 'language_title' and 'language_image'
+    $query->select(array($db->quoteName('l.title', 'language_title'), $db->quoteName('l.image', 'language_image')));
+    $query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
+
+    // Filter by access level.
+    $access = $this->getState('filter.access');
+
+    if(!empty($access))
+    {
+      if(is_numeric($access))
+      {
+        $access = (int) $access;
+        $query->where($db->quoteName('a.access') . ' = :access')
+          ->bind(':access', $access, ParameterType::INTEGER);
+      }
+      elseif(is_array($access))
+      {
+        $access = ArrayHelper::toInteger($access);
+        $query->whereIn($db->quoteName('a.access'), $access);
+      }
+    }
+
+    // Filter by owner
+    $userId = $this->getState('filter.created_by');
+
+    if(!empty($userId))
+    {
+      if(is_numeric($userId))
+      {
+        $userId = (int) $userId;
+        $type = $this->getState('filter.created_by.include', true) ? ' = ' : ' <> ';
+        $query->where($db->quoteName('a.created_by') . $type . ':userId')
+          ->bind(':userId', $userId, ParameterType::INTEGER);
+      }
+      elseif(is_array($userId))
+      {
+        $userId = ArrayHelper::toInteger($userId);
+        $query->whereIn($db->quoteName('a.created_by'), $userId);
+      }
+    }
+
+    // Filter by search
+    $search = $this->getState('filter.search');
+
+    if(!empty($search))
+    {
+      if(stripos($search, 'id:') === 0)
+      {
+        $search = (int) substr($search, 3);
+        $query->where($db->quoteName('a.id') . ' = :search')
+          ->bind(':search', $search, ParameterType::INTEGER);
+      }
+      else
+      {
+        $search = '%' . str_replace(' ', '%', trim($search)) . '%';
+        $query->where(
+          '(' . $db->quoteName('a.title') . ' LIKE :search1 OR ' . $db->quoteName('a.alias') . ' LIKE :search2'
+            . ' OR ' . $db->quoteName('a.description') . ' LIKE :search3)'
+        )
+          ->bind([':search1', ':search2', ':search3'], $search);
+      }
+    }
+
+    // Filter by published state
+    $published = (string) $this->getState('filter.published');
+
+    if($published !== '*')
+    {
+      if(is_numeric($published))
+      {
+        $state = (int) $published;
+        $query->where($db->quoteName('a.published') . ' = :state')
+          ->bind(':state', $state, ParameterType::INTEGER);
+      }
+    }
+
+    // Filter by hidden categories
+    $showhidden = (bool) $this->getState('filter.showhidden');
+
+    if(!$showhidden)
+    {
+      $query->where($db->quoteName('a.hidden') . ' = 0');
+    }
+
+    // Filter by empty categories
+    $showempty = (bool) $this->getState('filter.showempty');
+
+    if(!$showempty)
+    {
+      $query->having('img_count > 0');
+    }
+
+    // Filter by categories and by level
+    $categoryId = $this->getState('filter.category', array());
+    $level      = (int) $this->getState('filter.level');
+
+    if(!is_array($categoryId))
+    {
+      $categoryId = $categoryId ? array($categoryId) : array();
+    }
+
+    // Case: Using both categories filter and by level filter
+    if(count($categoryId))
+    {
+      $this->categoriesFilterQuery($query, $categoryId, $level);
+    }
+    // Case: Using only the by level filter
+    elseif($level = (int) $level)
+    {
+      $query->where($db->quoteName('a.level') . ' <= :level')
+        ->bind(':level', $level, ParameterType::INTEGER);
+    }
+
+    // Filter: Exclude categories
+    $excludeId = $this->getState('filter.exclude', array());
+    if(!is_array($excludeId))
+    {
+      $excludeId = $excludeId ? array($excludeId) : array();
+    }
+
+    // Case: Exclude categories filter
+    if(count($excludeId))
+    {
+      $this->categoriesFilterQuery($query, $excludeId, false, true);
+    }
+
+    // Filter self (remove the filtered category)
+    $showself = (bool) $this->getState('filter.showself');
+
+    if(count($categoryId) && !$showself)
+    {
+      foreach($categoryId as $catId)
+      {
+        $query->where($db->quoteName('a.id'). ' != :catid')
+          ->bind(':catid', $catId, ParameterType::INTEGER);
+      }
+    }
+
+    // Filter on the language.
+    if($language = $this->getState('filter.language'))
+    {
+      $query->where($db->quoteName('a.language') . ' = :language')
+        ->bind(':language', $language);
+    }
+
+    return $query;
+  }
+
 	/**
 	 * Get an array of data items
 	 *
