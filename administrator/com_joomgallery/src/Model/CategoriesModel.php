@@ -401,15 +401,6 @@ class CategoriesModel extends JoomListModel
     $query->select('COUNT(*)');
     $query->from($db->quoteName('#__joomgallery_categories', 'a'));
 
-    // Join over the access level field 'access'
-    $query->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
-
-    // Join over the user field 'created_by'
-    $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
-
-    // Join over the language fields 'language_title' and 'language_image'
-    $query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
-
     // Filter by access level.
     $access = $this->getState('filter.access');
 

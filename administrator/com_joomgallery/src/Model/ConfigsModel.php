@@ -219,9 +219,6 @@ class ConfigsModel extends JoomListModel
 		$query->select('COUNT(*)');
     $query->from($db->quoteName('#__joomgallery_configs', 'a'));
 
-		// Join over the user field 'created_by'
-    $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
-
 		// Filter by search
 		$search = $this->getState('filter.search');
 

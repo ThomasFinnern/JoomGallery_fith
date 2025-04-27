@@ -274,15 +274,6 @@ class TagsModel extends JoomListModel
     $query->select('COUNT(*)');
     $query->from($db->quoteName('#__joomgallery_tags', 'a'));
 
-		// Join over the access level field 'access'
-    $query->join('LEFT', $db->quoteName('#__viewlevels', 'access'), $db->quoteName('access.id') . ' = ' . $db->quoteName('a.access'));
-
-		// Join over the user field 'created_by'
-    $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
-
-    // Join over the language fields 'language_title' and 'language_image'
-		$query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
-
     // Filter by access level.
 		$filter_access = $this->state->get("filter.access");
     
