@@ -397,33 +397,17 @@ class CategoriesModel extends JoomListModel
     $db    = $this->getDbo();
     $query = $db->getQuery(true);
 
-    // Select the required fields from the table.
-    $query->select($this->getState('list.select', 'a.*'));
+    // Select only COUNT(*)
+    $query->select('COUNT(*)');
     $query->from($db->quoteName('#__joomgallery_categories', 'a'));
 
-    // Join over the users for the checked out user
-    $query->select($db->quoteName('uc.name', 'uEditor'));
-    $query->join('LEFT', $db->quoteName('#__users', 'uc'), $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out'));
-    $query->where($db->quoteName('a.level') . ' <> 0');
-
     // Join over the access level field 'access'
-    $query->select($db->quoteName('ag.title', 'access'));
     $query->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
 
     // Join over the user field 'created_by'
-    $query->select(array($db->quoteName('ua.name', 'created_by'), $db->quoteName('ua.id', 'created_by_id')));
     $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
 
-    // Join over the user field 'modified_by'
-    $query->select($db->quoteName('um.name', 'modified_by'));
-    $query->join('LEFT', $db->quoteName('#__users', 'um'), $db->quoteName('um.id') . ' = ' . $db->quoteName('a.modified_by'));
-
-    // Join over the category field 'parent_title'
-    $query->select($db->quoteName('parent.title', 'parent_title'));
-    $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('a.parent_id'));
-
     // Join over the language fields 'language_title' and 'language_image'
-    $query->select(array($db->quoteName('l.title', 'language_title'), $db->quoteName('l.image', 'language_image')));
     $query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
 
     // Filter by access level.
@@ -511,7 +495,13 @@ class CategoriesModel extends JoomListModel
 
     if(!$showempty)
     {
-      $query->having('img_count > 0');
+      // Add EXISTS subquery
+      $subQuery = $db->getQuery(true)
+      ->select('1')
+      ->from($db->quoteName('#__joomgallery', 'img'))
+      ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+
+      $query->where('EXISTS (' . (string) $subQuery . ')');
     }
 
     // Filter by categories and by level

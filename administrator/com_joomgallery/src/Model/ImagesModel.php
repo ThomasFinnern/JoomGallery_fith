@@ -407,6 +407,215 @@ class ImagesModel extends JoomListModel
 		return $query;
 	}
 
+  /**
+	 * Build an SQL query to load the list data for counting.
+	 *
+	 * @return  DatabaseQuery
+	 *
+	 * @since   4.1.0
+	 */
+	protected function getCountListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select('COUNT(*)');
+    $query->from($db->quoteName('#__joomgallery', 'a'));
+
+		// Join over the access level field 'access'
+    $query->join('LEFT', $db->quoteName('#__viewlevels', 'access'), $db->quoteName('access.id') . ' = ' . $db->quoteName('a.access'));
+
+		// Join over the user field 'created_by'
+    $query->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
+
+		// Join over the language fields 'language_title' and 'language_image'
+		$query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
+	
+    // Filter by access level.
+		$filter_access = $this->state->get("filter.access");
+    
+    if(!empty($filter_access))
+		{
+      if(is_numeric($filter_access))
+      {
+        $filter_access = (int) $filter_access;
+        $query->where($db->quoteName('a.access') . ' = :access')
+              ->bind(':access', $filter_access, ParameterType::INTEGER);
+      }
+      elseif (is_array($filter_access))
+      {
+        $filter_access = ArrayHelper::toInteger($filter_access);
+        $query->whereIn($db->quoteName('a.access'), $filter_access);
+      }
+    }
+
+    // Filter by owner
+		$userId = $this->getState('filter.created_by');
+
+    if(!empty($userId))
+		{
+      if(is_numeric($userId))
+      {
+        $userId = (int) $userId;
+        $type = $this->getState('filter.created_by.include', true) ? ' = ' : ' <> ';
+        $query->where($db->quoteName('a.created_by') . $type . ':userId')
+          ->bind(':userId', $userId, ParameterType::INTEGER);
+      }
+      elseif(is_array($userId))
+      {
+        $userId = ArrayHelper::toInteger($userId);
+        $query->whereIn($db->quoteName('a.created_by'), $userId);
+      }
+    }
+
+		// Filter by search
+		$search = $this->getState('filter.search');
+
+		if(!empty($search))
+		{
+			if(stripos($search, 'id:') === 0)
+			{
+				$search = (int) substr($search, 3);
+				$query->where($db->quoteName('a.id') . ' = :search')
+					->bind(':search', $search, ParameterType::INTEGER);
+			}
+			else
+			{
+        $search = '%' . str_replace(' ', '%', trim($search)) . '%';
+				$query->where(
+					'(' . $db->quoteName('a.title') . ' LIKE :search1 OR ' . $db->quoteName('a.alias') . ' LIKE :search2'
+						. ' OR ' . $db->quoteName('a.description') . ' LIKE :search3)'
+				)
+					->bind([':search1', ':search2', ':search3'], $search);
+			}
+		}
+
+    // Filter by published state
+		$published = (string) $this->getState('filter.published');
+
+		if($published !== '*')
+		{
+			if(is_numeric($published))
+			{
+				$state = (int) $published;
+
+        if($state == 1 || $state == 2)
+        { // published/unpublished
+
+          // translate state
+          $state = ($state == 1) ? 1 : 0;
+
+          // row name
+          $row = 'a.published';
+        }
+        elseif($state == 3 || $state == 4)
+        {// approved/not approved
+
+          // translate state
+          $state = ($state == 3) ? 1 : 0;
+          
+          // row name
+          $row = 'a.approved';
+        }
+        elseif($state == 5)
+        {// rejected
+          Factory::getApplication()->enqueueMessage('Unknown state: Rejected', 'error');
+          $state = false;
+        }
+        elseif($state == 6 || $state == 7)
+        {// featured/not featured
+
+          // translate state
+          $state = ($state == 6) ? 1 : 0;
+
+          // row name
+          $row = 'a.featured';
+        }
+
+        if($state || $state === 0)
+        {
+          $query->where($db->quoteName($row) . ' = :state')
+					->bind(':state', $state, ParameterType::INTEGER);
+        }        
+			}
+		}
+
+    // Filter by hidden images
+    $showhidden = (bool) $this->getState('filter.showhidden');
+
+    if(!$showhidden)
+		{
+      $query->where($db->quoteName('a.hidden') . ' = 0');
+		}
+
+    // Filter by unapproved images
+    $showunapproved = (bool) $this->getState('filter.showunapproved');
+
+    if(!$showunapproved)
+		{
+      $query->where($db->quoteName('a.approved') . ' = 1');
+		}
+
+    // Filter by categories
+    $catId = $this->getState("filter.category");
+
+    // Convert to array
+    if(isset($catId) && !\is_array($catId))
+    {
+      $catId = (string) preg_replace('/[^0-9\,]/i', '', $catId);
+      if(\strpos($catId, ',') !== false)
+      {
+        $catId = \explode(',', $catId);
+      }
+    }
+
+    if(!empty($catId))
+    {
+      if(is_numeric($catId))
+      {
+        $catId = (int) $catId;
+        $query->where($db->quoteName('a.catid') . ' = :catId')
+          ->bind(':catId', $catId, ParameterType::INTEGER);
+      }
+      elseif(is_array($catId))
+      {
+        $catId = ArrayHelper::toInteger($catId);
+        $query->whereIn($db->quoteName('a.catid'), $catId);
+      }
+    }
+
+    // Filter: Exclude images
+    $excludedId = Factory::getApplication()->input->get('exclude', '', 'string');
+    $excludedId = (string) preg_replace('/[^0-9\,]/i', '', $excludedId);
+    if(\strpos($excludedId, ',') !== false)
+    {
+      $excludedId = \explode(',', $excludedId);
+    }
+
+    if(is_numeric($excludedId))
+		{
+			$excludedId = (int) $excludedId;
+			$query->where($db->quoteName('a.id') . ' != :imgId')
+				->bind(':imgId', $excludedId, ParameterType::INTEGER);
+		}
+		elseif(is_array($excludedId))
+		{
+			$excludedId = ArrayHelper::toInteger($excludedId);
+			$query->whereNotIn($db->quoteName('a.id'), $excludedId);
+		}
+
+    // Filter on the language.
+		if($language = $this->getState('filter.language'))
+		{
+			$query->where($db->quoteName('a.language') . ' = :language')
+				->bind(':language', $language);
+		}
+
+		return $query;
+	}
+
 	/**
 	 * Get an array of data items
 	 *
