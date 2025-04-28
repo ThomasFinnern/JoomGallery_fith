@@ -89,13 +89,16 @@ CREATE TABLE IF NOT EXISTS `#__joomgallery_categories` (
 `metakey` TEXT NOT NULL,
 `robots` INT(11) UNSIGNED NOT NULL DEFAULT 0,
 PRIMARY KEY (`id`),
+KEY `idx_left_right` (`lft`,`rgt`),
+KEY `idx_parent_id` (`parent_id`),
+KEY `idx_language` (`language`),
 KEY `idx_access` (`access`),
 KEY `idx_checkout` (`checked_out`),
-KEY `idx_path` (`path`(100)),
-KEY `idx_left_right` (`lft`,`rgt`),
-KEY `idx_alias` (`alias`(100)),
-KEY `idx_language` (`language`),
-INDEX `idx_list_subcategories` (`published`, `access`, `hidden`, `id`)
+KEY `idx_created_by` (`created_by`),
+KEY `idx_alias` (`alias`(191)),
+KEY `idx_title` (`title`(191)),
+KEY `idx_path` (`path`(191)),
+KEY `idx_list_subcategories` (`published`, `access`, `hidden`, `id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
