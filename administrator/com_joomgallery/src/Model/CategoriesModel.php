@@ -215,14 +215,18 @@ class CategoriesModel extends JoomListModel
     $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('a.parent_id'));
 
     // Get img_count
-		$query->select('COUNT(`img`.id) AS `img_count`');
-    $query->join('LEFT', $db->quoteName('#__joomgallery', 'img'), $db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
-    $query->group($db->quoteName('a.id'));
+    $imgQuery = $db->getQuery(true);
+    $imgQuery->select('COUNT(`img`.id)')
+             ->from($db->quoteName('#__joomgallery', 'img'))
+             ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+    $query->select('(' . $imgQuery->__toString() . ') AS ' . $db->quoteName('img_count'));
 
     // Get child_count
-		$query->select('COUNT(`child`.id) AS `child_count`');
-    $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'child'), $db->quoteName('child.parent_id') . ' = ' . $db->quoteName('a.id'));
-    $query->group($db->quoteName('child.parent_id'));
+    $subQuery = $db->getQuery(true);
+    $subQuery->select('COUNT(`child`.id)')
+             ->from($db->quoteName('#__joomgallery_categories', 'child'))
+             ->where($db->quoteName('child.parent_id') . ' = ' . $db->quoteName('a.id'));
+    $query->select('(' . $subQuery->__toString() . ') AS ' . $db->quoteName('child_count'));
 
     // Join over the language fields 'language_title' and 'language_image'
 		$query->select(array($db->quoteName('l.title', 'language_title'), $db->quoteName('l.image', 'language_image')));
@@ -312,9 +316,15 @@ class CategoriesModel extends JoomListModel
     $showempty = (bool) $this->getState('filter.showempty');
 
     if(!$showempty)
-		{
-      $query->having('img_count > 0');
-		}
+    {
+      // Add EXISTS subquery
+      $existsQuery = $db->getQuery(true);
+      $existsQuery->select('1')
+                  ->from($db->quoteName('#__joomgallery', 'img'))
+                  ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+
+      $query->where('EXISTS (' . $existsQuery->__toString() . ')');
+    }
 
     // Filter by categories and by level
 		$categoryId = $this->getState('filter.category', array());
@@ -487,12 +497,12 @@ class CategoriesModel extends JoomListModel
     if(!$showempty)
     {
       // Add EXISTS subquery
-      $subQuery = $db->getQuery(true)
-      ->select('1')
-      ->from($db->quoteName('#__joomgallery', 'img'))
-      ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+      $existsQuery = $db->getQuery(true);
+      $existsQuery->select('1')
+                  ->from($db->quoteName('#__joomgallery', 'img'))
+                  ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
 
-      $query->where('EXISTS (' . (string) $subQuery . ')');
+      $query->where('EXISTS (' . $existsQuery->__toString() . ')');
     }
 
     // Filter by categories and by level

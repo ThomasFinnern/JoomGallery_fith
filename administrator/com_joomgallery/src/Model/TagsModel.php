@@ -175,12 +175,11 @@ class TagsModel extends JoomListModel
 		$query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
 
     // Count Items
-		$subQueryCountTaggedItems = $db->getQuery(true);
-		$subQueryCountTaggedItems
-			->select('COUNT(' . $db->quoteName('tags_ref.imgid') . ')')
-			->from($db->quoteName(_JOOM_TABLE_TAGS_REF, 'tags_ref'))
-			->where($db->quoteName('tags_ref.tagid') . ' = ' . $db->quoteName('a.id'));
-		$query->select('(' . (string) $subQueryCountTaggedItems . ') AS ' . $db->quoteName('countTaggedItems'));
+		$countQuery = $db->getQuery(true);
+		$countQuery->select('COUNT(' . $db->quoteName('tags_ref.imgid') . ')')
+			         ->from($db->quoteName(_JOOM_TABLE_TAGS_REF, 'tags_ref'))
+			         ->where($db->quoteName('tags_ref.tagid') . ' = ' . $db->quoteName('a.id'));
+		$query->select('(' . $countQuery->__toString() . ') AS ' . $db->quoteName('countTaggedItems'));
 
     // Filter by access level.
 		$filter_access = $this->state->get("filter.access");
