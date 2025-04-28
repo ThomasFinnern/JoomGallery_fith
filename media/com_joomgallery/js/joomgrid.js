@@ -38,6 +38,19 @@ var callback = function() {
       }
     }
 
+    // Add load event listener to images
+    if(settings.layout != 'justified') {
+      var loadImg = function() {
+        this.closest('.' + settings.imgboxclass).classList.add('loaded');
+      }
+
+      let images = Array.from(document.getElementsByClassName(settings.imgclass));
+      console.log(images);
+      images.forEach(image => {
+        image.addEventListener('load', loadImg);
+      });
+    }
+
     // Get the grid container
     const grid = document.querySelector('.' + settings.gridclass);
 
