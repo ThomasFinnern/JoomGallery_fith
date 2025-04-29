@@ -1,7 +1,5 @@
 <?php
-
-/**
-******************************************************************************************
+/*****************************************************************************************
 **   @package    com_joomgallery                                                        **
 **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
 **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
@@ -23,12 +21,13 @@ use Joomgallery\Component\Joomgallery\Administrator\Field;
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
-//	->useScript('form.validate')
-   ->useScript('com_joomgallery.uppy-uploader')
-   ->useScript('bootstrap.modal')
-   ->useStyle('com_joomgallery.uppy')
-   ->useStyle('com_joomgallery.admin');
-	;
+    ->useScript('form.validate')
+    ->useScript('com_joomgallery.uppy-uploader')
+    ->useScript('bootstrap.modal')
+	->useScript('bootstrap.collapse')
+    ->useStyle('com_joomgallery.uppy')
+    ->useStyle('com_joomgallery.admin');
+HTMLHelper::_('bootstrap.tooltip');
 
 $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUserCoreManager;
 
@@ -39,6 +38,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
 
 $isUseOrigFilename = $this->config->get('jg_useorigfilename');
 $isUseFilenameNumber = $this->config->get('jg_filenamenumber');
+
 
 $app = Factory::getApplication();
 
@@ -70,7 +70,6 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
 ?>
 
 <div class="jg jg-upload">
-
     <form
         action="<?php echo $uploadView; ?>"
         method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="needs-validation"
@@ -139,7 +138,6 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                             <div id="drag-drop-area">
                                 <div class="card-body"><?php echo Text::_('COM_JOOMGALLERY_INFO_UPLOAD_FORM_NOT_LOADED'); ?></div>
                             </div>
-                            <hr>
                             <div class="card-body">
                                 <?php echo $this->form->renderField('debug'); ?>
                             </div>
@@ -150,30 +148,17 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                             <h2><?php echo Text::_('JOPTIONS'); ?></h2>
                         </div>
                         <div class="card-body">
-                            <Xstrong class="ToDo: Either use joomgallery.tip (see below) or bootstrap Collapse">
-                            <font size="3">
-                            <?php echo '* ' . Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'); ?>
-                            </font>
-                            </Xstrong>
-                            <br />
-                            <Xsmall>
-                            <font size="2">
-                                <?php echo '* ' . Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA_DESC'); ?>
-                            </font>
-                            </Xsmall>
-    <!--                        <p>-->
-    <!--                            <hr>-->
-    <!--                            --><?php
-    //                            $displayData = [
-    //                                'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
-    //                                'id'          => 'adminForm-desc',
-    //                                'small'       => true
-    //                            ];
-    //                            $renderer = new FileLayout('joomgallery.tip');
-    //                            ?>
-    <!--                            <hr>-->
-    <!--                            --><?php //echo $renderer->render($displayData); ?>
-    <!--                        </p>-->
+                            <p>
+                                <?php
+                                $displayData = [
+                                    'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
+                                    'id'          => 'adminForm-desc',
+                                    'small'       => true
+                                ];
+                                $renderer = new FileLayout('joomgallery.tip');
+                                ?>
+    	                        <?php echo $renderer->render($displayData); ?>
+                            </p>
                             <?php echo $this->form->renderField('catid'); ?>
                             <?php if(!$isUseOrigFilename): ?>
                                 <?php echo $this->form->renderField('title'); ?>
@@ -186,8 +171,8 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                             <?php echo $this->form->renderField('access'); ?>
                             <?php echo $this->form->renderField('language'); ?>
                             <fieldset class="adminform">
-                            <?php echo $this->form->getLabel('description'); ?>
-                            <?php echo $this->form->getInput('description'); ?>
+                                <?php echo $this->form->getLabel('description'); ?>
+                                <?php echo $this->form->getInput('description'); ?>
                             </fieldset>
                             <input type="text" id="jform_id" class="hidden form-control readonly" name="jform[id]" value="" readonly/>
                         </div>
@@ -199,10 +184,11 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
         <?php endif; ?>
 
         <input type="hidden" name="task" value="upload.ajaxsave"/>
-
-<!--	    --><?php //if($this->config->get('jg_useorigfilename')): ?>
-<!--          <input type="hidden" name="jform[title]" value="title" />-->
-<!--	    --><?php //endif; ?>
+        <input type="hidden" name="jform[uploader]" value="tus" />
+        <input type="hidden" name="jform[multiple]" value="1" />
+	    <?php if($this->config->get('jg_useorigfilename')): ?>
+          <input type="hidden" name="jform[title]" value="title" />
+	    <?php endif; ?>
         <input type="hidden" name="id" value="0" />
 
 	    <?php echo HTMLHelper::_('form.token'); ?>

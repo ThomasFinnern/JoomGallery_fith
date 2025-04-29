@@ -1,12 +1,11 @@
 <?php
 
-/**
- * @package     Joomla.Site
- * @subpackage  com_contact
- *
- * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
+/********************************************************************************************
+ * **   @package    com_joomgallery                                                        **
+ * **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+ * **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+ * **   @license    GNU General Public License version 3 or later                          **
+ *******************************************************************************************/
 
 namespace Joomgallery\Component\Joomgallery\Site\View\Userupload;
 
@@ -19,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Database\DatabaseInterface;
 
+// use \Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -127,6 +127,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	    $acl       = $this->component->getAccess();
 
 		// Needed for JgcategoryField
+	    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 	    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 
 	    // Add variables to JavaScript
@@ -137,11 +138,11 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	    $js_vars->allowedTypes = $this->getAllowedTypes();
 
 	    $js_vars->uppyTarget   = '#drag-drop-area';          // Id of the DOM element to apply the uppy form
-	    $js_vars->uppyLimit    = 5;                          // Number of concurrent tus upploads (only file upload)
-	    $js_vars->uppyDelays   = array(0, 1000, 3000, 5000); // Delay in ms between upload retrys
+	    $js_vars->uppyLimit    = 5;                          // Number of concurrent tus uploads (only file upload)
+	    $js_vars->uppyDelays   = array(0, 1000, 3000, 5000); // Delay in ms between upload retries
 
 	    $js_vars->semaCalls    = $this->config->get('jg_parallelprocesses', 1); // Number of concurrent async calls to save the record to DB (including image processing)
-	    $js_vars->semaTokens   = 100;                                           // Prealloc space for 100 tokens
+	    $js_vars->semaTokens   = 100;                                           // Pre alloc space for 100 tokens
 
 	    $this->js_vars = $js_vars;
 
