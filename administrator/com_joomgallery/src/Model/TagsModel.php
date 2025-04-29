@@ -147,7 +147,7 @@ class TagsModel extends JoomListModel
 	protected function getListQuery()
 	{
 		// Create a new query object. 
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -282,7 +282,7 @@ class TagsModel extends JoomListModel
 	 */
 	public function searchItems($filters = array())
 	{
-    $db = Factory::getDbo();
+    $db = $this->getDatabase();
     $query = $db->getQuery(true)
             ->select([
                         $db->quoteName('a.id', 'value'),
@@ -364,7 +364,7 @@ class TagsModel extends JoomListModel
 	protected function getMappedListQuery($img_id)
 	{
     // Create a new query object. 
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
     // Select the required fields from the table.

@@ -208,7 +208,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
 			}
 			else
 			{
-				if(Factory::getConfig()->get('unicodeslugs') == 1)
+				if(Factory::getApplication()->getConfig()->get('unicodeslugs') == 1)
 				{
 					$array['alias'] = OutputFilter::stringURLUnicodeSlug(trim($array['title']));
 				}
@@ -220,7 +220,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
 		}
     else
     {
-      if(Factory::getConfig()->get('unicodeslugs') == 1)
+      if(Factory::getApplication()->getConfig()->get('unicodeslugs') == 1)
       {
         $array['alias'] = OutputFilter::stringURLUnicodeSlug(trim($array['alias']));
       }
@@ -472,7 +472,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
    */
   public function addRoot()
   {
-    $db = $this->getDbo();
+    $db = $this->getDatabase();
 
     $checkQuery = $db->getQuery(true);
     $checkQuery->select('*');
@@ -522,7 +522,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
       $name = $this->typeAlias . '.1';
 
       // Create asset for root category
-      $assetTable = new Asset($this->getDbo());
+      $assetTable = new Asset($this->getDatabase());
       $assetTable->loadByName($name);
 
       if($assetTable->getError())
@@ -629,7 +629,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
     }
 
     // Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
     // Select the required fields from the table.
@@ -751,7 +751,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
     }
 
     // Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
     // Select the required fields from the table.
