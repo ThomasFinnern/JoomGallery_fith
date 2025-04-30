@@ -12,11 +12,13 @@ namespace Joomgallery\Component\Joomgallery\Site\Model;
 // No direct access.
 defined('_JEXEC') or die;
 
+use Joomgallery\Component\Joomgallery\Administrator\Model\JoomAdminModel;
 use Joomgallery\Component\Joomgallery\Administrator\Service\Access\AccessInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Application\AdministratorApplication;
 
 /**
  * Model to get a list of category records.
@@ -25,7 +27,7 @@ use Joomla\Registry\Registry;
  * @since   4.0.0
  */
 //class UseruploadModel extends AdminCategoriesModel
-class UseruploadModel extends FormModel
+class UseruploadModel extends JoomAdminModel
 {
     /**
      * Joomla application class
@@ -50,7 +52,7 @@ class UseruploadModel extends FormModel
 	 * @access  protected
 	 * @var     string
 	 */
-	protected $typeAlias = 'com_joomgallery.userupload';
+	public $typeAlias = 'com_joomgallery.userupload';
 //	protected $typeAlias = '';
 
     /**

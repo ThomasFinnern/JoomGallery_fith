@@ -18,6 +18,9 @@ $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
 
+
+
+
 ?>
 
 <div class="jg jg-user-categories">
@@ -28,6 +31,12 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
             novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_IMAGES_UPLOAD', true); ?>" >
 
         <h3><?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?></h3>
+
+        <div class="alert alert-danger" role="alert">
+            wrong page. This shall be removed
+        </div>
+
+
 
     <button type="button" class="btn btn-default jg-cancel">
         <span class="icon-"></span> <?php echo Text::_(''); ?>
@@ -49,15 +58,13 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
 
         <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
             <span class="icon-upload"></span>
-            <?php echo Text::_('upload'); ?>
+            <?php echo Text::_('COM_JOOMGALLERY_UPLOAD'); ?>
         </a>
 
         <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
             <span class="icon-home"></span>
-            <?php echo Text::_('user panel'); ?>
+            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
         </a>
-
-
 
 		<?php endif; ?>
 

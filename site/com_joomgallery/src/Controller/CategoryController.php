@@ -104,7 +104,7 @@ class CategoryController extends JoomBaseController
 	{
 		// Get the previous edit id (if any) and the current edit id.
 		$previousId = (int) $this->app->getUserState(_JOOM_OPTION.'.add.category.id');
-    $cid        = (array) $this->input->post->get('cid', [], 'int');
+        $cid        = (array) $this->input->post->get('cid', [], 'int');
 		$editId     = (int) (\count($cid) ? $cid[0] : $this->input->getInt('id', 0));
 		$addCatId   = (int) $this->input->getInt('catid', 0);
 
@@ -127,7 +127,7 @@ class CategoryController extends JoomBaseController
 		// Check in the previous user.
 		if($previousId && $previousId !== $addCatId)
 		{
-      // Get the model.
+	      // Get the model.
 		  $model = $this->getModel('Category', 'Site');
 
 			$model->checkin($previousId);

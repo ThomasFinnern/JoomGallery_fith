@@ -68,11 +68,11 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
      */
     protected $params;
 
-    /**
-     * @var    \Joomla\Registry\Registry
-     * @since  4.0.0
-     */
-    protected $config;
+//    /**
+//     * @var    \Joomla\Registry\Registry
+//     * @since  4.0.0
+//     */
+//    protected $config;
 
 	/**
 	 * @var    bool
@@ -86,6 +86,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	protected $isUserHasCategory = false;
 
 	protected $isUserCoreManager = false;
+	protected $userId = 0;
 
     /**
      * Execute and display a template script.
@@ -109,7 +110,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
         $this->params      = $model->getParams();
 //      $this->return_page = $this->getReturnPage();
 
-	    $this->config     = $this->params['configs'];
+	    $config     = $this->params['configs'];
 
 		//	user must be logged in and have one 'master/base' category
 	    $this->isUserLoggedIn = true;
@@ -117,11 +118,12 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 			$this->isUserLoggedIn = false;
 		}
 
-		// one category is eed for upload view
+		// at least one category is needed for upload view
 		$this->isUserHasCategory = $this->getUserHasACategory($user);
 
+		$this->userId = $user->id;
+
 	    // Get access service
-	    // Access service class
 	    $this->component->createAccess();
 	    $this->acl = $this->component->getAccess();
 	    $acl       = $this->component->getAccess();
@@ -141,7 +143,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	    $js_vars->uppyLimit    = 5;                          // Number of concurrent tus uploads (only file upload)
 	    $js_vars->uppyDelays   = array(0, 1000, 3000, 5000); // Delay in ms between upload retries
 
-	    $js_vars->semaCalls    = $this->config->get('jg_parallelprocesses', 1); // Number of concurrent async calls to save the record to DB (including image processing)
+	    $js_vars->semaCalls    = $config->get('jg_parallelprocesses', 1); // Number of concurrent async calls to save the record to DB (including image processing)
 	    $js_vars->semaTokens   = 100;                                           // Pre alloc space for 100 tokens
 
 	    $this->js_vars = $js_vars;
@@ -245,7 +247,8 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	 */
 	protected function getAllowedTypes()
 	{
-		$types = \explode(',', $this->config->get('jg_imagetypes'));
+		$config     = $this->params['configs'];
+		$types = \explode(',', $config->get('jg_imagetypes'));
 
 		// add different types of jpg files
 		$jpg_array = array('jpg', 'jpeg', 'jpe', 'jfif');

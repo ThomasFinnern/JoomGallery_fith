@@ -13,6 +13,8 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userpanel;
 //use Joomla\CMS\Factory;
 //use Joomla\CMS\Helper\TagsHelper;
 //use Joomla\CMS\Language\Multilanguage;
+use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
@@ -26,7 +28,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  *
  * @since  4.0.0
  */
-class HtmlView extends BaseHtmlView
+class HtmlView extends JoomGalleryView
 {
     /**
      * @var    \Joomla\CMS\Form\Form
@@ -76,36 +78,38 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-//        $user = $this->getCurrentUser();
-//        $app  = Factory::getApplication();
-//
-//        // Get model data.
-//        $this->state       = $this->get('State');
-//        $this->item        = $this->get('Item');
-//        $this->form        = $this->get('Form');
-//        $this->return_page = $this->get('ReturnPage');
-//
-//        if (empty($this->item->id)) {
-//            $authorised = $user->authorise('core.create', 'com_contact') || count($user->getAuthorisedCategories('com_contact', 'core.create'));
-//        } else {
-//            // Since we don't track these assets at the item level, use the category id.
-//            $canDo      = ContactHelper::getActions('com_contact', 'category', $this->item->catid);
-//            $authorised = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by === $user->id);
-//        }
-//
-//        if ($authorised !== true) {
-//            $app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
-//            $app->setHeader('status', 403, true);
-//
-//            return false;
-//        }
-//
-//        $this->item->tags = new TagsHelper();
-//
-//        if (!empty($this->item->id)) {
-//            $this->item->tags->getItemTags('com_contact.contact', $this->item->id);
-//        }
-//
+        $user = $this->getCurrentUser();
+        $app  = Factory::getApplication();
+
+	    // Get model data
+	    $model             = $this->getModel();
+	    $this->state       = $model->getState();
+//	    $this->form        = $model->getForm();
+	    $this->params      = $model->getParams();
+//      $this->return_page = $this->getReturnPage();
+
+	    $config     = $this->params['configs'];
+
+	    //	user must be logged in and have one 'master/base' category
+	    $this->isUserLoggedIn = true;
+	    if ($user->guest) {
+		    $this->isUserLoggedIn = false;
+	    }
+
+	    // at least one category is needed for upload view
+	    $this->isUserHasCategory = $this->getUserHasACategory($user);
+
+	    $this->userId = $user->id;
+
+	    // Get access service
+	    $this->component->createAccess();
+	    $this->acl = $this->component->getAccess();
+	    $acl       = $this->component->getAccess();
+
+	    // Needed for JgcategoryField
+	    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+	    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+
 //        // Check for errors.
 //        if (count($errors = $this->get('Errors'))) {
 //            $app->enqueueMessage(implode("\n", $errors), 'error');
