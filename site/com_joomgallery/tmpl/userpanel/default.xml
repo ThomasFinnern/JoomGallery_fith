@@ -5,14 +5,19 @@
 			<![CDATA[COM_JOOMGALLERY_VIEW_USER_PANEL_DESC]]>
 		</message>
 	</layout>
-	<!--fields name="request">
-	   <fieldset name="options">
-	        <field
-	            name="id"
-	            type="text"
-	            label="COM_SPM_FIELD_ID_LABEL"
-	            required="true" />
-	   </fieldset>
-   </fields-->
+	<fields name="request">
+		<fieldset name="request"
+		>
+			<field
+					name="userNeedsSettings"
+					type="text"
+					default="ToDo: Create info field type"
+					label="COM_JOOMGALLERY_VIEW_USER_SITE_INFO"
+					description="COM_JOOMGALLERY_VIEW_USER_SITE_INFO_DESC"
+					readonly="true"
+					size="10"
+			/>
+		</fieldset>
+	</fields>
 </metadata>
 

@@ -36,9 +36,13 @@ $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
 
-$isUseOrigFilename = $this->config->get('jg_useorigfilename');
-$isUseFilenameNumber = $this->config->get('jg_filenamenumber');
+$config     = $this->params['configs'];
+$menuParam  = $this->params['menu'];
 
+$isUseOrigFilename = $config->get('jg_useorigfilename');
+$isUseFilenameNumber = $config->get('jg_filenamenumber');
+//$isShowTitle = $this->config->get('userUploadShowTitle');
+$isShowTitle = $menuParam->get('userUploadShowTitle');
 
 $app = Factory::getApplication();
 
@@ -46,6 +50,14 @@ $app = Factory::getApplication();
 $isModal = $app->input->get('layout') === 'modal';
 $layout  = $isModal ? 'modal' : 'edit';
 $tmpl    = $isModal || $app->input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
+
+$displayTipData = [
+	'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
+	'id'          => 'adminForm-desc',
+	'small'       => true
+];
+$rendererTip = new FileLayout('joomgallery.tip');
+
 
 // Add language strings to JavaScript
 Text::script('JCLOSE');
@@ -75,15 +87,13 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
         method="post" enctype="multipart/form-data" name="adminForm" id="adminForm" class="needs-validation"
         novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_IMAGES_UPLOAD', true); ?>" >
 
-        <h3><?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?></h3>
+	    <?php if ($isShowTitle): ?>
+            <h3><?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?></h3>
+	    <?php endif; ?>
 
         <?php if (empty($isHasAccess)): ?>
             <div>
                 <?php // ToDo: discuss link to 'goto login' ?>
-                <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
-                  <span class="icon-home"></span>
-                  <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-                </a>
                 <?php if ( ! $this->isUserLoggedIn): ?>
                   <p>
                       <div class="alert alert-warning" role="alert">
@@ -92,22 +102,29 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                       </div>
                   </p>
                 <?php else: ?>
-                  <?php if ( ! $this->isUserHasCategory): ?>
+                    <!--<a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+                        <span class="icon-home"></span>
+                        <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+                    </a>-->
+
+                    <?php if ( ! $this->isUserHasCategory): ?>
                       <p>
                           <div class="alert alert-warning" role="alert">
                               <span class="icon-images"></span>
                               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
+                              <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
                           </div>
                       </p>
-                  <?php endif; ?>
-                  <?php if ( ! $this->isUserCoreManager): ?>
-                      <p>
-                          <div class="alert alert-warning" role="alert">
-                              <span class="icon-lamp"></span>
-                              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
-                          </div>
-                      </p>
-                  <?php endif; ?>
+                    <?php endif; ?>
+                        <?php if ( ! $this->isUserCoreManager): ?>
+                          <p>
+                              <div class="alert alert-warning" role="alert">
+                                  <span class="icon-lamp"></span>
+                                  <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
+                                  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
+                              </div>
+                          </p>
+                        <?php endif; ?>
                 <?php endif; ?>
             </div>
     	<?php else: ?>
@@ -149,17 +166,10 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                         </div>
                         <div class="card-body">
                             <p>
-                                <?php
-                                $displayData = [
-                                    'description' => Text::_('COM_JOOMGALLERY_GENERIC_UPLOAD_DATA'),
-                                    'id'          => 'adminForm-desc',
-                                    'small'       => true
-                                ];
-                                $renderer = new FileLayout('joomgallery.tip');
-                                ?>
-    	                        <?php echo $renderer->render($displayData); ?>
+    	                        <?php echo $rendererTip->render($displayTipData); ?>
                             </p>
                             <?php echo $this->form->renderField('catid'); ?>
+<!--                            --><?php //echo $this->form->renderField('catid', $this->userId); ?>
                             <?php if(!$isUseOrigFilename): ?>
                                 <?php echo $this->form->renderField('title'); ?>
                                 <?php if($isUseFilenameNumber): ?>
@@ -180,13 +190,12 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                 </div>
             </div>
 
-
         <?php endif; ?>
 
-        <input type="hidden" name="task" value="upload.ajaxsave"/>
+        <input type="hidden" name="task" value="userupload.ajaxsave" />
         <input type="hidden" name="jform[uploader]" value="tus" />
         <input type="hidden" name="jform[multiple]" value="1" />
-	    <?php if($this->config->get('jg_useorigfilename')): ?>
+	    <?php if($config->get('jg_useorigfilename')): ?>
           <input type="hidden" name="jform[title]" value="title" />
 	    <?php endif; ?>
         <input type="hidden" name="id" value="0" />
