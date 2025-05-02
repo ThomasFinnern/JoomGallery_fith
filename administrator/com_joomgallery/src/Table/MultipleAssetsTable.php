@@ -27,6 +27,7 @@ use \Joomgallery\Component\Joomgallery\Administrator\Table\Asset\MultipleAssetsT
 class MultipleAssetsTable extends Table
 {
   use MultipleAssetsTableTrait;
+  use LegacyDatabaseTrait;
 
   /**
    * The rules associated with this record.

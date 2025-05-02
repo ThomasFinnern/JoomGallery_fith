@@ -30,6 +30,7 @@ class TagTable extends Table
 {
   use JoomTableTrait;
   use GlobalAssetTableTrait;
+  use LegacyDatabaseTrait;
 
   /**
    * List of images connected to this tag

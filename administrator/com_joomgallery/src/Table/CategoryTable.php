@@ -35,6 +35,7 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
   use JoomTableTrait;
   use MultipleAssetsTableTrait;
   use MigrationTableTrait;
+  use LegacyDatabaseTrait;
   
   /**
    * Object property to hold the path of the new location reference node.

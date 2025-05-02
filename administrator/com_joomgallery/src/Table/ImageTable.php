@@ -32,7 +32,8 @@ class ImageTable extends Table implements VersionableTableInterface
 {
   use JoomTableTrait;
   use NoAssetTableTrait;
-	use MigrationTableTrait;
+  use MigrationTableTrait;
+  use LegacyDatabaseTrait;
 
 	/**
 	 * Constructor

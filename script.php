@@ -611,6 +611,12 @@ class com_joomgalleryInstallerScript extends InstallerScript
 
     require_once $multipleassetstable_path;
 
+    // Load LegacyDatabaseTrait
+    $legacydatabasetrait_path = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Table'.DIRECTORY_SEPARATOR.'LegacyDatabaseTrait.php';
+    $legacydatabasetraitClass = '\\Joomgallery\\Component\\Joomgallery\\Administrator\\Table\\LegacyDatabaseTrait';
+
+    require_once $legacydatabasetrait_path;
+
     // Load CategoryTable
     $class_path = JPATH_ADMINISTRATOR.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_joomgallery'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Table'.DIRECTORY_SEPARATOR.'CategoryTable.php';
     $tableClass = '\\Joomgallery\\Component\\Joomgallery\\Administrator\\Table\\CategoryTable';
