@@ -114,3 +114,14 @@ $wa->addInlineScript($iniJS, ['position' => 'after'], [], ['com_joomgallery.joom
     </div>
   <?php endif; ?>
 </div>
+
+<script>
+  // Add event listener to images
+  let loadImg = function() {
+    this.closest('.jg-image').classList.add('loaded');
+  }
+  let images = Array.from(document.getElementsByClassName('jg-image-thumb'));
+  images.forEach(image => {
+    image.addEventListener('load', loadImg);
+  });
+</script>

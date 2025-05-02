@@ -8,8 +8,6 @@ const defaults = {
         thumbnails: false,
         lightbox_obj: {},
         lightbox_params: {container: 'lightgallery-0-0', selector: '.lightgallery-item'},
-        imgboxclass: 'jg-image',
-        imgclass: 'jg-image-thumb',
         gridclass: 'jg-category',
         infscrollclass: 'infinite-scroll',
         loadmoreid: 'loadMore',
@@ -36,19 +34,6 @@ var callback = function() {
       if(!settings.hasOwnProperty(key) || settings[key] === undefined || settings[key] === null) {
         settings[key] = value;
       }
-    }
-
-    // Add load event listener to images
-    if(settings.layout != 'justified') {
-      var loadImg = function() {
-        this.closest('.' + settings.imgboxclass).classList.add('loaded');
-      }
-
-      let images = Array.from(document.getElementsByClassName(settings.imgclass));
-      console.log(images);
-      images.forEach(image => {
-        image.addEventListener('load', loadImg);
-      });
     }
 
     // Get the grid container
@@ -112,10 +97,10 @@ var callback = function() {
     // Infinity scroll or load more
     if(settings.pagination == 1 && grid || settings.pagination == 2 && grid)
     {
-      const items        = Array.from(grid.getElementsByClassName(settings.imgboxclass));
+      const items        = Array.from(grid.getElementsByClassName('jg-image'));
       const maxImages    = settings.num_columns * 2;
       const loadImages   = settings.num_columns * 3;
-      const hiddenClass  = 'hidden-' + settings.imgboxclass;
+      const hiddenClass  = 'hidden-jg-image';
       const hiddenImages = Array.from(document.getElementsByClassName(hiddenClass));
 
       items.forEach(function (item, index) {

@@ -281,3 +281,14 @@ $returnURL  = base64_encode(JoomHelper::getViewRoute('category', $this->item->id
     </a></p>
   </div>
 <?php endif; ?>
+
+<script>
+  // Add event listener to images
+  let loadImg = function() {
+    this.closest('.jg-image').classList.add('loaded');
+  }
+  let images = Array.from(document.getElementsByClassName('jg-image-thumb'));
+  images.forEach(image => {
+    image.addEventListener('load', loadImg);
+  });
+</script>
