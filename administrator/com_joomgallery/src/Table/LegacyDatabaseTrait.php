@@ -54,6 +54,7 @@ trait LegacyDatabaseTrait
       $currentClass = $parent;
     }
 
+    // If we havent found getDatabase(), we use getDbo()
     if(\method_exists($this, 'getDbo'))
     {
       return $this->getDbo();
