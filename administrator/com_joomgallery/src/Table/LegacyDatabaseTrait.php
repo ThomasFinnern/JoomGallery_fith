@@ -31,17 +31,27 @@ trait LegacyDatabaseTrait
    */
   protected function getDatabase(): DatabaseInterface
   {
-    $parentClass = \get_parent_class($this);
+    $currentClass = \get_class($this);
 
-    if($parentClass && \method_exists($parentClass, 'getDatabase'))
+    // Traverse up the class hierarchy and look for the method getDatabase()
+    while($parent = \get_parent_class($currentClass))
     {
-      $method = new \ReflectionMethod($parentClass, 'getDatabase');
-
-      if($method->isProtected() || $method->isPublic())
+      if(\method_exists($parent, 'getDatabase'))
       {
-        // Call parent::getDatabase() even if overridden by trait
-        return $method->invoke($this);
+        $method = new \ReflectionMethod($parent, 'getDatabase');
+
+        // Avoid infinite recursion by ensuring we're not calling the trait version again
+        $avoid = [__TRAIT__, \get_class($this), \get_parent_class($this)];
+        if(!\in_array($method->getDeclaringClass()->name, $avoid))
+        {
+          if($method->isPublic() || $method->isProtected())
+          {
+            return $method->invoke($this);
+          }
+        }
       }
+
+      $currentClass = $parent;
     }
 
     if(\method_exists($this, 'getDbo'))
