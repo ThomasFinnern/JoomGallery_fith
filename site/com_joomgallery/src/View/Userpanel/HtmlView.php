@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Site
- * @subpackage  com_contact
+ * @package         Joomla.Site
+ * @subpackage      com_contact
  *
  * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @license         GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomgallery\Component\Joomgallery\Site\View\Userpanel;
@@ -17,6 +17,7 @@ use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -30,85 +31,86 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 class HtmlView extends JoomGalleryView
 {
-    /**
-     * @var    \Joomla\CMS\Form\Form
-     * @since  4.0.0
-     */
-    protected $form;
+  /**
+   * @var    \Joomla\CMS\Form\Form
+   * @since  4.0.0
+   */
+  protected $form;
 
-    /**
-     * @var    object
-     * @since  4.0.0
-     */
-    protected $item;
+  /**
+   * @var    object
+   * @since  4.0.0
+   */
+  protected $item;
 
-    /**
-     * @var    string
-     * @since  4.0.0
-     */
-    protected $return_page;
+  /**
+   * @var    string
+   * @since  4.0.0
+   */
+  protected $return_page;
 
-    /**
-     * @var    string
-     * @since  4.0.0
-     */
-    protected $pageclass_sfx;
+  /**
+   * @var    string
+   * @since  4.0.0
+   */
+  protected $pageclass_sfx;
 
-    /**
-     * @var    \Joomla\Registry\Registry
-     * @since  4.0.0
-     */
-    protected $state;
+  /**
+   * @var    \Joomla\Registry\Registry
+   * @since  4.0.0
+   */
+  protected $state;
 
-    /**
-     * @var    \Joomla\Registry\Registry
-     * @since  4.0.0
-     */
-    protected $params;
+  /**
+   * @var    \Joomla\Registry\Registry
+   * @since  4.0.0
+   */
+  protected $params;
 
-    /**
-     * Execute and display a template script.
-     *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-     *
-     * @return  void|boolean
-     *
-     * @throws \Exception
-     * @since  4.0.0
-     */
-    public function display($tpl = null)
-    {
-        $user = $this->getCurrentUser();
-        $app  = Factory::getApplication();
+  /**
+   * Execute and display a template script.
+   *
+   * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+   *
+   * @return  void|boolean
+   *
+   * @throws \Exception
+   * @since  4.0.0
+   */
+  public function display($tpl = null)
+  {
+    $user = $this->getCurrentUser();
+    $app  = Factory::getApplication();
 
-	    // Get model data
-	    $model             = $this->getModel();
-	    $this->state       = $model->getState();
+    // Get model data
+    $model       = $this->getModel();
+    $this->state = $model->getState();
 //	    $this->form        = $model->getForm();
-	    $this->params      = $model->getParams();
+    $this->params = $model->getParams();
 //      $this->return_page = $this->getReturnPage();
 
-	    $config     = $this->params['configs'];
+    $config = $this->params['configs'];
 
-	    //	user must be logged in and have one 'master/base' category
-	    $this->isUserLoggedIn = true;
-	    if ($user->guest) {
-		    $this->isUserLoggedIn = false;
-	    }
+    //	user must be logged in and have one 'master/base' category
+    $this->isUserLoggedIn = true;
+    if ($user->guest)
+    {
+      $this->isUserLoggedIn = false;
+    }
 
-	    // at least one category is needed for upload view
-	    $this->isUserHasCategory = $this->getUserHasACategory($user);
+    // at least one category is needed for upload view
+    $this->isUserHasCategory = $model->getUserHasACategory($user);
 
-	    $this->userId = $user->id;
+    $this->userId = $user->id;
 
-	    // Get access service
-	    $this->component->createAccess();
-	    $this->acl = $this->component->getAccess();
-	    $acl       = $this->component->getAccess();
+    // Get access service
+    $this->component->createAccess();
+    $this->acl = $this->component->getAccess();
+    $acl       = $this->component->getAccess();
 
-	    // Needed for JgcategoryField
-	    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
-	    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+    // Needed for JgcategoryField
+    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 
 //        // Check for errors.
 //        if (count($errors = $this->get('Errors'))) {
@@ -134,8 +136,8 @@ class HtmlView extends JoomGalleryView
 //
 //        $this->_prepareDocument();
 
-        parent::display($tpl);
-    }
+    parent::display($tpl);
+  }
 
 //    /**
 //     * Prepares the document

@@ -12,12 +12,54 @@
 					name="userNeedsSettings"
 					type="text"
 					default="ToDo: Create info field type"
-					label="COM_JOOMGALLERY_VIEW_USER_SITE_INFO"
-					description="COM_JOOMGALLERY_VIEW_USER_SITE_INFO_DESC"
+					label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
+					description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
 					readonly="true"
 					size="10"
 			/>
 		</fieldset>
 	</fields>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="userPanelShowTitle"
+				   type="radio"
+				   default="1"
+				   label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
+				   description="COM_JOOMGALLERY_MENU_SHOW_TITLE_DESC"
+				   class="btn-group btn-group-yesno">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+
+			<field name="userPanelShowUserCategories"
+				   type="radio"
+				   default="1"
+             label="COM_JOOMGALLERY_MENU_SHOW_USER_CATEGORIES"
+             description="COM_JOOMGALLERY_MENU_SHOW_USER_CATEGORIES_DESC"
+             class="btn-group btn-group-yesno">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+
+			<field name="userPanelShowUserImages"
+				   type="radio"
+				   default="1"
+             label="COM_JOOMGALLERY_MENU_SHOW_USER_IMAGES"
+             description="COM_JOOMGALLERY_MENU_SHOW_USER_IMAGES_DESC"
+             class="btn-group btn-group-yesno">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+
+			<!--            <field-->
+			<!--                    label="COM_JOOMGALLERY_CONFIG_CATEGORY_VIEW_SUBCATEGORIES"-->
+			<!--                    type="spacer"-->
+			<!--                    name="spacer1"-->
+			<!--                    hr="false"-->
+			<!--            >-->
+			<!--            </field>-->
+		</fieldset>
+	</fields>
+
 </metadata>
 

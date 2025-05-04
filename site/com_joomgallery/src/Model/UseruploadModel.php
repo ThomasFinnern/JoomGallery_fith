@@ -17,6 +17,7 @@ use Joomgallery\Component\Joomgallery\Administrator\Service\Access\AccessInterfa
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Application\AdministratorApplication;
 
@@ -236,6 +237,30 @@ class UseruploadModel extends JoomAdminModel
 
         return $this->acl;
     }
+
+  public function getUserHasACategory(\Joomla\CMS\User\User $user)
+  {
+    $isUserHasACategory = true;
+
+    // try {
+
+    $db = Factory::getContainer()->get(DatabaseInterface::class);		// ToDo: Count categories of user
+
+    // Check number of records in tables
+    $query = $db->getQuery(true)
+      ->select('COUNT(*)')
+      ->from($db->quoteName(_JOOM_TABLE_CATEGORIES))
+      ->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
+
+    $db->setQuery($query);
+    $count = $db->loadResult();
+
+    if(empty ($count)) {
+      $isUserHasACategory = false;
+    }
+
+    return $isUserHasACategory;
+  }
 
 
 

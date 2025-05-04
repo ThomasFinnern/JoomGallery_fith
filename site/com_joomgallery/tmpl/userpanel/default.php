@@ -14,14 +14,12 @@ $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUse
 $config     = $this->params['configs'];
 $menuParam  = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('userUploadShowTitle');
+$isShowTitle = $menuParam->get('userPanelShowTitle');
 
 $panelView = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
-
-
 
 ?>
 
@@ -90,15 +88,6 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
                       <span class="icon-home"></span>
                       <?php echo Text::_('user panel'); ?>
                   </a>
-              <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
-                <span class="icon-images"></span>
-                <?php echo Text::_('catgories/galleries'); ?>
-              </a>
-
-              <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
-                <span class="icon-new-tab"></span>
-                <?php echo Text::_('new category/gallery'); ?>
-              </a>
 
               </div>
               <div class="form-group">

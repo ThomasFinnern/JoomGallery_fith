@@ -13,8 +13,8 @@
                     name="userNeedsSettings"
                     type="text"
                     default="ToDo: Create Info field type "
-                    label="COM_JOOMGALLERY_VIEW_USER_SITE_INFO"
-                    description="COM_JOOMGALLERY_VIEW_USER_SITE_INFO_DESC"
+                    label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
+                    description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
                     readonly="true"
                     size="10"
             />
@@ -25,8 +25,8 @@
             <field name="userUploadShowTitle"
                    type="radio"
                    default="1"
-                   label="COM_JOOMGALLERY_SHOW_TITLE"
-                   description="COM_JOOMGALLERY_SHOW_TITLE_DESC"
+                   label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
+                   description="COM_JOOMGALLERY_MENU_SHOW_TITLE_DESC"
                    class="btn-group btn-group-yesno">
                 <option value="1">JYES</option>
                 <option value="0">JNO</option>

@@ -119,7 +119,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 		}
 
 		// at least one category is needed for upload view
-		$this->isUserHasCategory = $this->getUserHasACategory($user);
+		$this->isUserHasCategory = $model->getUserHasACategory($user);
 
 		$this->userId = $user->id;
 

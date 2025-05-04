@@ -13,6 +13,8 @@ namespace Joomgallery\Component\Joomgallery\Site\Model;
 defined('_JEXEC') or die;
 
 use \Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel as AdminCategoriesModel;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Model to get a list of category records.
@@ -112,4 +114,34 @@ class UserpanelModel extends AdminCategoriesModel
 //
 //		return $items;
 //	}
+
+
+  public function getUserHasACategory(\Joomla\CMS\User\User $user)
+  {
+    $isUserHasACategory = true;
+
+    // try {
+
+    $db = Factory::getContainer()->get(DatabaseInterface::class);		// ToDo: Count categories of user
+
+    // Check number of records in tables
+    $query = $db->getQuery(true)
+      ->select('COUNT(*)')
+      ->from($db->quoteName(_JOOM_TABLE_CATEGORIES))
+      ->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
+
+    $db->setQuery($query);
+    $count = $db->loadResult();
+
+    if(empty ($count)) {
+      $isUserHasACategory = false;
+    }
+
+    return $isUserHasACategory;
+  }
+
+
+
+
+
 }
