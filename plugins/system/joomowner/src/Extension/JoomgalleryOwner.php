@@ -167,16 +167,23 @@ final class JoomgalleryOwner extends CMSPlugin implements SubscriberInterface
    */
   public function onMigrationBeforeSave(Event $event)
   {
+    $context = $event->getContext();
+    if (empty($context)) {
+      return;
+    }
+
     if(\version_compare(JVERSION, '5.0.0', '<'))
     {
       // Joomla 4
+      //[$context, &$table] = $event->getArguments();
       [$context, &$table] = $event->getArguments();
     }
     else
     {
       // Joomla 5 or newer
       extract($event->getArguments());
-      $table = &$event->getItem();
+      // $table = &$event->getItem();
+      $table = $event->getItem();
     }
 
     if(\strpos($context, 'com_joomgallery') !== 0)
@@ -191,7 +198,7 @@ final class JoomgalleryOwner extends CMSPlugin implements SubscriberInterface
     $typeAlias = isset($table->typeAlias) ? $table->typeAlias : $context;
     if(!$ownerField = $this->guessType($typeAlias))
     {
-      // We couldnt guess the type of content we are dealing with
+      // We couldn't guess the type of content we are dealing with
       $this->setResult($event, true);
 
       return;
@@ -217,16 +224,24 @@ final class JoomgalleryOwner extends CMSPlugin implements SubscriberInterface
    */
   public function onContentBeforeSave(Event $event)
   {
+
+    $context = $event->getContext();
+    if (empty($context)) {
+      return;
+    }
+
     if(\version_compare(JVERSION, '5.0.0', '<'))
     {
       // Joomla 4
-      [$context, &$table, $isNew, $data] = $event->getArguments();
+      // [$context, &$table, $isNew, $data] = $event->getArguments();
+      [$context, $table, $isNew, $data] = $event->getArguments();
     }
     else
     {
       // Joomla 5 or newer
       extract($event->getArguments());
-      $table = &$event->getItem(); 
+      // $table = &$event->getItem();
+      $table = $event->getItem();
     }
 
     if($context == 'com_plugins.plugin' && $table->name == 'plg_system_joomowner')
