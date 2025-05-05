@@ -112,8 +112,9 @@
            maxlength="255" />
 
     <field name="catid"
-           type="jgcategory"
+           type="jgcategorydropdown"
            label="JCATEGORY"
+           categoriesOfUser="true"
            default=""
            show_root="false"
            required="true"

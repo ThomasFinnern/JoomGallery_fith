@@ -76,17 +76,17 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
 
                   <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
                       <span class="icon-images"></span>
-                      <?php echo Text::_('catgories/galleries'); ?>
+                      <?php echo Text::_('*catgories/galleries'); ?>
                   </a>
 
                   <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
                       <span class="icon-new-tab"></span>
-                      <?php echo Text::_('new category/gallery'); ?>
+                      <?php echo Text::_('*new category/gallery'); ?>
                   </a>
 
-                  <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+                  <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
                       <span class="icon-home"></span>
-                      <?php echo Text::_('user panel'); ?>
+                      <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
                   </a>
 
               </div>

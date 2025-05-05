@@ -38,7 +38,7 @@ class JgcategorydropdownField extends ListField
 	/**
 	 * To allow creation of new categories.
 	 *
-	 * @var    integer
+	 * @var    integer   // ToDo: ??? bool ?
 	 * @since  4.0.0
 	 */
 	protected $allowAdd;
@@ -50,6 +50,14 @@ class JgcategorydropdownField extends ListField
 	 * @since  4.0.0
 	 */
 	protected $customPrefix;
+
+	/**
+	 * Optional restrict to user categories
+	 *
+	 * @var    bool
+	 * @since  4.0.0
+	 */
+//	protected $categoriesOfUser;
 
 	/**
 	 * Name of the layout being used to render the field
@@ -81,6 +89,8 @@ class JgcategorydropdownField extends ListField
 		{
 			$this->allowAdd = isset($this->element['allowAdd']) ? (boolean) $this->element['allowAdd'] : false;
 			$this->customPrefix = (string) $this->element['customPrefix'];
+
+      // $this->categoriesOfUser = isset($this->element['categoriesOfUser']) ? (boolean) $this->element['categoriesOfUser'] : false;
 		}
 
 		return $return;
@@ -195,6 +205,7 @@ class JgcategorydropdownField extends ListField
           $db->quoteName('a.in_hidden'),
 					$db->quoteName('a.lft'),
 					$db->quoteName('a.language'),
+					$db->quoteName('a.created_by'),
 				]
 			)
 			->from($db->quoteName(_JOOM_TABLE_CATEGORIES, 'a'));
@@ -250,7 +261,14 @@ class JgcategorydropdownField extends ListField
       $query->where($db->quoteName('a.level') . ' > 0');
     }
 
-		// Get the options.
+    // Filter for user
+    if(isset($this->element['categoriesOfUser']) && ! empty ($this->element['categoriesOfUser']))
+    {
+      $user = $this->getCurrentUser();
+      $query->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
+    }
+
+    // Get the options.
 		$db->setQuery($query);
 
 		try
@@ -334,7 +352,7 @@ class JgcategorydropdownField extends ListField
 
 				/*
 				 * However, if you can edit.state you can also move this to another category for which you have
-				 * create permission and you should also still be able to save in the current category.
+				 * create permission, and you should also still be able to save in the current category.
 				 */
 				$assetKey = $extension . '.category.' . $option->value;
 
