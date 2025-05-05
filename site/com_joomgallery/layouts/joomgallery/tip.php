@@ -35,6 +35,10 @@ extract($displayData);
   {
     $tag = 'small';
   }
+
+  if (empty($class)){
+    $class = '';
+  }
 ?>
 
 <?php echo $description; ?>
