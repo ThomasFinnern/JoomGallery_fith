@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<layout title="COM_JOOMGALLERY_VIEW_USER_PANEL_TITLE">
+	<layout title="COM_JOOMGALLERY_MENU_VIEW_USER_PANEL_TITLE">
 		<message>
-			<![CDATA[COM_JOOMGALLERY_VIEW_USER_PANEL_DESC]]>
+			<![CDATA[COM_JOOMGALLERY_MENU_VIEW_USER_PANEL_DESC]]>
 		</message>
 	</layout>
 	<fields name="request">
@@ -10,13 +10,12 @@
 		>
 			<field
 					name="userNeedsSettings"
-					type="text"
-					default="ToDo: Create info field type"
-					label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
-					description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
+					type="note"
+          label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
+          description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
 					readonly="true"
-					size="10"
-			/>
+          class="alert alert-info"
+      />
 		</fieldset>
 	</fields>
 	<fields name="params">

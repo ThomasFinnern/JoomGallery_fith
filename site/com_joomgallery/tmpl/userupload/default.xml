@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_JOOMGALLERY_VIEW_USER_UPLOAD_TITLE" option="JDEFAULT">
+	<layout title="COM_JOOMGALLERY_MENU_VIEW_USER_UPLOAD_TITLE" option="JDEFAULT">
         <message>
-          <![CDATA[COM_JOOMGALLERY_VIEW_USER_UPLOAD_DESC]]>
+          <![CDATA[COM_JOOMGALLERY_MENU_VIEW_USER_UPLOAD_DESC]]>
         </message>
 	</layout>
 
     <fields name="request">
         <fieldset name="request"
         >
-            <field
-                    name="userNeedsSettings"
-                    type="text"
-                    default="ToDo: Create Info field type "
-                    label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
-                    description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
-                    readonly="true"
-                    size="10"
-            />
+          <field
+            name="userNeedsSettings"
+            type="note"
+            label="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO"
+            description="COM_JOOMGALLERY_MENU_VIEW_USER_SITE_INFO_DESC"
+            readonly="true"
+            class="alert alert-info"
+          />
         </fieldset>
     </fields>
     <fields name="params">
