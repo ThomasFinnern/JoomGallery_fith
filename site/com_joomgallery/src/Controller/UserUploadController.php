@@ -42,56 +42,5 @@ class UserUploadController extends JoomFormController
 	}
 
 
-	/**
-	 * Method to add multiple new image records.
-	 *
-	 * @return  boolean  True if the record can be added, false if not.
-	 *
-	 * @since   4.0
-	 */
-	public function ajaxsave() : void
-	{
-		$result  = array('error' => false);
 
-		try
-		{
-			if(!parent::save())
-			{
-				$result['success'] = false;
-				$result['error']   = $this->message;
-			}
-			else
-			{
-				$result['success'] = true;
-				$result['record'] = $this->component->cache->get('imgObj');
-			}
-
-			$json = json_encode($result, JSON_FORCE_OBJECT);
-			echo new JsonResponse($json);
-
-			$this->app->close();
-		}
-		catch(\Exception $e)
-		{
-			echo new JsonResponse($e);
-
-			$this->app->close();
-		}
-
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+} // class

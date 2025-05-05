@@ -13,6 +13,7 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Table;
 defined('_JEXEC') or die;
 
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Table\Asset;
 use \Joomla\CMS\Table\Table;
 use \Joomla\Registry\Registry;

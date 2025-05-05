@@ -98,7 +98,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
               </div>
 	      <?php endif; ?>
 
-          <input type="hidden" name="task" value="userpanel.???"/>
+          <input type="hidden" name="task" value="image.???"/>
           <input type="hidden" name="id" value="0" />
 
 	      <?php echo HTMLHelper::_('form.token'); ?>
