@@ -337,7 +337,7 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
     }
     else
     {
-      if(File::exists($file))
+      if(\is_file(Path::clean($file)))
       {
         $bak_file = $file.'bak';
         $success  = File::copy($file, $bak_file);
@@ -377,7 +377,7 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
       }
       else
       {
-        if(File::exists($file))
+        if(\is_file(Path::clean($file)))
         {
           $bak_file = $file.'bak';
           $success  = File::copy($file, $bak_file);
