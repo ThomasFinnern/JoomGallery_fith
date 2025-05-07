@@ -151,8 +151,8 @@ class TagsModel extends JoomListModel
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-    $query->select($this->getState('list.select', 'DISTINCT a.*'));
-    $query->from($db->quoteName(_JOOM_TABLE_TAGS, 'a'));
+    $query->select($this->getState('list.select', 'a.*'));
+    $query->from($db->quoteName('#__joomgallery_tags', 'a'));
 
 		// Join over the users for the checked out user
     $query->select($db->quoteName('uc.name', 'uEditor'));
@@ -175,12 +175,11 @@ class TagsModel extends JoomListModel
 		$query->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
 
     // Count Items
-		$subQueryCountTaggedItems = $db->getQuery(true);
-		$subQueryCountTaggedItems
-			->select('COUNT(' . $db->quoteName('tags_ref.imgid') . ')')
-			->from($db->quoteName(_JOOM_TABLE_TAGS_REF, 'tags_ref'))
-			->where($db->quoteName('tags_ref.tagid') . ' = ' . $db->quoteName('a.id'));
-		$query->select('(' . (string) $subQueryCountTaggedItems . ') AS ' . $db->quoteName('countTaggedItems'));
+		$countQuery = $db->getQuery(true);
+		$countQuery->select('COUNT(' . $db->quoteName('tags_ref.imgid') . ')')
+			         ->from($db->quoteName(_JOOM_TABLE_TAGS_REF, 'tags_ref'))
+			         ->where($db->quoteName('tags_ref.tagid') . ' = ' . $db->quoteName('a.id'));
+		$query->select('(' . $countQuery->__toString() . ') AS ' . $db->quoteName('countTaggedItems'));
 
     // Filter by access level.
 		$filter_access = $this->state->get("filter.access");
@@ -253,6 +252,86 @@ class TagsModel extends JoomListModel
     {
       $query->order($db->escape($this->state->get('list.fullordering', 'a.lft ASC')));
     }
+
+		return $query;
+	}
+
+  /**
+	 * Build an SQL query to load the list data for counting.
+	 *
+	 * @return  DatabaseQuery
+	 *
+	 * @since   4.1.0
+	 */
+	protected function getCountListQuery()
+	{
+		// Create a new query object. 
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+    $query->select('COUNT(*)');
+    $query->from($db->quoteName('#__joomgallery_tags', 'a'));
+
+    // Filter by access level.
+		$filter_access = $this->state->get("filter.access");
+    
+    if(!empty($filter_access))
+		{
+      if(is_numeric($filter_access))
+      {
+        $filter_access = (int) $filter_access;
+        $query->where($db->quoteName('a.access') . ' = :access')
+              ->bind(':access', $filter_access, ParameterType::INTEGER);
+      }
+      elseif (is_array($filter_access))
+      {
+        $filter_access = ArrayHelper::toInteger($filter_access);
+        $query->whereIn($db->quoteName('a.access'), $filter_access);
+      }
+    }
+
+		// Filter by search
+		$search = $this->getState('filter.search');
+
+		if(!empty($search))
+		{
+			if(stripos($search, 'id:') === 0)
+			{
+				$search = (int) substr($search, 3);
+				$query->where($db->quoteName('a.id') . ' = :search')
+					->bind(':search', $search, ParameterType::INTEGER);
+			}
+			else
+			{
+        $search = '%' . str_replace(' ', '%', trim($search)) . '%';
+				$query->where(
+					'(' . $db->quoteName('a.title') . ' LIKE :search1 OR ' . $db->quoteName('a.alias') . ' LIKE :search2'
+						. ' OR ' . $db->quoteName('a.description') . ' LIKE :search3)'
+				)
+					->bind([':search1', ':search2', ':search3'], $search);
+			}
+		}
+ 
+    // Filter by published state
+		$published = (string) $this->getState('filter.published');
+
+		if($published !== '*')
+		{
+			if(is_numeric($published))
+			{
+				$state = (int) $published;
+				$query->where($db->quoteName('a.published') . ' = :state')
+					->bind(':state', $state, ParameterType::INTEGER);
+			}
+		}
+
+    // Filter on the language.
+		if($language = $this->getState('filter.language'))
+		{
+			$query->where($db->quoteName('a.language') . ' = :language')
+				->bind(':language', $language);
+		}
 
 		return $query;
 	}

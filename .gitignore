@@ -15,6 +15,8 @@
 /administrator/com_joomgallery/joomgallery.xml
 /administrator/com_joomgallery/joomgallery_old.xml
 /administrator/com_joomgallery/vendor
+.DS_Store
+Thumbs.db
 node_modules
 joomgallery_old.xml
 /administrator/com_joomgallery/vendor
