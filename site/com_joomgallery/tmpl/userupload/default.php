@@ -79,6 +79,8 @@ Text::script('COM_JOOMGALLERY_ERROR_UPPY_SAVE_RECORD');
 Text::script('COM_JOOMGALLERY_ERROR_FILL_REQUIRED_FIELDS');
 
 $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_vars) . '\');', ['position' => 'before'], [], ['com_joomgallery.uppy-uploader']);
+
+
 ?>
 
 <div class="jg jg-upload">
@@ -159,7 +161,12 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
                                 <?php echo $this->form->renderField('debug'); ?>
                             </div>
                         </div>
+
+                      <div>
+                        <?php DisplaySystemSettings ($this->uploadLimit, $this->postMaxSize, $this->memoryLimit, $this->configSize, $this->maxSize); ?>
+                      </div>
                     </div>
+
                     <div class="col card">
                         <div class="card-header">
                             <h2><?php echo Text::_('JOPTIONS'); ?></h2>
@@ -206,3 +213,98 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
     <div id="popup-area"></div>
 
 </div>
+
+<?php
+/**
+ * Display system settings as collapsed
+ *
+ * @param   string  $title     The displayed title of the content
+ * @param   array   $settings  Array with hold the data
+ *
+ * @since 4.0.0
+ */
+function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $configSize, $maxSize)
+{
+  // $title =  Text::sprintf('COM_JOOMGALLERY_UPLOAD_LIMIT_IS', $maxSize);
+  $title =  Text::sprintf('COM_JOOMGALLERY_POST_MAX_SIZE_IS', $maxSize);
+  $id = 127;
+  $itemId = 128;
+
+  ?>
+
+  <div class="card">
+    <div class="accordion" id="<?php echo $id; ?>">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="<?php echo $itemId; ?>Header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#<?php echo $itemId; ?>" aria-expanded="false" aria-controls="<?php echo $itemId; ?>">
+            <?php echo Text::_($title); ?>
+          </button>
+        </h2>
+        <div id="<?php echo $itemId; ?>" class="accordion-collapse collapse"
+             aria-labelledby="<?php echo $itemId; ?>Header" data-bs-parent="#<?php echo $id; ?>">
+          <div class="accordion-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="d-md-table-cell">
+                    <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_UPLOAD_LIMIT_IS', $UploadLimit); ?>
+                  </td>
+                  <td class="d-md-table-cell">
+                    <?php // echo $value; ?>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="d-md-table-cell">
+                    <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_POST_MAX_SIZE_IS', $PostMaxSize); ?>
+                  </td>
+                  <td class="d-md-table-cell">
+                    <?php // echo $value; ?>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="d-md-table-cell">
+                    <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_POST_MEMORY_LIMIT_IS', $MemoryLimit); ?>
+                  </td>
+                  <td class="d-md-table-cell">
+                    <?php // echo $value; ?>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="d-md-table-cell">
+                    <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_CONFIG_LIMIT_IS', $configSize); ?>
+                  </td>
+                  <td class="d-md-table-cell">
+                    <?php // echo $value; ?>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="d-md-table-cell">
+                    <?php echo Text::sprintf('COM_JOOMGALLERY_POST_MAX_SIZE_IS', $maxSize); ?>
+                  </td>
+                  <td class="d-md-table-cell">
+                    <?php // echo $value; ?>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div><!--/accordion-collapse-->
+      </div><!--/accordion-item-->
+    </div><!--/accordion -->
+  </div><!--/card -->
+
+  <?php return;
+
+}
+
+

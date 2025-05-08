@@ -14,6 +14,7 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userupload;
 //use Joomla\CMS\Language\Multilanguage;
 use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Database\DatabaseInterface;
@@ -88,7 +89,13 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	protected $isUserCoreManager = false;
 	protected $userId = 0;
 
-    /**
+  protected $uploadLimit;
+  protected $postMaxSize;
+  protected $memoryLimit;
+  protected $maxSize;
+  protected $configSize;
+
+  /**
      * Execute and display a template script.
      *
      * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -147,6 +154,25 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	    $js_vars->semaTokens   = 100;                                           // Pre alloc space for 100 tokens
 
 	    $this->js_vars = $js_vars;
+
+      //--- Limits --------------------------------------------------------------------
+
+      // Instantiate the media helper
+      $mediaHelper = new MediaHelper;
+
+      // Maximum allowed size in MB
+      $this->uploadLimit = round($mediaHelper->toBytes(ini_get('upload_max_filesize')) / (1024 * 1024));
+      $this->postMaxSize = round($mediaHelper->toBytes(ini_get('post_max_size')) / (1024 * 1024));
+      $this->memoryLimit = round($mediaHelper->toBytes(ini_get('memory_limit')) / (1024 * 1024));
+
+      // $js_vars
+      //$this->configSize = round($mediaHelper->toBytes($config->get('jg_maxfilesize')) / (1024 * 1024));
+      $this->configSize = round($config->get('jg_maxfilesize') / (1024 * 1024));
+
+      // Max size to be used (previously defined by joomla function but ...)
+      // j old: $max_size   = parseSize(ini_get('post_max_size'));
+      // j old: $upload_max = parseSize(ini_get('upload_max_filesize'));
+      $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->memoryLimit, $this->configSize);
 
 
 //
