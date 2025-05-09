@@ -21,7 +21,13 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\Metadata;
 interface MetadataInterface
 {
   /**
+   * Reads the metadata from an image.
+   * (Current supported image formats: JPEG)
+   * (Current supported metadata formats: EXIF/IPTC)
    * 
+   * @param  string $file  Path to the file 
+   * 
+   * @return array  Metadata as array
    */
   public function readMetadata(string $file);
 
