@@ -16,6 +16,7 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userpanel;
 use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
@@ -84,10 +85,23 @@ class HtmlView extends JoomGalleryView
 
     // Get model data
     $model       = $this->getModel();
+
     $this->state = $model->getState();
-//	    $this->form        = $model->getForm();
     $this->params = $model->getParams();
-//      $this->return_page = $this->getReturnPage();
+
+    $this->items         = $this->get('Items');
+    $this->pagination    = $this->get('Pagination');
+    $this->filterForm    = $this->get('FilterForm');
+    $this->activeFilters = $this->get('ActiveFilters');
+
+    // Check for errors.
+    if(\count($errors = $this->get('Errors')))
+    {
+      throw new GenericDataException(\implode("\n", $errors), 500);
+    }
+
+
+
 
     $config = $this->params['configs'];
 
@@ -135,6 +149,8 @@ class HtmlView extends JoomGalleryView
 //        }
 //
 //        $this->_prepareDocument();
+
+    // $this->_prepareDocument();
 
     parent::display($tpl);
   }

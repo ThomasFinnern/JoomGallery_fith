@@ -22,7 +22,8 @@ use Joomla\Database\DatabaseInterface;
  * @package JoomGallery
  * @since   4.0.0
  */
-class UserpanelModel extends AdminCategoriesModel
+//class UserpanelModel extends AdminCategoriesModel
+class UserpanelModel extends ImagesModel
 {
 //	/**
 //   * Constructor
@@ -64,44 +65,53 @@ class UserpanelModel extends AdminCategoriesModel
 //		parent::__construct($config);
 //	}
 //
-//	/**
-//	 * Method to auto-populate the model state.
-//	 *
-//	 * Note. Calling getState in this method will result in recursion.
-//	 *
-//	 * @param   string  $ordering   Elements order
-//	 * @param   string  $direction  Order direction
-//	 *
-//	 * @return  void
-//	 *
-//	 * @throws  \Exception
-//	 *
-//	 * @since   4.0.0
-//	 */
-//	protected function populateState($ordering = 'a.lft', $direction = 'ASC')
-//	{
-//		// List state information.
-//		parent::populateState($ordering, $direction);
-//
-//    // Set filters based on how the view is used.
-//    // e.g. user list of categories: $this->setState('filter.created_by', Factory::getApplication()->getIdentity());
-//
-//    $this->loadComponentParams();
-//	}
-//
-//	/**
-//	 * Build an SQL query to load the list data.
-//	 *
-//	 * @return  DatabaseQuery
-//	 *
-//	 * @since   4.0.0
-//	 */
-//	protected function getListQuery()
-//	{
-//    $query = parent::getListQuery();
-//
-//    return $query;
-//	}
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   Elements order
+	 * @param   string  $direction  Order direction
+	 *
+	 * @return  void
+	 *
+	 * @throws  \Exception
+	 *
+	 * @since   4.0.0
+	 */
+//	protected function populateState($ordering = 'a.lft', $direction = 'DESC')
+	protected function populateState($ordering = 'a.id', $direction = 'desc')
+	{
+		// List state information.
+		parent::populateState($ordering, $direction);
+
+		// Set filters based on how the view is used.
+		//  e.g. user list of categories:
+	    $this->setState('filter.created_by', Factory::getApplication()->getIdentity());
+    	$this->setState('filter.created_by.include', true);
+
+	    $this->loadComponentParams();
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return  DatabaseQuery
+	 *
+	 * @since   4.0.0
+	 */
+	protected function getListQuery()
+	{
+    $query = parent::getListQuery();
+
+    $user = Factory::getApplication()->getIdentity();
+
+    $db    = $this->getDbo();
+    $query->where($db->quoteName('a.created_by') . ' = ' . (int) $user->id);
+
+    return $query;
+	}
+
 //
 //	/**
 //	 * Method to get an array of data items
@@ -114,6 +124,7 @@ class UserpanelModel extends AdminCategoriesModel
 //
 //		return $items;
 //	}
+
 
 
   public function getUserHasACategory(\Joomla\CMS\User\User $user)

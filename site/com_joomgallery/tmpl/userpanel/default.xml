@@ -20,7 +20,7 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic">
-			<field name="userPanelShowTitle"
+			<field name="show_page_heading"
 				   type="radio"
 				   default="1"
 				   label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
