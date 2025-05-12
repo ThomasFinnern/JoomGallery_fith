@@ -82,7 +82,7 @@ class HtmlView extends JoomGalleryView
     ToolbarHelper::title(Text::_('JCATEGORIES'), "folder-open");
 
     /** @var Toolbar $model */
-    $toolbar = $this->getDocument()->getToolbar();
+    $toolbar = $this->getToolbar();
 
     // Check if the form exists before showing the add/edit buttons
     $formPath = _JOOM_PATH_ADMIN . '/src/View/Categories';

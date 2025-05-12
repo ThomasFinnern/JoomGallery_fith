@@ -80,7 +80,7 @@ class HtmlView extends JoomGalleryView
     ToolbarHelper::title(Text::_('COM_JOOMGALLERY_IMAGES'), "image");
 
     /** @var Toolbar $model */
-    $toolbar = $this->getDocument()->getToolbar();
+    $toolbar = $this->getToolbar();
 
     // Check if the form exists before showing the add/edit buttons
     $formPath = _JOOM_PATH_ADMIN . '/src/View/Images';

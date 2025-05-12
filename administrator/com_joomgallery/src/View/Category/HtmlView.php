@@ -80,7 +80,7 @@ class HtmlView extends JoomGalleryView
 		Factory::getApplication()->input->set('hidemainmenu', true);
 
 		/** @var Toolbar $model */
-    $toolbar = $this->getDocument()->getToolbar();
+    $toolbar = $this->getToolbar();
 
 		$user  = Factory::getApplication()->getIdentity();
 		$isNew = ($this->item->id == 0);

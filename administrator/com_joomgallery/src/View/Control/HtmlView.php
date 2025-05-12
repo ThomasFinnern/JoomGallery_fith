@@ -86,7 +86,7 @@ class HtmlView extends JoomGalleryView
   protected function addToolbar()
   {
     /** @var Toolbar $model */
-    $toolbar = $this->getDocument()->getToolbar();
+    $toolbar = $this->getToolbar();
 
     // Images button
     $html = '<a href="index.php?option=com_joomgallery&amp;view=images" class="btn btn-primary"><span class="icon-images" title="'.Text::_('COM_JOOMGALLERY_IMAGES').'"></span> '.Text::_('COM_JOOMGALLERY_IMAGES').'</a>';
