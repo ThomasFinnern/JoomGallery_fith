@@ -1329,8 +1329,8 @@ class MigrationModel extends JoomAdminModel
       $table->setLocation($data['parent_id'], 'last-child');
     }
 
-    // Create filesystem service
-    $this->component->createFilesystem();
+    // Create filemanager which will create config and filesystem
+    $this->component->createFileManager($data['catid']);
 
     // Set filesystem
     $data['filesystem'] = $this->component->getFilesystem()->get('filesystem');
