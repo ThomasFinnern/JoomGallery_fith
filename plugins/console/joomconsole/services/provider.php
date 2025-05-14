@@ -23,7 +23,9 @@ return new class implements ServiceProviderInterface {
   public function register(Container $container)
   {
     //$container->registerServiceProvider(new MVCFactory('Joomgallery\\Component\\JoomConsole'));
-    $container->registerServiceProvider(new MVCFactory('Joomgallery\\Component\\JoomgalleryConsole'));
+    // $container->registerServiceProvider(new MVCFactory('Joomgallery\\Component\\JoomgalleryConsole'));
+    // $container->registerServiceProvider(new MVCFactory('Joomgallery\\Component\\Joomgallery\\Administrator'));
+    $container->registerServiceProvider(new MVCFactory('Joomgallery\\Component\\Joomgallery'));
 
     $container->set(
       PluginInterface::class,
