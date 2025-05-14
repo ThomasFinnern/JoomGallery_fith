@@ -47,6 +47,8 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
 
     // Get the categories, using the backend model
     /** @var \Joomla\CMS\MVC\Model\BaseDatabaseModel $categoriesModel */
+
+    $test = $this->getMVCFactory();
     $categoriesModel = $this->getMVCFactory()->createModel('Categories', 'Administrator');
 
     if ($search)
@@ -71,7 +73,14 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
         return [
           $item->id,
           $item->title,
-          $item->published ? Text::_('JYES') : Text::_('JNO')
+          $item->published ? Text::_('JYES') : Text::_('JNO'),
+          $item->created_by,
+          $item->created_time,
+          $item->modified_by,
+          $item->modified_time,
+          $item->parent_title, // JGLOBAL_ROOT
+          // $item->,
+
         ];
       },
       $categories
@@ -80,9 +89,15 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
     // Display the categories in a table and set the exit code to 0
     $this->ioStyle->table(
       [
-        Text::_('COM_JOOMGALLERY_FIELD_HEADER_ID'),
+        Text::_('JGLOBAL_FIELD_ID_LABEL'),
         Text::_('JGLOBAL_TITLE'),
         Text::_('JPUBLISHED'),
+        Text::_('JGLOBAL_FIELD_CREATED_BY_LABEL') . ' ('.  Text::_('COM_JOOMGALLERY_OWNER') . ')', // ToDo: Owner
+        Text::_('JGLOBAL_FIELD_CREATED_LABEL'),
+        Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL'),
+        Text::_('JGLOBAL_FIELD_MODIFIED_LABEL'),
+        Text::_('JGLOBAL_LINK_PARENT_CATEGORY_LABEL'),
+        // Text::_(''),
       ],
       $categories
     );
