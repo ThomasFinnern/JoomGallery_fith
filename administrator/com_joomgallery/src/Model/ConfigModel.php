@@ -784,7 +784,8 @@ class ConfigModel extends JoomAdminModel
 		}
 
 		// Check file extension
-		if(strtolower(File::getExt($file['name'])) != 'json')
+		$filesystem = JoomHelper::getService('Filesystem');
+		if(strtolower($filesystem->getExt($file['name'])) != 'json')
 		{
 			// Invalid file extension
 			$this->setError(Text::sprintf('COM_JOOMGALLERY_ERROR_INVALID_FILE_EXTENSION', 'json', $file['name']), 'error');

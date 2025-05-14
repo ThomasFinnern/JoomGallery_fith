@@ -261,7 +261,16 @@ class Filesystem implements AdapterInterface, FilesystemInterface
    */
   public function getExt(string $file): string
   {
-    $ext = JFile::getExt($file);
+    try
+    {
+      // Joomla 5+
+      $ext = JFile::getExt($file);
+    }
+    catch(\Throwable $th)
+    {
+      // Joomla 4-
+      $ext = \Joomla\CMS\Filesystem\File::getExt($file);
+    }    
 
     // Check if it is a valid extension
     $valid_rex = !\boolval(\preg_match('/[^a-zA-Z]/', $ext));  // File extension has to be only letters
@@ -582,7 +591,16 @@ class Filesystem implements AdapterInterface, FilesystemInterface
     $object->name      = $name;
     $object->path      = $path;
     $object->data      = $data;
-    $object->extension = strtolower(JFile::getExt($name));
+    try
+    {
+      // Joomla 5+
+      $object->extension = strtolower(JFile::getExt($name));
+    }
+    catch(\Throwable $th)
+    {
+      // Joomla 4-
+      $object->extension = strtolower(\Joomla\CMS\Filesystem\File::getExt($name));
+    }    
 
     PluginHelper::importPlugin('content');
 
@@ -634,7 +652,16 @@ class Filesystem implements AdapterInterface, FilesystemInterface
     $object->name      = $name;
     $object->path      = $path;
     $object->data      = $data;
-    $object->extension = strtolower(JFile::getExt($name));
+    try
+    {
+      // Joomla 5+
+      $object->extension = strtolower(JFile::getExt($name));
+    }
+    catch(\Throwable $th)
+    {
+      // Joomla 4-
+      $object->extension = strtolower(\Joomla\CMS\Filesystem\File::getExt($name));
+    }
 
     PluginHelper::importPlugin('content');
 

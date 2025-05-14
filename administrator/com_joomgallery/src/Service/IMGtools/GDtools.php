@@ -287,7 +287,8 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
     }
 
     // Define image type to write
-    $type = \strtoupper(File::getExt($file));
+    $filesystem = JoomHelper::getService('Filesystem');
+    $type = \strtoupper($filesystem->getExt($file));
     if(!empty($type))
     {
       if(\in_array($type, $this->supported_types))
