@@ -40,20 +40,39 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
   {
     // Configure the Symfony output helper
     $this->configureSymfonyIO($input, $output);
-    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
-
-    // Collect the options
-    $search = $input->getOption('search') ?? null;
+//    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
+    $this->ioStyle->title('JoomGallery Categories list');
 
     // Get the categories, using the backend model
     /** @var \Joomla\CMS\MVC\Model\BaseDatabaseModel $categoriesModel */
-
-    $test = $this->getMVCFactory();
     $categoriesModel = $this->getMVCFactory()->createModel('Categories', 'Administrator');
 
-    if ($search)
+    //--- assign option ----------------------------
+
+//    $search = $input->getOption('search') ?? null;
+//    if ($search)
+//    {
+//      $categoriesModel->setState('filter.search', $search);
+//    }
+
+    $owner = $input->getOption('owner') ?? null;
+
+    if ($owner) // created_by
     {
-      $categoriesModel->setState('filter.search', $search);
+      $categoriesModel->setState('filter.created_by', $owner);
+      // rename
+      // not matching option error
+      // $input->setOption('created_by', $owner);
+
+      $app = $this->getApplication();
+      $input = $app->getInput();
+      // $input->set('created_by', $owner);
+
+      //$filter = $input->get('filter');
+
+//      $filter = $input->getFilter();
+//
+//      $filter->set('filter.created_by', $owner);
     }
 
     $categories = $categoriesModel->getItems();
@@ -89,15 +108,17 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
     // Display the categories in a table and set the exit code to 0
     $this->ioStyle->table(
       [
-        Text::_('JGLOBAL_FIELD_ID_LABEL'),
-        Text::_('JGLOBAL_TITLE'),
-        Text::_('JPUBLISHED'),
-        Text::_('JGLOBAL_FIELD_CREATED_BY_LABEL') . ' ('.  Text::_('COM_JOOMGALLERY_OWNER') . ')', // ToDo: Owner
-        Text::_('JGLOBAL_FIELD_CREATED_LABEL'),
-        Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL'),
-        Text::_('JGLOBAL_FIELD_MODIFIED_LABEL'),
-        Text::_('JGLOBAL_LINK_PARENT_CATEGORY_LABEL'),
+//        Text::_('JGLOBAL_FIELD_ID_LABEL'),
+//        Text::_('JGLOBAL_TITLE'),
+//        Text::_('JPUBLISHED'),
+//        Text::_('JGLOBAL_FIELD_CREATED_BY_LABEL') . ' ('.  Text::_('COM_JOOMGALLERY_OWNER') . ')', // ToDo: Owner
+//        Text::_('JGLOBAL_FIELD_CREATED_LABEL'),
+//        Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL'),
+//        Text::_('JGLOBAL_FIELD_MODIFIED_LABEL'),
+//        Text::_('JGLOBAL_LINK_PARENT_CATEGORY_LABEL'),
         // Text::_(''),
+
+        'ID', 'Title', 'Published', 'Created by (owner)','Created','Modified by','Modified','Parent',
       ],
       $categories
     );
@@ -112,10 +133,21 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
    */
   protected function configure(): void
   {
-    $this->setDescription(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
-    $this->setHelp(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_HELP'));
+//    $this->setDescription(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
+//    $this->setHelp(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_HELP'));
+//
+//    $this->addOption('search', 's', InputOption::VALUE_OPTIONAL, Text::_('COM_JOOMGALLERY_CLI_CONFIG_SEARCH'));
 
+    // ToDo: option to limit by user (owner), ?parent ...
+    $this->addOption('owner', null, InputOption::VALUE_OPTIONAL, 'username (created_by)');
     $this->addOption('search', 's', InputOption::VALUE_OPTIONAL, Text::_('COM_JOOMGALLERY_CLI_CONFIG_SEARCH'));
+
+    $help = "<info>%command.name%</info> will list all joomgallery categories 
+		    \nUsage: <info>php %command.full_name%</info>";
+
+    $this->setDescription(Text::_('List all joomgallery categories'));
+    $this->setHelp($help);
+
   }
 
   /**
