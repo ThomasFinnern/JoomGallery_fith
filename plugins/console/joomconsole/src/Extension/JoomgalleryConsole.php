@@ -9,10 +9,12 @@
 
 namespace JoomGallery\Plugin\Console\Joomconsole\Extension;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
+// \defined('JPATH_PLATFORM') or die;
 
 //use Joomgallery\Component\JoomGallery\Administrator\Clicommand\Categorieslist;
 use Joomgallery\Component\Joomgallery\Administrator\CliCommand\CategoriesList;
+use Joomgallery\Component\Joomgallery\Administrator\CliCommand\AddCategory;
 use Joomla\Application\ApplicationEvents;
 use Joomla\Application\Event\ApplicationEvent;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
@@ -33,8 +35,12 @@ class JoomgalleryConsole extends CMSPlugin implements SubscriberInterface
 {
   use MVCFactoryAwareTrait;
 
+  // command classes in folder
+  // administrator\components\com_joomgallery\src\CliCommand
+  // administrator\components\com_joomgallery\src\CliCommand
   private static $commands = [
     CategoriesList::class,
+    AddCategory::class,
   ];
 
   protected $autoloadLanguage = true;
@@ -46,11 +52,12 @@ class JoomgalleryConsole extends CMSPlugin implements SubscriberInterface
 
   public static function getSubscribedEvents(): array
   {
-    return [
-      ApplicationEvents::BEFORE_EXECUTE => 'registerCLICommands',
-    ];
+      return [
+        ApplicationEvents::BEFORE_EXECUTE => 'registerCLICommands',
+      ];
   }
-// Joomgallery\\Component\\Joomgallery\\Administrator\\
+
+  //
   public function registerCLICommands(ApplicationEvent $event): void
   {
     // $test = new CategoriesList ();
@@ -71,6 +78,10 @@ class JoomgalleryConsole extends CMSPlugin implements SubscriberInterface
 
         $this->getApplication()->addCommand($command);
       } catch (Throwable $e) {
+
+        // print $commandFQN . ': error ' . $e->getMessage();
+        $this->ioStyle->writeln($commandFQN . ': error ' . $e->getMessage());
+
         continue;
       }
     }
