@@ -44,7 +44,7 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
     $this->ioStyle->title('JoomGallery Categories list');
 
     // Get the categories, using the backend model
-    /** @var \Joomla\CMS\MVC\Model\BaseDatabaseModel $categoriesModel */
+    /** @var Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel;  */
     $categoriesModel = $this->getMVCFactory()->createModel('Categories', 'Administrator');
 
     //--- assign option ----------------------------
@@ -123,7 +123,7 @@ class CategoriesList extends \Joomla\Console\Command\AbstractCommand
       $categories
     );
 
-    return 0;
+    return Command::SUCCESS;
   }
 
   /**

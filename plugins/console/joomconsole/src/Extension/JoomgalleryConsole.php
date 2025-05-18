@@ -79,8 +79,8 @@ class JoomgalleryConsole extends CMSPlugin implements SubscriberInterface
         $this->getApplication()->addCommand($command);
       } catch (Throwable $e) {
 
-        // print $commandFQN . ': error ' . $e->getMessage();
-        $this->ioStyle->writeln($commandFQN . ': error ' . $e->getMessage());
+        print ($commandFQN . ': error ' . $e->getMessage());
+        // $this->ioStyle->writeln($commandFQN . ': error ' . $e->getMessage());
 
         continue;
       }

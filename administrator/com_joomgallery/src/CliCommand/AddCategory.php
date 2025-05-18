@@ -10,6 +10,9 @@ use Joomla\Console\Command\AbstractCommand;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filter\InputFilter;
+
+use Joomgallery\Component\Joomgallery\Administrator\Model\CategoryModel;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -44,7 +47,8 @@ class AddCategory extends AbstractCommand
   private $created_time;
   private $modified_by;
   private $modified_time;
-  private $parent_title;
+  // ToDo: private $parent_title;
+  private $parent_id;
 
   /**
    * @inheritDoc
@@ -55,10 +59,6 @@ class AddCategory extends AbstractCommand
     $this->configureSymfonyIO($input, $output);
 //    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
     $this->ioStyle->title('JoomGallery add category');
-
-    // Get the categories, using the backend model
-    /** @var \Joomla\CMS\MVC\Model\BaseDatabaseModel $categoriesModel */
-    $categoriesModel = $this->getMVCFactory()->createModel('Categories', 'Administrator');
 
     //--- assign option ----------------------------
 
@@ -105,11 +105,11 @@ class AddCategory extends AbstractCommand
       }
     }
 
-    $test = $filter->clean($input->getOption('published') ?? '0');
     $this->published     = $filter->clean($input->getOption('published') ?? '0');
     $this->created_time  = $filter->clean($input->getOption('created_time')  ?? $actualTime);
     $this->modified_time = $filter->clean($input->getOption('modified_time') ?? $actualTime);
-    $this->parent_title  = $filter->clean($input->getOption('parent_title')  ?? 'root');
+//    $this->parent_title  = $filter->clean($input->getOption('parent_title')  ?? 'root');
+    $this->parent_id  = $filter->clean($input->getOption('parent_id')  ?? '1');
 
     //--- validate -----------------------------------
 
@@ -126,11 +126,34 @@ class AddCategory extends AbstractCommand
       'created_time' => $filter->clean($this->title, 'STRING'),
       'modified_by' => $filter->clean($this->modified_by, 'STRING'),
       'modified_time' => $filter->clean($this->title, 'STRING'),
-      'parent_title' => $filter->clean($this->parent_title, 'STRING'),
+//      'parent_title' => $filter->clean($this->parent_title, 'STRING'),
+      'parent_id' => $filter->clean($this->parent_id, 'INT'),
     ];
 
+    // Save the category, using the backend model
+    /** @var Joomgallery\Component\Joomgallery\Administrator\Model\CategoryModel; $categoriesModel */
+    $categoryModel = $this->getMVCFactory()->createModel('Category', 'Administrator');
 
+    if (!$categoryModel->save($category)) {
+//      switch ($categoryModel->getError()) {
+//        case "JLIB_DATABASE_ERROR_USERNAME_INUSE":
+//          $this->ioStyle->error("The username already exists!");
+//          break;
+//        case "JLIB_DATABASE_ERROR_EMAIL_INUSE":
+//          $this->ioStyle->error("The email address already exists!");
+//          break;
+//        case "JLIB_DATABASE_ERROR_VALID_MAIL":
+//          $this->ioStyle->error("The email address is invalid!");
+//          break;
+//      }
+      $this->ioStyle->error($categoryModel->getError());
 
+      return Command::FAILURE;
+    }
+
+    $this->ioStyle->success("User created!");
+
+    return Command::SUCCESS;
 
 
 
@@ -147,8 +170,8 @@ class AddCategory extends AbstractCommand
 //          'groups'   => $this->userGroups,
 //        ];
 //
-//        $userObj = User::getInstance();
-//        $userObj->bind($user);
+//        $categoryObj = User::getInstance();
+//        $categoryObj->bind($user);
 //
 //
 //
@@ -223,7 +246,7 @@ class AddCategory extends AbstractCommand
 //      $categories
 //    );
 
-    return 0;
+//    return 0;
   }
 
   /**
@@ -289,7 +312,8 @@ class AddCategory extends AbstractCommand
     $this->addOption('created_by', 'c', InputOption::VALUE_REQUIRED, 'Created by (owner)');
     $this->addOption('modified_time', null, InputOption::VALUE_OPTIONAL, 'Modified time');
     $this->addOption('modified_by', 'm', InputOption::VALUE_OPTIONAL, 'Modified by');
-    $this->addOption('parent_title', 'p', InputOption::VALUE_OPTIONAL, 'parent title');
+//    $this->addOption('parent_title', 'p', InputOption::VALUE_OPTIONAL, 'parent title');
+    $this->addOption('parent_id', 'p', InputOption::VALUE_OPTIONAL, 'parent id (1=no parent)');
 
     $help = "<info>%command.name%</info> will add a joomgallery category
 		    \nUsage: <info>php %command.full_name%</info>";
