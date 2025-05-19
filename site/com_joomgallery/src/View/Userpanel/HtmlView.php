@@ -89,10 +89,10 @@ class HtmlView extends JoomGalleryView
     $this->state = $model->getState();
     $this->params = $model->getParams();
 
-    $this->items         = $this->get('Items');
-    $this->pagination    = $this->get('Pagination');
-    $this->filterForm    = $this->get('FilterForm');
-    $this->activeFilters = $this->get('ActiveFilters');
+    $this->items         = $model->getItems();
+    $this->pagination    = $model->getPagination();
+    $this->filterForm    = $model->getFilterForm();
+    $this->activeFilters = $model->getActiveFilters();
 
     // Check for errors.
     if(\count($errors = $this->get('Errors')))
@@ -120,11 +120,11 @@ class HtmlView extends JoomGalleryView
     // Get access service
     $this->component->createAccess();
     $this->acl = $this->component->getAccess();
-    $acl       = $this->component->getAccess();
+    // $acl       = $this->component->getAccess();
 
     // Needed for JgcategoryField
     // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
-    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+    $this->isUserCoreManager = $this->acl->checkACL('core.manage', 'com_joomgallery');
 
 //        // Check for errors.
 //        if (count($errors = $this->get('Errors'))) {

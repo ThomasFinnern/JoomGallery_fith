@@ -87,7 +87,7 @@ class UserpanelModel extends ImagesModel
 
 		// Set filters based on how the view is used.
 		//  e.g. user list of categories:
-	    $this->setState('filter.created_by', Factory::getApplication()->getIdentity());
+	    $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
     	$this->setState('filter.created_by.include', true);
 
 	    $this->loadComponentParams();
@@ -104,10 +104,15 @@ class UserpanelModel extends ImagesModel
 	{
     $query = parent::getListQuery();
 
-    $user = Factory::getApplication()->getIdentity();
-
-    $db    = $this->getDbo();
-    $query->where($db->quoteName('a.created_by') . ' = ' . (int) $user->id);
+//    // restrict to actual user
+//    $user = Factory::getApplication()->getIdentity();
+//    $db    = $this->getDbo();
+//////    $query->where($db->quoteName('a.created_by') . ' = ' . (int) $user->id);
+//////    $query->where($db->quoteName('created_by_id') . ' = ' . (int) $user->id);
+////    $query->where($db->quoteName('id') . ' = ' . (int) $user->id);
+//    //$query->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
+////    $query->where($db->quoteName('ua.name') . ' = ' . (int) $user->id);
+//    $query->where($db->quoteName('ua.id') . ' = ' . (int) $user->id);
 
     return $query;
 	}
