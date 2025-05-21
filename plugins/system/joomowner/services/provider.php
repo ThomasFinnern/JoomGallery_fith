@@ -1,28 +1,36 @@
-defined('_JEXEC') || die;
+<?php
+/**
+ ******************************************************************************************
+ **   @package    com_joomgallery                                                        **
+ **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+ **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+ **   @license    GNU General Public License version 3 or later                          **
+ *****************************************************************************************/
 
-use Joomla\CMS\Extension\PluginInterface;
-use Joomla\CMS\Extension\Service\Provider\MVCFactory;
-use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\CMS\Plugin\PluginHelper;
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
 use Joomla\DI\Container;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Extension\PluginInterface;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Console\ATS\Extension\ATS;
+use Joomgallery\Plugin\System\Joomowner\Extension\JoomgalleryOwner;
 
-return new class implements ServiceProviderInterface {
+return new class implements ServiceProviderInterface
+{
   public function register(Container $container)
   {
-    $container->registerServiceProvider(new MVCFactory('Acme\\Component\\Example'));
-
     $container->set(
       PluginInterface::class,
-      function (Container $container) {
-        $config     = (array) PluginHelper::getPlugin('console', 'example');
-        $subject    = $container->get(DispatcherInterface::class);
-        $mvcFactory = $container->get(MVCFactoryInterface::class);
-        $plugin     = new Example($subject, $config)
+      function (Container $container)
+      {
+        $plugin     = PluginHelper::getPlugin('system', 'joomowner');
+        $dispatcher = $container->get(DispatcherInterface::class);
 
-        $plugin->setMVCFactory($mvcFactory);
+        /** @var \Joomla\CMS\Plugin\CMSPlugin $plugin */
+        $plugin = new JoomgalleryOwner($dispatcher, (array) $plugin);
+        $plugin->setApplication(Factory::getApplication());
 
         return $plugin;
       }
