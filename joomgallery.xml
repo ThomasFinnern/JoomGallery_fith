@@ -81,6 +81,7 @@
     <plugin group="system" plugin="joomgallery"/>
     <plugin group="system" plugin="joomowner"/>
     <plugin group="privacy" plugin="joomgallery"/>
+    <plugin group="console" plugin="joomconsole"/>
   </plugins>
   <changelogurl>https://www.joomgalleryfriends.net/updates/changelog.xml</changelogurl>
   <updateservers>
