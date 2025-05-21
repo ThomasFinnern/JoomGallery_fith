@@ -311,7 +311,7 @@ class MigrationController extends BaseController implements FormFactoryAwareInte
 
     // Check if migration item is checked out
     $user  = Factory::getUser();
-    if(isset($item->checked_out) && !($item->checked_out == 0 || $item->checked_out == $user->get('id')))
+    if(isset($item->checked_out) && !($item->checked_out == 0 || $item->checked_out == $user->id))
     {
       // You are not allowed to resume the migration, since it is checked out by another user
       $this->setMessage(Text::sprintf('COM_JOOMGALLERY_ERROR_CHECKED_OUT_BY_ANOTHER_USER', $user->get('name')), 'error');
@@ -397,7 +397,7 @@ class MigrationController extends BaseController implements FormFactoryAwareInte
 
       // Check if migration item is checked out
       $user  = Factory::getUser();
-      if(isset($item->checked_out) && !($item->checked_out == 0 || $item->checked_out == $user->get('id')))
+      if(isset($item->checked_out) && !($item->checked_out == 0 || $item->checked_out == $user->id))
       {
         // You are not allowed to resume the migration, since it is checked out by another user
         $this->setMessage(Text::sprintf('COM_JOOMGALLERY_ERROR_CHECKED_OUT_BY_ANOTHER_USER', $user->get('name')), 'error');

@@ -465,7 +465,7 @@ abstract class Config extends \stdClass implements ConfigInterface
     }
 
     $userGroups  = \array_values($user->get('groups'));
-    $configGroup = $this->getUserSetting($user->get('id'));
+    $configGroup = $this->getUserSetting($user->id);
     
     if(\in_array($configGroup, $userGroups))
     {

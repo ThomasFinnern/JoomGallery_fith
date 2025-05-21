@@ -968,7 +968,7 @@ class ImageModel extends JoomAdminModel
 		}
 
 		// Attempt to change the state of the records.
-		if (!$table->changeState($type, $pks, $value, $user->get('id')))
+		if (!$table->changeState($type, $pks, $value, $user->id))
 		{
 			$this->setError($table->getError());
 

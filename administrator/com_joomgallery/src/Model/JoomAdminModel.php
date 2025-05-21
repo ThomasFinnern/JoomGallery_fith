@@ -295,7 +295,7 @@ abstract class JoomAdminModel extends AdminModel
       $checkedOutField = $table->getColumnAlias('checked_out');
 
       // Check if this is the user having previously checked out the row.
-      if( $table->$checkedOutField > 0 && $table->$checkedOutField != $user->get('id') &&
+      if( $table->$checkedOutField > 0 && $table->$checkedOutField != $user->id &&
           !$user->authorise('core.manage', 'com_checkin')
         )
       {
