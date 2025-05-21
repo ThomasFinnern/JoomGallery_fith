@@ -765,18 +765,16 @@ class CategoryModel extends JoomAdminModel
 	 */
 	public function duplicate(&$pks)
 	{
-		$app  = Factory::getApplication();
-		$user = Factory::getContainer()->get(UserFactoryInterface::class);
-    $task = $app->input->get('task');
+    $task = $this->app->input->get('task');
 
 		// Access checks.
-		if(!$user->authorise('core.create', _JOOM_OPTION))
+		if(!$this->user->authorise('core.create', _JOOM_OPTION))
 		{
 			throw new \Exception(Text::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
     // Set task to be save2copy
-    $app->input->set('task', 'save2copy');
+    $this->app->input->set('task', 'save2copy');
 
 		$table = $this->getTable();
 
@@ -807,7 +805,7 @@ class CategoryModel extends JoomAdminModel
         $data = (array) $table->getFieldsValues();
 
         // Set the id of the origin category
-        $app->input->set('origin_id', $pk);
+        $this->app->input->set('origin_id', $pk);
 
         // Save the copy
         $this->save($data);
@@ -815,11 +813,11 @@ class CategoryModel extends JoomAdminModel
       else
       {
         throw new \Exception($table->getError());
-      }			
+      }
 		}
 
     // Reset official task
-    $app->input->set('task', $task);
+    $this->app->input->set('task', $task);
 
 		// Clean cache
 		$this->cleanCache();

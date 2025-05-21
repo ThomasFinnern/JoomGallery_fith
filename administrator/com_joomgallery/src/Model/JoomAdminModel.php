@@ -273,8 +273,6 @@ abstract class JoomAdminModel extends AdminModel
     // Only attempt to check the row in if it exists.
     if($pk)
     {
-      $user = $this->getCurrentUser();
-
       // Get an instance of the row to checkin.
       $table = $this->getTable();
 
@@ -295,8 +293,8 @@ abstract class JoomAdminModel extends AdminModel
       $checkedOutField = $table->getColumnAlias('checked_out');
 
       // Check if this is the user having previously checked out the row.
-      if( $table->$checkedOutField > 0 && $table->$checkedOutField != $user->id &&
-          !$user->authorise('core.manage', 'com_checkin')
+      if( $table->$checkedOutField > 0 && $table->$checkedOutField != $this->user->id &&
+          !$this->user->authorise('core.manage', 'com_checkin')
         )
       {
         $this->component->setError(Text::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'));

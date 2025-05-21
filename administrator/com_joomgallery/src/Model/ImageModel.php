@@ -250,11 +250,8 @@ class ImageModel extends JoomAdminModel
 	 */
 	public function duplicate(&$pks)
 	{
-		$app  = Factory::getApplication();
-		$user = Factory::getContainer()->get(UserFactoryInterface::class);
-
 		// Access checks.
-		if(!$user->authorise('core.create', _JOOM_OPTION))
+		if(!$this->user->authorise('core.create', _JOOM_OPTION))
 		{
 			throw new \Exception(Text::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
@@ -315,7 +312,7 @@ class ImageModel extends JoomAdminModel
 				}
 
 				// Trigger the before save event.
-				$result = $app->triggerEvent($this->event_before_save, array($context, &$table, true, $table));
+				$result = $this->app->triggerEvent($this->event_before_save, array($context, &$table, true, $table));
 
 				if(in_array(false, $result, true) || !$table->store())
 				{
@@ -323,7 +320,7 @@ class ImageModel extends JoomAdminModel
 				}
 
 				// Trigger the after save event.
-				$app->triggerEvent($this->event_after_save, array($context, &$table, true));
+				$this->app->triggerEvent($this->event_after_save, array($context, &$table, true));
 			}
 			else
 			{
@@ -1220,6 +1217,6 @@ class ImageModel extends JoomAdminModel
    */
   protected function canRecreate($record)
   {
-    return Factory::getContainer()->get(UserFactoryInterface::class)->authorise('core.edit', $this->typeAlias);
+		return $this->getAcl()->checkACL('core.edit', $this->typeAlias);
   }
 }
