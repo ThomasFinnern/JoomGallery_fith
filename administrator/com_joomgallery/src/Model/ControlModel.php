@@ -198,7 +198,10 @@ class ControlModel extends BaseDatabaseModel
       try
       {
         $info_extension    = $this->getBestUpdate(JoomHelper::fetchXML($url));
-        $extensions[$name] = \json_decode(\json_encode($info_extension), true);
+        if($info_extension)
+        {
+          $extensions[$name] = \json_decode(\json_encode($info_extension), true);
+        }        
       }
       catch (\Exception $e)
       {
