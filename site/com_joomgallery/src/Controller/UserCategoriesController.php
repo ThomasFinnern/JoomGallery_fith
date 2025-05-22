@@ -21,7 +21,8 @@ use \Joomla\CMS\Language\Text;
  * @package JoomGallery
  * @since   4.0.0
  */
-class UsercategoriesController extends JoomBaseController
+//class UsercategoriesController extends JoomBaseController
+class UsercategoriesController extends CategoriesController
 {
 
 //	/**

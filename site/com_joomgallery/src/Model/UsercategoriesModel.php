@@ -12,7 +12,7 @@ namespace Joomgallery\Component\Joomgallery\Site\Model;
 // No direct access.
 defined('_JEXEC') or die;
 
-use \Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel as AdminCategoriesModel;
+use Joomla\CMS\Factory;
 
 /**
  * Model to get a list of category records.
@@ -20,7 +20,8 @@ use \Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel as Ad
  * @package JoomGallery
  * @since   4.0.0
  */
-class UsercategoriesModel extends AdminCategoriesModel
+//class UsercategoriesModel extends AdminCategoriesModel
+class UsercategoriesModel extends CategoriesModel
 {
 //	/**
 //   * Constructor
@@ -112,4 +113,37 @@ class UsercategoriesModel extends AdminCategoriesModel
 //
 //		return $items;
 //	}
+
+  /**
+   * Method to auto-populate the model state.
+   *
+   * Note. Calling getState in this method will result in recursion.
+   *
+   * @param   string  $ordering   Elements order
+   * @param   string  $direction  Order direction
+   *
+   * @return  void
+   *
+   * @throws  \Exception
+   *
+   * @since   4.0.0
+   */
+//	protected function populateState($ordering = 'a.lft', $direction = 'DESC')
+  protected function populateState($ordering = 'a.id', $direction = 'desc')
+  {
+    // List state information.
+    parent::populateState($ordering, $direction);
+
+    // Set filters based on how the view is used.
+    //  e.g. user list of categories:
+    $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
+    $this->setState('filter.created_by.include', true);
+
+    $this->loadComponentParams();
+  }
+
+
+
+
+
 }

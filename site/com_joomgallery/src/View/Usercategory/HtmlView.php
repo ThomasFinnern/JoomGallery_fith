@@ -8,7 +8,7 @@
 **   @license    GNU General Public License version 3 or later                          **
 *****************************************************************************************/
 
-namespace Joomgallery\Component\Joomgallery\Site\View\Categoryform;
+namespace Joomgallery\Component\Joomgallery\Site\View\Usercategory;
 
 // No direct access
 defined('_JEXEC') or die;

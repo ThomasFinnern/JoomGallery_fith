@@ -34,7 +34,9 @@ $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUse
 $panelView = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
-$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=edit');
+$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0');
 
 $config     = $this->params['configs'];
 $menuParam  = $this->params['menu'];
@@ -134,17 +136,17 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\''. json_encode($this->js_va
 
                 <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
                     <span class="icon-images"></span>
-                        <?php echo Text::_('catgories/galleries'); ?>
+                        <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
                 </a>
 
                 <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
                     <span class="icon-new-tab"></span>
-                        <?php echo Text::_('new category/gallery'); ?>
+                        <?php echo Text::_('COM_JOOMGALLERY_USER_NEW_CATEGORY'); ?>
                 </a>
 
                 <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
                     <span class="icon-home"></span>
-                        <?php echo Text::_('user panel'); ?>
+                        <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
                 </a>
             </div>
             <div class="form-group">

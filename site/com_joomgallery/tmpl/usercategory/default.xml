@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_JOOMGALLERY_VIEW_USER_CATEGORY_TITLE" option="JDEFAULT">
+      <message>
+        <![CDATA[COM_JOOMGALLERY_VIEW_USER_CATEGORY_FORM_DESC]]>
+      </message>
+    </layout>
+	<!-- query="SELECT 0 as `id`, 'New Category' as `title` UNION SELECT `id`,`title` FROM #__joomgallery_categories ORDER BY `id` DESC" -->
+    <fields name="request">
+        <fieldset name="request" >
+            <field name="id"
+                   type="sql"
+                   query="SELECT `id`,`title` FROM #__joomgallery_categories ORDER BY `id` DESC"
+                   key_field="id"
+                   value_field="title"
+                   label="JCATEGORY"
+                   require="true" >
+            </field>
+        </fieldset>
+    </fields>
+</metadata>

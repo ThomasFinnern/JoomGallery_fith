@@ -160,9 +160,11 @@ if($saveOrder && !empty($this->items))
                       <?php if($canChange && $saveOrder) : ?>
                         <span class="sortable-handler<?php echo $iconClass ?>">
                           <span class="icon-ellipsis-v"></span>
-                        </span>											
-												<input type="text" name="order[]" size="5" value="<?php echo $item->lft; ?>" class="hidden">
-											<?php endif; ?>
+                        </span>
+                        <label>
+                          <input type="text" name="order[]" size="5" value="<?php echo $item->lft; ?>" class="hidden">
+                        </label>
+                      <?php endif; ?>
 
                       <?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->title); ?>
                     </td>

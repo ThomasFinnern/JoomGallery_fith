@@ -43,7 +43,9 @@ $isShowTitle = $menuParam->get('show_page_heading');
 $panelView = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
-$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=edit');
+$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0');
 
 ?>
 
@@ -99,12 +101,12 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
 
               <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
                   <span class="icon-images"></span>
-                  <?php echo Text::_('*catgories/galleries'); ?>
+                  <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
               </a>
 
               <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
                   <span class="icon-new-tab"></span>
-                  <?php echo Text::_('*new category/gallery'); ?>
+                  <?php echo Text::_('COM_JOOMGALLERY_USER_NEW_CATEGORY'); ?>
               </a>
 
               <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
@@ -115,15 +117,6 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
           </div>
 
           <div class="form-group">
-
-            <div class="card " style="width: 18rem;">
-              <div class="card-body">
-                x
-                x
-                x
-                x
-              </div>
-            </div>
 
             <div class="card " >
               <div class="card-body">
@@ -302,24 +295,13 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categori
               </div>
             </div>
 
-
-            <div class="card " style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">open ...</h5>
-
-                ??? latest category list <br>
-                ??? latest images list <br>
-              </div>
-            </div>
-
-
           </div>
 	      <?php endif; ?>
 
-          <input type="hidden" name="task" value="image.???"/>
-          <input type="hidden" name="id" value="0" />
+        <input type="hidden" name="task" value="image.???"/>
+        <input type="hidden" name="id" value="0" />
 
-	      <?php echo HTMLHelper::_('form.token'); ?>
-      </form>
+      <?php echo HTMLHelper::_('form.token'); ?>
+    </form>
 
 </div>

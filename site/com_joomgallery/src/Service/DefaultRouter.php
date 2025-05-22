@@ -103,8 +103,12 @@ class DefaultRouter extends RouterView
     $categories = new RouterViewConfiguration('categories');
     $this->registerView($categories);
 
+//    $category = new RouterViewConfiguration('category');
+//    $category->setKey('id')->setNestable()->setParent($gallery);
+//    $this->registerView($category);
+
     $category = new RouterViewConfiguration('category');
-    $category->setKey('id')->setNestable()->setParent($gallery);
+    $category->setKey('id');
     $this->registerView($category);
 
     $categoryform = new RouterViewConfiguration('categoryform');
@@ -116,7 +120,8 @@ class DefaultRouter extends RouterView
 		$this->registerView($images);
 
     $image = new RouterViewConfiguration('image');
-    $image->setKey('id')->setParent($images);
+    $image->setKey('id')
+      ->setParent($images);
     $this->registerView($image);
 
     $imageform = new RouterViewConfiguration('imageform');
@@ -128,14 +133,18 @@ class DefaultRouter extends RouterView
     $this->registerView($userpanel);
 
     $userupload = new RouterViewConfiguration('userupload');
-    // $userupload->setKey('id');
+    //$userupload->setKey('id');
     $this->registerView($userupload);
 
     $usercategories = new RouterViewConfiguration('usercategories');
-    // $usercategories->setKey('id');
+    //$usercategories->setKey('id');
     $this->registerView($usercategories);
 
-		$this->attachRule(new MenuRules($this));
+    $usercategory = new RouterViewConfiguration('usercategory');
+    $usercategory->setKey('id');
+    $this->registerView($usercategory);
+
+    $this->attachRule(new MenuRules($this));
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
 	}
@@ -261,6 +270,25 @@ class DefaultRouter extends RouterView
    * @return  array|string  The segments of this item
    */
   public function getCategoryformSegment($id, $query)
+  {
+    if(!$id)
+    {
+      // Load empty form view
+      return array('');
+    }
+
+    return $this->getCategorySegment($id, $query);
+  }
+
+  /**
+   * Method to get the segment(s) for an usercategory
+   *
+   * @param   string  $id     ID of the usercategory to retrieve the segments for
+   * @param   array   $query  The request that is built right now
+   *
+   * @return  array|string  The segments of this item
+   */
+  public function getUsercategorySegment($id, $query)
   {
     if(!$id)
     {
@@ -443,6 +471,19 @@ class DefaultRouter extends RouterView
    * @return  mixed   The id of this item or false
    */
   public function getCategoryformId($segment, $query)
+  {
+    return $this->getCategoryId($segment, $query);
+  }
+
+  /**
+   * Method to get the segment(s) for an usercategory
+   *
+   * @param   string  $segment  Segment of the usercategory to retrieve the ID for
+   * @param   array   $query    The request that is parsed right now
+   *
+   * @return  mixed   The id of this item or false
+   */
+  public function getUsercategoryId($segment, $query)
   {
     return $this->getCategoryId($segment, $query);
   }
