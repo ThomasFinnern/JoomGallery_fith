@@ -55,6 +55,10 @@ $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0&return=' . $returnURL);
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0');
 
+//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&usercategory&layout=edit&id=';
+$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=edit&id=';
+//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=categoryform&id=';
+
 // ToDo: Prevent direct accass without login  see user panel (?htmlview.php ...)
 ?>
 
@@ -273,17 +277,13 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                     // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . (int) $item->id);
                     // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . $item->id);
                     $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=' . $item->id);
+                    $route = Route::_('index.php?option=com_joomgallery&view=categoryform&id=' . $item->id);
+                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=' . $item->id);
+                    $route= Route::_($baseLink_CategorEdit . (int) $item->id);
                     $title = $this->escape($item->title);
-                    // echo $title;
                     ?>
-                    <!--                      <a href="-->
-                    <?php //echo Route::_('index.php?option=com_joomgallery&view=category&id=' . (int) $item->id);
-                    ?><!--">--><?php //echo $this->escape($item->title);
-                    ?><!-- (--><?php //echo $this->escape($item->id);
-                    ?><!--)</a>-->
-                    <a
-                      href="<?php echo Route::_('index.php?option=com_joomgallery&usercategory&layout=edit&id=' . (int) $item->id); ?>"><?php echo $this->escape($item->title); ?>
-                      (<?php echo $this->escape($item->id); ?>)</a>
+                    <a href="<?php echo Route::_($baseLink_CategorEdit . (int) $item->id); ?>">
+                        <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
                   </th>
 
                   <td class="d-none d-lg-table-cell text-center">
