@@ -46,7 +46,7 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 	<?php if (!$canEdit) : ?>
 		<?php Factory::getApplication()->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_ACCESS_VIEW'), 'error'); ?>
 	<?php else : ?>
-		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&controller=categoryform&id='.$this->item->id); ?>"
+		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&controller=usercategory&id='.$this->item->id); ?>"
 			    method="post" name="adminForm" class="form-validate form-horizontal" enctype="multipart/form-data">
       <fieldset>
         <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'category')); ?>
@@ -103,17 +103,17 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
         <input type="hidden" name="jform[path]" value="<?php echo isset($this->item->path) ? $this->item->path : ''; ?>" />
         <input type="hidden" name="jform[in_hidden]" value="<?php echo isset($this->item->in_hidden) ? $this->item->in_hidden : ''; ?>" />
 
-        <input type="hidden" name="type" id ="itemType" value="categoryform"/>
+        <input type="hidden" name="type" id ="itemType" value="usercategory"/>
         <input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
         <input type="hidden" name="task" value=""/>
         <?php echo HTMLHelper::_('form.token'); ?>
       </fieldset>
         
       <div class="mb-2">
-        <button class="btn btn-primary" type="button" data-submit-task="categoryform.save">
+        <button class="btn btn-primary" type="button" data-submit-task="usercategory.save">
           <span class="fas fa-check" aria-hidden="true"></span> <?php echo Text::_('JAPPLY'); ?>
         </button>
-        <button class="btn btn-danger" type="button" data-submit-task="categoryform.cancel">
+        <button class="btn btn-danger" type="button" data-submit-task="usercategory.cancel">
           <span class="fas fa-times" aria-hidden="true"></span> <?php echo Text::_('JCANCEL'); ?>
         </button>
       </div>

@@ -1,12 +1,11 @@
 <?php
-
 /**
-******************************************************************************************
-**   @package    com_joomgallery                                                        **
-**   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
-**   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
-**   @license    GNU General Public License version 3 or later                          **
-*****************************************************************************************/
+ ******************************************************************************************
+ **   @package    com_joomgallery                                                        **
+ **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+ **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+ **   @license    GNU General Public License version 3 or later                          **
+ *****************************************************************************************/
 
 namespace Joomgallery\Component\Joomgallery\Site\View\Usercategory;
 
@@ -69,7 +68,8 @@ class HtmlView extends JoomGalleryView
 	 */
 	public function display($tpl = null)
 	{
-		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
+    $this->app->enqueueMessage('User Cat... ' . Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
+//		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
 
 //		if(!$this->app->input->get('preview', 0))
 //		{
@@ -80,7 +80,13 @@ class HtmlView extends JoomGalleryView
 		$this->state  = $this->get('State');
 		$this->params = $this->get('Params');
 		$this->item   = $this->get('Item');
-		$this->form		= $this->get('Form');
+
+    // ToDo: fix for empty Id: item->id=null
+    if (empty($this->item->id)) {
+      $this->item->id =0;
+    }
+
+    $this->form		= $this->get('Form');
 
     // Get return page
     $this->return_page = $this->get('ReturnPage');		

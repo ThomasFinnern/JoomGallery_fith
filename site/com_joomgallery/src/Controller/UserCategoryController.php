@@ -81,7 +81,9 @@ class UserCategoryController extends FormController // ? JoomFormController
 		// Check for request forgeries.
 		$this->checkToken();
 
-		// Get the user data.
+    $task = Factory::getApplication()->input->get('task', '', 'cmd');
+
+    // Get the user data.
 		$data = $this->input->post->get('jform', [], 'array');
 
 		// To avoid data collisions the urlVar may be different from the primary key.
@@ -189,6 +191,7 @@ class UserCategoryController extends FormController // ? JoomFormController
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
     // ToDo: check
+    $returnPage = $this->getReturnPage();
     $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
 		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
 	}

@@ -69,6 +69,20 @@ class HtmlView extends JoomGalleryView
   protected $params;
 
   /**
+   * @var    bool
+   * @since  4.0.0
+   */
+  protected $isUserLoggedIn = false;
+  /**
+   * @var    bool
+   * @since  4.0.0
+   */
+  protected $isUserHasCategory = false;
+
+  protected $isUserCoreManager = false;
+  protected $userId = 0;
+
+  /**
    * Execute and display a template script.
    *
    * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -81,7 +95,7 @@ class HtmlView extends JoomGalleryView
   public function display($tpl = null)
   {
     $user = $this->getCurrentUser();
-    $app  = Factory::getApplication();
+    // $app  = Factory::getApplication();
 
     // Get model data
     $model       = $this->getModel();
@@ -100,10 +114,7 @@ class HtmlView extends JoomGalleryView
       throw new GenericDataException(\implode("\n", $errors), 500);
     }
 
-
-
-
-    $config = $this->params['configs'];
+    // $config = $this->params['configs'];
 
     //	user must be logged in and have one 'master/base' category
     $this->isUserLoggedIn = true;

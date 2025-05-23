@@ -5,13 +5,13 @@
         <![CDATA[COM_JOOMGALLERY_VIEW_USER_CATEGORY_EDIT_DESC]]>
       </message>
     </layout>
-	<!-- ToDo : own field with order DESC but first item new category -->
+    <!--
     <fields name="request">
         <fieldset name="request" >
             <field name="id"
                    type="sql"
-				   default="0"
-				   query="SELECT 0 as `id`, 'New Category' as `title` UNION SELECT `id`,`title` FROM #__joomgallery_categories ORDER BY `id` DESC"
+           default="0"
+           query="SELECT 0 as `id`, 'New Category' as `title` UNION SELECT `id`,`title` FROM #__joomgallery_categories ORDER BY `id` DESC"
                    key_field="id"
                    value_field="title"
                    label="JCATEGORY"
@@ -19,4 +19,5 @@
             </field>
         </fieldset>
     </fields>
+    -->
 </metadata>

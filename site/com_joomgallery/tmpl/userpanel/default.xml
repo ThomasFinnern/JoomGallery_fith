@@ -20,17 +20,17 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="basic">
-			<field name="show_page_heading"
-				   type="radio"
-				   default="1"
-				   label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
-				   description="COM_JOOMGALLERY_MENU_SHOW_TITLE_DESC"
-				   class="btn-group btn-group-yesno">
-				<option value="1">JYES</option>
-				<option value="0">JNO</option>
-			</field>
+      <field name="userPanelShowTitle"
+             type="radio"
+             default="1"
+             label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
+             description="COM_JOOMGALLERY_MENU_SHOW_TITLE_DESC"
+             class="btn-group btn-group-yesno">
+        <option value="1">JYES</option>
+        <option value="0">JNO</option>
+      </field>
 
-			<field name="userPanelShowUserCategories"
+      <field name="userPanelShowUserCategories"
 				   type="radio"
 				   default="1"
              label="COM_JOOMGALLERY_MENU_SHOW_USER_CATEGORIES"

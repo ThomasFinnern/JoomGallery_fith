@@ -5,6 +5,7 @@
         <![CDATA[COM_JOOMGALLERY_VIEW_CATEGORY_FORM_DESC]]>
       </message>
     </layout>
+    <!--
     <fields name="request">
         <fieldset name="request" >
             <field name="item_id"
@@ -17,4 +18,5 @@
             </field>
         </fieldset>
     </fields>
+    -->
 </metadata>

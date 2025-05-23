@@ -69,7 +69,7 @@ class HtmlView extends JoomGalleryView
 	 */
 	public function display($tpl = null)
 	{
-		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
+		$this->app->enqueueMessage('Cat..Form ' . Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
 
 //		if(!$this->app->input->get('preview', 0))
 //		{
@@ -80,6 +80,12 @@ class HtmlView extends JoomGalleryView
 		$this->state  = $this->get('State');
 		$this->params = $this->get('Params');
 		$this->item   = $this->get('Item');
+
+    // fix for empty Id: item->id=null
+    if (empty($this->item->id)) {
+      $this->item->id =0;
+    }
+
 		$this->form		= $this->get('Form');
 
     // Get return page

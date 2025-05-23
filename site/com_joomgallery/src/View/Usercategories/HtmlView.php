@@ -42,6 +42,20 @@ class HtmlView extends JoomGalleryView
   protected $params;
 
   /**
+   * @var    bool
+   * @since  4.0.0
+   */
+  protected $isUserLoggedIn = false;
+  /**
+   * @var    bool
+   * @since  4.0.0
+   */
+  protected $isUserHasCategory = false;
+
+  protected $isUserCoreManager = false;
+  protected $userId = 0;
+
+  /**
    * Execute and display a template script.
    *
    * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -53,6 +67,8 @@ class HtmlView extends JoomGalleryView
    */
   public function display($tpl = null)
   {
+    $user = $this->getCurrentUser();
+
     // Get model data
     $model = $this->getModel();
 
@@ -69,6 +85,27 @@ class HtmlView extends JoomGalleryView
     {
       throw new GenericDataException(\implode("\n", $errors), 500);
     }
+
+    //	user must be logged in and have one 'master/base' category
+    $this->isUserLoggedIn = true;
+    if ($user->guest)
+    {
+      $this->isUserLoggedIn = false;
+    }
+
+    // at least one category is needed for upload view
+    $this->isUserHasCategory = $model->getUserHasACategory($user);
+
+    $this->userId = $user->id;
+
+    // Get access service
+    $this->component->createAccess();
+    $this->acl = $this->component->getAccess();
+    // $acl       = $this->component->getAccess();
+
+    // Needed for JgcategoryField
+    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
+    $this->isUserCoreManager = $this->acl->checkACL('core.manage', 'com_joomgallery');
 
     // Check if is userspace is enabled
     // Check access permission (ACL)

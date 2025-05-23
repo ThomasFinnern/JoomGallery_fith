@@ -13,6 +13,7 @@ namespace Joomgallery\Component\Joomgallery\Site\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Model to get a list of category records.
@@ -141,6 +142,32 @@ class UsercategoriesModel extends CategoriesModel
 
     $this->loadComponentParams();
   }
+
+
+  public function getUserHasACategory(\Joomla\CMS\User\User $user)
+  {
+    $isUserHasACategory = true;
+
+    // try {
+
+    $db = Factory::getContainer()->get(DatabaseInterface::class);		// ToDo: Count categories of user
+
+    // Check number of records in tables
+    $query = $db->getQuery(true)
+      ->select('COUNT(*)')
+      ->from($db->quoteName(_JOOM_TABLE_CATEGORIES))
+      ->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
+
+    $db->setQuery($query);
+    $count = $db->loadResult();
+
+    if(empty ($count)) {
+      $isUserHasACategory = false;
+    }
+
+    return $isUserHasACategory;
+  }
+
 
 
 

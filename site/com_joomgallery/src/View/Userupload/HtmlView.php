@@ -135,7 +135,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	    $this->acl = $this->component->getAccess();
 	    $acl       = $this->component->getAccess();
 
-		// Needed for JgcategoryField
+  		// Needed for JgcategoryField
 	    // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 	    $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
 

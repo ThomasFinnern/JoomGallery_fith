@@ -12,6 +12,7 @@ namespace Joomgallery\Component\Joomgallery\Site\Controller;
 // No direct access
 \defined('_JEXEC') or die;
 
+use Joomgallery\Component\Joomgallery\Administrator\Controller\JoomFormController;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Router\Route;
@@ -23,7 +24,7 @@ use \Joomla\CMS\MVC\Controller\FormController;
  * @package JoomGallery
  * @since   4.0.0
  */
-class CategoryformController extends FormController
+class CategoryformController extends JoomFormController // FormController
 {
   use RoutingTrait;
 
@@ -80,7 +81,9 @@ class CategoryformController extends FormController
 		// Check for request forgeries.
 		$this->checkToken();
 
-		// Get the user data.
+    $task = Factory::getApplication()->input->get('task', '', 'cmd');
+
+    // Get the user data.
 		$data = $this->input->post->get('jform', [], 'array');
 
 		// To avoid data collisions the urlVar may be different from the primary key.
@@ -183,6 +186,9 @@ class CategoryformController extends FormController
 
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
+    // ToDo: check
+    $returnPage = $this->getReturnPage();
+    $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
 		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
 	}
 
