@@ -150,7 +150,7 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 			// Redirect back to the edit screen.
 			//$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=edit&id=' . $recordId, false));
+			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
 
 			$this->redirect();
 		}
@@ -164,7 +164,7 @@ class UserCategoryController extends FormController // ? JoomFormController
 			// Redirect back to the edit screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
       //$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-      $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=edit&id=' . $recordId, false));
+      $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
 
 			return false;
 		}

@@ -6,6 +6,7 @@ use Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
@@ -42,12 +43,13 @@ $isShowTitle = true;
 
 $panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
+$imagesView = Route::_('index.php?option=com_joomgallery&view=images');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=edit');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=edit&id=0');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=editCat');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=editCat&id=0');
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0');
-$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0');
+$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
 
 ?>
 
@@ -108,7 +110,12 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
       <div class="form-group">
 
         <div class="mb-2">
-          <a class="btn btn-success" href="<?php echo $categoriesView; ?>" role="button">
+          <a class="btn btn-info" href="<?php echo $imagesView; ?>" role="button">
+            <span class="icon-list"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?>
+          </a>
+
+          <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
             <span class="icon-images"></span>
             <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
           </a>
@@ -119,7 +126,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
           </a>
 
           <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
-            <span class="icon-home"></span>
+            <span class="icon-upload"></span>
             <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
           </a>
         </div>
@@ -140,15 +147,10 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
               </div>
             <?php else : ?>
 
-              <?php if (true || $this->params->get('show_pagination_limit')) : ?>
-                <div class="com-contact-featured__pagination btn-group float-end">
-                  <label for="limit" class="visually-hidden">
-                    <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
-                  </label>
-                  <?php echo $this->pagination->getLimitBox(); ?>
-                </div>
-              <?php endif; ?>
-
+              <?php if(!empty($this->filterForm)) {
+                $test = "test";
+                echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+              } ?>
 
               <div class="clearfix"></div>
 

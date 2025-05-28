@@ -80,7 +80,8 @@ class UserpanelModel extends ImagesModel
 	 * @since   4.0.0
 	 */
 //	protected function populateState($ordering = 'a.lft', $direction = 'DESC')
-	protected function populateState($ordering = 'a.id', $direction = 'desc')
+//	protected function populateState($ordering = 'a.id', $direction = 'desc')
+	protected function populateState($ordering = 'a.ordering', $direction = 'asc')
 	{
 		// List state information.
 		parent::populateState($ordering, $direction);

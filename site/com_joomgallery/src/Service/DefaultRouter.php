@@ -411,7 +411,7 @@ class DefaultRouter extends RouterView
   }
 
   /**
-   * Method to get the segment(s) for an category
+   * Method to get the segment(s) for a category
    *
    * @param   string  $segment  Segment of the category to retrieve the ID for
    * @param   array   $query    The request that is parsed right now
@@ -489,7 +489,7 @@ class DefaultRouter extends RouterView
   }
 
   /**
-   * Method to get the segment(s) for an category
+   * Method to get the segment(s) for a category
    *
    * @param   string  $segment  Segment of the category to retrieve the ID for
    * @param   array   $query    The request that is parsed right now

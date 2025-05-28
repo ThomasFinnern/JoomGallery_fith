@@ -1,5 +1,4 @@
 <?php
-
 /**
 ******************************************************************************************
 **   @package    com_joomgallery                                                        **
@@ -81,12 +80,12 @@ class HtmlView extends JoomGalleryView
 		$this->params = $this->get('Params');
 		$this->item   = $this->get('Item');
 
-    // fix for empty Id: item->id=null
+    // ToDo: fix for empty Id: item->id=null
     if (empty($this->item->id)) {
       $this->item->id =0;
     }
 
-		$this->form		= $this->get('Form');
+    $this->form		= $this->get('Form');
 
     // Get return page
     $this->return_page = $this->get('ReturnPage');		

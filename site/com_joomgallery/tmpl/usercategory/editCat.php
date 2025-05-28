@@ -23,6 +23,8 @@ $wa->useScript('keepalive')
    ->useScript('com_joomgallery.form-edit')
    ->useStyle('com_joomgallery.site');
 
+HTMLHelper::_('bootstrap.framework');
+
 // Load admin language file
 $lang = Factory::getLanguage();
 $lang->load('com_joomgallery', JPATH_SITE);

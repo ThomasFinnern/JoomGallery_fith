@@ -50,16 +50,16 @@ $returnURL      = $categoriesView;
 
 $panelView  = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
+$imagesView = Route::_('index.php?option=com_joomgallery&view=images');
 // Org here: $newCategoryView = Route::_('index.php?option=com_joomgallery&task=category.add&return='.$returnURL, false, 0)
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0&return='.$returnURL);
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0&return=' . $returnURL);
-$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=0');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0&return=' . $returnURL);
+$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
 
-//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&usercategory&layout=edit&id=';
-$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=edit&id=';
+//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&usercategory&layout=editCat&id=';
+$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=';
 //$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=categoryform&id=';
 
-// ToDo: Prevent direct accass without login  see user panel (?htmlview.php ...)
 ?>
 
 <?php if ($this->params['menu']->get('show_page_heading')) : ?>
@@ -82,12 +82,12 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
       <?php // ToDo: discuss link to 'goto login' ?>
       <?php if (!$this->isUserLoggedIn): ?>
         <p>
-        <div class="mb-2">
-          <div class="alert alert-warning" role="alert">
-            <span class="icon-key"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
+          <div class="mb-2">
+            <div class="alert alert-warning" role="alert">
+              <span class="icon-key"></span>
+              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
+            </div>
           </div>
-        </div>
         </p>
       <?php else: ?>
         <!--                  <div class="mb-2">-->
@@ -99,20 +99,20 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
 
         <?php if (!$this->isUserHasCategory): ?>
           <p>
-          <div class="alert alert-warning" role="alert">
-            <span class="icon-images"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
-          </div>
+            <div class="alert alert-warning" role="alert">
+              <span class="icon-images"></span>
+              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
+              <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
+            </div>
           </p>
         <?php endif; ?>
         <?php if (!$this->isUserCoreManager): ?>
           <p>
-          <div class="alert alert-warning" role="alert">
-            <span class="icon-lamp"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
-          </div>
+            <div class="alert alert-warning" role="alert">
+              <span class="icon-lamp"></span>
+              <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
+              <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
+            </div>
           </p>
         <?php endif; ?>
       <?php endif; ?>
@@ -120,9 +120,9 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
   <?php else: ?>
     <div class="form-group">
 
-      <div class="mb-2">
+      <div class="mb-4">
         <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
-          <span class="icon-home"></span>
+          <span class="icon-upload"></span>
           <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
         </a>
 
@@ -131,10 +131,15 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
           <?php echo Text::_('COM_JOOMGALLERY_USER_NEW_CATEGORY'); ?>
         </a>
 
-        <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
-          <span class="icon-home"></span>
-          <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-        </a>
+          <a class="btn btn-info" href="<?php echo $imagesView; ?>" role="button">
+            <span class="icon-list"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?>
+          </a>
+
+          <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+            <span class="icon-home"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+          </a>
       </div>
 
     </div>
@@ -276,9 +281,9 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
                     $itemId = $item->id;
                     // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . (int) $item->id);
                     // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . $item->id);
-                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=' . $item->id);
+                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . $item->id);
                     $route = Route::_('index.php?option=com_joomgallery&view=categoryform&id=' . $item->id);
-                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=edit&id=' . $item->id);
+                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . $item->id);
                     $route= Route::_($baseLink_CategorEdit . (int) $item->id);
                     $title = $this->escape($item->title);
                     ?>
