@@ -235,6 +235,7 @@ class DefaultRouter extends RouterView
    *
    * @return  array|string  The segments of this item
    */
+  // ToDo: fith may need a parent in above definition categoryForm
   public function getCategorySegment($id, $query)
   {
     $category = $this->getCategory((int) $id, 'route_path', true);
@@ -269,6 +270,7 @@ class DefaultRouter extends RouterView
    *
    * @return  array|string  The segments of this item
    */
+  // ToDo: fith may need a parent in above definition categoryForm
   public function getCategoryformSegment($id, $query)
   {
     if(!$id)
@@ -283,20 +285,25 @@ class DefaultRouter extends RouterView
   /**
    * Method to get the segment(s) for an usercategory
    *
-   * @param   string  $id     ID of the usercategory to retrieve the segments for
+   * @param   string  $id     ID of the category to retrieve the segments for
    * @param   array   $query  The request that is built right now
    *
    * @return  array|string  The segments of this item
    */
   public function getUsercategorySegment($id, $query)
   {
-    if(!$id)
+    if(empty($id))
     {
       // Load empty form view
       return array('');
     }
 
-    return $this->getCategorySegment($id, $query);
+    $category = $this->getCategory((int) $query['id'], 'children', true);
+
+    $testAlias = $category->alias;
+
+    $segment = [(int) $id => $category->alias];
+    return [(int) $id => $category->alias];
   }
 
   /**
@@ -485,7 +492,25 @@ class DefaultRouter extends RouterView
    */
   public function getUsercategoryId($segment, $query)
   {
-    return $this->getCategoryId($segment, $query);
+    // ToDo: manuel why is this used in other functions
+//    $id = (int) $query['id'];
+//    $id = (int) $segment;
+
+    if (!empty($segment)) {
+
+      $dbquery = $this->db->getQuery(true);
+
+      $dbquery->select($this->db->quoteName('id'))
+        ->from($this->db->quoteName(_JOOM_TABLE_CATEGORIES))
+        ->where($this->db->quoteName('alias') . ' = :alias')
+        ->bind(':alias', $segment);
+
+      $this->db->setQuery($dbquery);
+
+      $id = (int) $this->db->loadResult();
+    }
+
+    return $id;
   }
 
   /**
