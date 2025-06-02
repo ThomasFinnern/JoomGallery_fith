@@ -124,6 +124,9 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
         <button class="btn btn-primary" type="button" data-submit-task="usercategory.save">
           <span class="fas fa-check" aria-hidden="true"></span> <?php echo Text::_('JAPPLY'); ?>
         </button>
+        <button class="btn btn-primary" type="button" data-submit-task="usercategory.saveAndClose">
+          <span class="fas fa-check" aria-hidden="true"></span> <?php echo Text::_('JSAVE'); ?>
+        </button>
         <button class="btn btn-danger" type="button" data-submit-task="usercategory.cancel">
           <span class="fas fa-times" aria-hidden="true"></span> <?php echo Text::_('JCANCEL'); ?>
         </button>

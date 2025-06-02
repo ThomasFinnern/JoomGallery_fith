@@ -69,7 +69,18 @@ class UserCategoryController extends FormController // ? JoomFormController
 		$this->acl = $this->component->getAccess();
   }
 
-	/**
+  public function saveAndClose($key = NULL, $urlVar = NULL)
+  {
+    $isSaved = $this->save($key, $urlVar) != false;
+    $isCanceled = $this->cancel($key) != false;
+
+    if ( !$isSaved || !$isCanceled) {
+      return false;
+    }
+
+  }
+
+  /**
 	 * Method to save data.
 	 *
 	 * @return  void

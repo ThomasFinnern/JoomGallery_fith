@@ -196,7 +196,8 @@ class JoomgalleryComponent extends MVCComponent implements BootableExtensionInte
             return 'image';
 
         case 'category':
-        case 'categoryform':
+        //case 'categoryform':
+        case 'usercategory':
           return 'category';
       }
     }
