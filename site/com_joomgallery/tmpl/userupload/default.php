@@ -35,10 +35,18 @@ $panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 $imagesView = Route::_('index.php?option=com_joomgallery&view=images');
+
+//--- new category URL link -----------------------
+
+// return to uploadView;
+$returnURL = base64_encode('index.php?option=com_joomgallery&view=userupload');
+//$returnURL = htmlspecialchars($uploadView);
+
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
+//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0');
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=editCat');
-$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0');
 //$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
+$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
 
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];

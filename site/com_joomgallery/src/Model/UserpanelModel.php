@@ -23,6 +23,10 @@ use Joomla\Database\DatabaseInterface;
  * @since   4.0.0
  */
 //class UserpanelModel extends AdminCategoriesModel
+// class UserpanelModel extends ImagesModel  orientieren an categorty model hat zwei listen die geladen werden
+//class UserpanelModel extends JoomItemModel oder besser gallery model hat getimages
+//
+// soll !!! wenn imagelist und categories list
 class UserpanelModel extends ImagesModel
 {
 //	/**

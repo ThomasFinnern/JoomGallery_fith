@@ -57,6 +57,7 @@ class HtmlView extends JoomGalleryView
    */
   protected $return_page = '';
 
+  protected $isUserRootCategory = false;
 	/**
 	 * Display the view
 	 *
@@ -83,13 +84,19 @@ class HtmlView extends JoomGalleryView
 
     // ToDo: fix for empty Id: item->id=null
     if (empty($this->item->id)) {
-      $this->item->id =0;
+      $this->item->id = 0;
+    }
+
+    if ( ! empty($this->item->id) && ! empty($this->item->parent_id) )
+    {
+      $this->isUserRootCategory = true;
     }
 
     $this->form		= $this->get('Form');
 
     // Get return page
-    $this->return_page = $this->get('ReturnPage');		
+    $return_page = $this->state->get('return_page');
+    $this->return_page = base64_encode($return_page); // base64 encoded
 
     // Check access view level
 		if(!\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))

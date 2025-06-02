@@ -54,6 +54,25 @@
            default="1"
            label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL" />
 
+<!--    <field name="parent_id"-->
+<!--           type="jgcategorydropdown"-->
+<!--           label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL"-->
+<!--           categoriesOfUser="true"-->
+<!--           default=""-->
+<!--           show_root="false"-->
+<!--           required="true"-->
+<!--           message="COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY" />-->
+
+<!--    <field id="parent_id_readonly"-->
+<!--           name="parent_id_readonly"-->
+<!--           type="jgcategorydropdown"-->
+<!--           label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL_ROOT"-->
+<!--           categoriesOfUser="true"-->
+<!--           default="&#45;&#45; root &#45;&#45;"-->
+<!--           show_root="false"-->
+<!--           required="true"-->
+<!--           message="COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY" />-->
+
     <field name="published"
            type="radio"
            layout="joomla.form.field.radio.switcher"

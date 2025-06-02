@@ -46,14 +46,21 @@ class UsercategoryModel extends AdminCategoryModel
 	{
 		// Load state from the request userState on edit or from the passed variable on default
 		$id = $this->app->input->getInt('id', null);
-		if($id)
+		if(!empty($id))
 		{
 			$this->app->setUserState('com_joomgallery.edit.category.id', $id);
 		}
 		else
 		{
-			$id = (int) $this->app->getUserState('com_joomgallery.edit.category.id', null);
-		}
+			// Old original: $id = (int) $this->app->getUserState('com_joomgallery.edit.category.id', null);
+
+      // New category
+      $id = 0;
+
+      // Clear the profile id from the session.
+      $this->app->setUserState('com_joomgallery.edit.category.id', null);
+      $this->app->setUserState('com_joomgallery.edit.category.data', null);
+    }
 
 		if(is_null($id))
 		{

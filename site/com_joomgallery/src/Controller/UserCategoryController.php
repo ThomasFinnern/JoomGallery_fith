@@ -58,7 +58,8 @@ class UserCategoryController extends FormController // ? JoomFormController
   {
     parent::__construct($config, $factory, $app, $input);
 
-    $this->default_view = 'usercategory';
+    // parent view
+    $this->default_view = 'usercategories';
 
     // JoomGallery extension class
 		$this->component = $this->app->bootComponent(_JOOM_OPTION);
@@ -102,11 +103,14 @@ class UserCategoryController extends FormController // ? JoomFormController
 			return false;
 		}
 
+    $baseLink = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . (int) $data['id'];
+    $backLink = Route::_($baseLink, false);
+
     // Access check
 		if(!$this->acl->checkACL('edit', 'category', $recordId))
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
+			$this->setRedirect($backLink);
 
 			return false;
 		}
@@ -150,7 +154,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 			// Redirect back to the edit screen.
 			//$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
+			//$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
+      $this->setRedirect($backLink);
 
 			$this->redirect();
 		}
@@ -164,9 +169,11 @@ class UserCategoryController extends FormController // ? JoomFormController
 			// Redirect back to the edit screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
       //$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-      $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
+      //$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
+      $this->setRedirect($backLink);
 
-			return false;
+
+      return false;
 		}
 
 		// Check in the profile.
@@ -179,7 +186,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'warning');
       // ToDo: check
       $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
+      //$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
+      $this->setRedirect($backLink);
 
 			return false;
 		}
@@ -190,10 +198,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
-    // ToDo: check
-    $returnPage = $this->getReturnPage();
-    $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
-		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
+		// $this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
+    $this->setRedirect($backLink);
 	}
 
 	/**
@@ -230,9 +236,13 @@ class UserCategoryController extends FormController // ? JoomFormController
 		$this->app->setUserState('com_joomgallery.edit.category.id', null);
 		$this->app->setUserState('com_joomgallery.edit.category.data', null);
 
-		// Redirect to the list screen.
-		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId),false));
-	}
+    // Redirect to the list screen.
+    $returnPage = $this->getReturnPage();
+    //$itemAppend = $this->getItemAppend($recordId);
+    // $backLink = Route::_($returnPage . '&' . $itemAppend);
+    $backLink = Route::_($returnPage);
+    $this->setRedirect($backLink);
+  }
 
 //	/**
 //	 * Method to remove data

@@ -55,7 +55,16 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'category', Text::_('JCATEGORY', true)); ?>
           <?php echo $this->form->renderField('title'); ?>
           <?php echo $this->form->renderField('alias'); ?>
-          <?php echo $this->form->renderField('parent_id'); ?>
+          <?php
+          // on root category avoid selection of category
+          if ($this->isUserRootCategory)
+          {
+            echo $this->form->renderField('parent_id');
+            //echo $this->form->renderField('parent_id_readonly');
+          } else {
+            echo $this->form->renderField('parent_id');
+          }
+          ?>
           <?php echo $this->form->renderField('published'); ?>
           <?php echo $this->form->renderField('access'); ?>
           <?php echo $this->form->renderField('password'); ?>
