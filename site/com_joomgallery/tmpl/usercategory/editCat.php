@@ -42,6 +42,15 @@ else
   $canEdit  = $this->getAcl()->checkACL('add', 'com_joomgallery.category', 0, 1, true);
 }
 $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
+
+$config    = $this->params['configs'];
+$menuParam = $this->params['menu'];
+
+//$isShowTitle = $this->config->get('userUploadShowTitle');
+// ToDo: set it in config
+// $isShowTitle = $menuParam->get('userUploadShowTitle');
+$isShowTitle = true;
+
 ?>
 
 <div class="jg category-edit front-end-edit item-page">
@@ -50,6 +59,34 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 	<?php else : ?>
 		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&controller=usercategory&id='.$this->item->id); ?>"
 			    method="post" name="adminForm" class="form-validate form-horizontal" enctype="multipart/form-data">
+
+      <?php if ($isShowTitle): ?>
+        <h3><?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORY_EDIT'); ?></h3>
+        <hr>
+      <?php endif; ?>
+
+      <div class="form-group">
+
+        <div class="mb-4">
+          <button class="btn btn-primary" type="button" data-submit-task="usercategory.save">
+            <span class="fas fa-save" aria-hidden="true"></span> <?php echo Text::_('JAPPLY'); ?>
+          </button>
+          <button class="btn btn-primary" type="button" data-submit-task="usercategory.saveAndClose">
+            <span class="fas fa-save" aria-hidden="true"></span> <?php echo Text::_('JSAVEANDCLOSE'); ?>
+          </button>
+          <button class="btn btn-primary" type="button" data-submit-task="usercategory.save2copy">
+            <span class="fas fa-plus" aria-hidden="true"></span> <?php echo Text::_('JSAVEASCOPY'); ?>
+          </button>
+          <button class="btn btn-primary" type="button" data-submit-task="usercategory.save2new2">
+            <span class="fas fa-copy" aria-hidden="true"></span> <?php echo Text::_('JTOOLBAR_SAVE_AND_NEW'); ?>
+          </button>
+          <button class="btn btn-danger" type="button" data-submit-task="usercategory.cancel">
+            <span class="fas fa-times" aria-hidden="true"></span> <?php echo Text::_('JCANCEL'); ?>
+          </button>
+        </div>
+
+      </div>
+
       <fieldset>
         <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'category')); ?>
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'category', Text::_('JCATEGORY', true)); ?>
@@ -119,18 +156,7 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
         <input type="hidden" name="task" value=""/>
         <?php echo HTMLHelper::_('form.token'); ?>
       </fieldset>
-        
-      <div class="mb-2">
-        <button class="btn btn-primary" type="button" data-submit-task="usercategory.save">
-          <span class="fas fa-check" aria-hidden="true"></span> <?php echo Text::_('JAPPLY'); ?>
-        </button>
-        <button class="btn btn-primary" type="button" data-submit-task="usercategory.saveAndClose">
-          <span class="fas fa-check" aria-hidden="true"></span> <?php echo Text::_('JSAVE'); ?>
-        </button>
-        <button class="btn btn-danger" type="button" data-submit-task="usercategory.cancel">
-          <span class="fas fa-times" aria-hidden="true"></span> <?php echo Text::_('JCANCEL'); ?>
-        </button>
-      </div>
+
 		</form>
 	<?php endif; ?>
 </div>

@@ -71,6 +71,9 @@ class UserCategoryController extends FormController // ? JoomFormController
 
   public function saveAndClose($key = NULL, $urlVar = NULL)
   {
+    // Check for request forgeries.
+    $this->checkToken();
+
     $isSaved = $this->save($key, $urlVar) != false;
     $isCanceled = $this->cancel($key) != false;
 
@@ -78,6 +81,37 @@ class UserCategoryController extends FormController // ? JoomFormController
       return false;
     }
 
+  }
+
+// is provided by FormController
+//  public function save2copy($key = NULL, $urlVar = NULL)
+//  {
+//    // Check for request forgeries.
+//    $this->checkToken();
+//
+//    $isSaved = $this->save($key, $urlVar) != false;
+//    return $isSaved;
+//  }
+
+  public function save2new2($key = NULL, $urlVar = NULL)
+  {
+    // Check for request forgeries.
+    $this->checkToken();
+
+    $isSaved = $this->save($key, $urlVar) != false;
+
+    // Clear the profile id from the session.
+    $this->app->setUserState('com_joomgallery.edit.category.id', null);
+    $this->app->setUserState('com_joomgallery.edit.category.data', null);
+
+    $baseLink = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . (int)0;
+    $returnPage = $this->getReturnPage();
+
+    $combinedLink = $baseLink . '&return=' . base64_encode($returnPage);
+    $backLink = Route::_(  $combinedLink, false);
+    $this->setRedirect($backLink);
+
+    return $isSaved;
   }
 
   /**
@@ -125,6 +159,11 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 			return false;
 		}
+
+    if ($this->getTask() === 'save2copy') {
+
+      $data['id'] = 0;
+    }
 
     // Initialise variables.
 		$app   = Factory::getApplication();
@@ -179,8 +218,6 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 			// Redirect back to the edit screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
-      //$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-      //$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
       $this->setRedirect($backLink);
 
 
@@ -188,7 +225,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 		}
 
     // new backlink after save of new item
-    if ((int) $data['id'] == 0)
+    // if ((int) $data['id'] == 0)
+    if ($this->getTask() === 'save2copy' || (int) $data['id'] == 0) 
     {
       $newId = $model->getState('usercategory.id', '');
       $baseLink = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . (int) $newId;
@@ -203,9 +241,6 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 			// Redirect to list screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'warning');
-      // ToDo: check
-      $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
-      //$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
       $this->setRedirect($backLink);
 
 			return false;
@@ -217,7 +252,6 @@ class UserCategoryController extends FormController // ? JoomFormController
 
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
-		// $this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
     $this->setRedirect($backLink);
 	}
 
@@ -244,8 +278,6 @@ class UserCategoryController extends FormController // ? JoomFormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-      // ToDo: check
-      $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false);
 			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
 
 			return false;

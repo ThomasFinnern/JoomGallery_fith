@@ -64,7 +64,7 @@
            show_root="false"
            required="true"
            message="COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY" />
-     
+
     <field name="published"
            type="radio"
            layout="joomla.form.field.radio.switcher"
