@@ -187,6 +187,14 @@ class UserCategoryController extends FormController // ? JoomFormController
       return false;
 		}
 
+    // new backlink after save of new item
+    if ((int) $data['id'] == 0)
+    {
+      $newId = $model->getState('usercategory.id', '');
+      $baseLink = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . (int) $newId;
+      $backLink = Route::_($baseLink, false);
+    }
+
 		// Check in the profile.
 		if($model->checkin($validData[$key]) === false)
 		{

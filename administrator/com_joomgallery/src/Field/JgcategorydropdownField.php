@@ -52,12 +52,12 @@ class JgcategorydropdownField extends ListField
 	protected $customPrefix;
 
 	/**
-	 * Optional restrict to user categories
+	 * Optional restrict to categories of logged user
 	 *
 	 * @var    bool
 	 * @since  4.0.0
 	 */
-//	protected $categoriesOfUser;
+	protected $isCategoriesOfUser;
 
 	/**
 	 * Name of the layout being used to render the field
@@ -90,7 +90,7 @@ class JgcategorydropdownField extends ListField
 			$this->allowAdd = isset($this->element['allowAdd']) ? (boolean) $this->element['allowAdd'] : false;
 			$this->customPrefix = (string) $this->element['customPrefix'];
 
-      // $this->categoriesOfUser = isset($this->element['categoriesOfUser']) ? (boolean) $this->element['categoriesOfUser'] : false;
+      $this->isCategoriesOfUser = isset($this->element['categoriesOfUser']) ? (boolean) $this->element['categoriesOfUser'] : false;
 		}
 
 		return $return;
@@ -239,7 +239,7 @@ class JgcategorydropdownField extends ListField
 
 		$query->order($db->quoteName('a.lft') . ' ASC');
 
-		// If parent isn't explicitly stated but we are in com_joomgallery assume we want parents
+		// If parent isn't explicitly stated, but we are in com_joomgallery assume we want parents
 		if ($oldCat != 0 && ($this->element['parent'] == true || ($jinput->get('option') == _JOOM_OPTION && $jinput->get('view') == 'category')))
 		{
 			// Prevent parenting to children of this item.
@@ -262,9 +262,8 @@ class JgcategorydropdownField extends ListField
     }
 
     // Filter for user
-    if(isset($this->element['categoriesOfUser']) && ! empty ($this->element['categoriesOfUser']))
+    if($this->isCategoriesOfUser)
     {
-      $user = $this->getCurrentUser();
       $query->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
     }
 
