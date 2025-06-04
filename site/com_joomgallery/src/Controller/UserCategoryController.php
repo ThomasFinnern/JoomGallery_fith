@@ -294,81 +294,81 @@ class UserCategoryController extends FormController // ? JoomFormController
     $this->setRedirect($backLink);
   }
 
-//	/**
-//	 * Method to remove data
-//	 *
-//	 * @return  void
-//	 *
-//	 * @throws  Exception
-//	 *
-//	 * @since   4.0.0
-//	 */
-//	public function remove()
-//	{
-//    // Check for request forgeries
-//		$this->checkToken();
-//
-//		// Get the current edit id.
-//    $cid        = (array) $this->input->post->get('cid', [], 'int');
-//    $boxchecked = (bool) $this->input->getInt('boxchecked', 0);
-//    if($boxchecked)
-//    {
-//      // List view action
-//      $removeId = (int) $cid[0];
-//    }
-//    else
-//    {
-//      // Single view action
-//      $removeId = $this->input->getInt('id', 0);
-//    }
-//
-//    // ID check
-//		if(!$removeId)
-//		{
-//			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
-//			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend(),false));
-//
-//			return false;
-//		}
-//
-//		// Access check
-//		if(!$this->acl->checkACL('delete', 'category', $removeId))
-//		{
-//			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 'error');
-//			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId),false));
-//
-//			return false;
-//		}
-//
-//    // Get the model.
-//    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
-//    $model = $this->getModel('Usercategory', 'Site');
-//
-//		// Attempt to delete the record.
-//		if($model->delete($removeId) === false)
-//		{
-//			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_DELETE_FAILED', $model->getError()), 'error');
-//			$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
-//
-//			return false;
-//		}
-//
-//		// Attempt to check in the current record.
-//		if($model->checkin($removeId) === false)
-//		{
-//			// Check-in failed, go back to the record and display a notice.
-//			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-//			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
-//
-//			return false;
-//		}
-//
-//		$this->app->setUserState('com_joomgallery.edit.category.id', null);
-//		$this->app->setUserState('com_joomgallery.edit.category.data', null);
-//
-//		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_DELETE_SUCCESSFUL'), 'success');
-//		$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
-//	}
+	/**
+	 * Method to remove data
+	 *
+	 * @return  void
+	 *
+	 * @throws  Exception
+	 *
+	 * @since   4.0.0
+	 */
+	public function remove()
+	{
+    // Check for request forgeries
+		$this->checkToken();
+
+		// Get the current edit id.
+    $cid        = (array) $this->input->post->get('cid', [], 'int');
+    $boxchecked = (bool) $this->input->getInt('boxchecked', 0);
+    if($boxchecked)
+    {
+      // List view action
+      $removeId = (int) $cid[0];
+    }
+    else
+    {
+      // Single view action
+      $removeId = $this->input->getInt('id', 0);
+    }
+
+    // ID check
+		if(!$removeId)
+		{
+			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend(),false));
+
+			return false;
+		}
+
+		// Access check
+		if(!$this->acl->checkACL('delete', 'category', $removeId))
+		{
+			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId),false));
+
+			return false;
+		}
+
+    // Get the model.
+    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
+    $model = $this->getModel('Usercategory', 'Site');
+
+		// Attempt to delete the record.
+		if($model->delete($removeId) === false)
+		{
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_DELETE_FAILED', $model->getError()), 'error');
+			$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+
+			return false;
+		}
+
+		// Attempt to check in the current record.
+		if($model->checkin($removeId) === false)
+		{
+			// Check-in failed, go back to the record and display a notice.
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+
+			return false;
+		}
+
+		$this->app->setUserState('com_joomgallery.edit.category.id', null);
+		$this->app->setUserState('com_joomgallery.edit.category.data', null);
+
+		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_DELETE_SUCCESSFUL'), 'success');
+		$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+	}
 
   /**
    * Method to edit an existing record.
@@ -514,7 +514,7 @@ class UserCategoryController extends FormController // ? JoomFormController
 
     // Redirect to the list screen.
 		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_'.\strtoupper($task).'_SUCCESSFUL'), 'success');
-		$this->app->redirect(Route::_($this->getReturnPage('categories').'&'.$this->getItemAppend($id), false));
+		$this->app->redirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend($id), false));
   }
 
   /**

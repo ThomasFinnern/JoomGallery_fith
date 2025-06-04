@@ -156,32 +156,39 @@ class AccessOwn extends Access
     $result = null;
 
     $groupsOfUser = self::$identities[$userId];
-    $assetOwner   = \end($ancestors)->owner;
 
-    foreach($ancestors as $key => $ancestor)
+    if (empty($ancestors)){
+      $Test = $action;
+    }
+    if (! empty($ancestors))
     {
-      // Get rules
-      $rules = \json_decode($ancestor->rules);
-      if(!\in_array($action, \array_keys(\get_object_vars($rules))))
-      {
-        // This ancestor does not contain any rule for the current action
-        continue;
-      }
-    
-      if($assetOwner == $userId)
-      {
-        // User is owner of this ancestor
-        foreach($rules->{$action} as $groupId => $allowed)
-        {
-          if(\in_array($groupId, $groupsOfUser))
-          {
-            // Usergroup is allowed to perform the action
-            $result = \boolval($allowed);
+      $assetOwner = \end($ancestors)->owner;
 
-            // An explicit deny wins.
-            if($result === false)
+      foreach ($ancestors as $key => $ancestor)
+      {
+        // Get rules
+        $rules = \json_decode($ancestor->rules);
+        if (!\in_array($action, \array_keys(\get_object_vars($rules))))
+        {
+          // This ancestor does not contain any rule for the current action
+          continue;
+        }
+
+        if ($assetOwner == $userId)
+        {
+          // User is owner of this ancestor
+          foreach ($rules->{$action} as $groupId => $allowed)
+          {
+            if (\in_array($groupId, $groupsOfUser))
             {
-              break;
+              // Usergroup is allowed to perform the action
+              $result = \boolval($allowed);
+
+              // An explicit deny wins.
+              if ($result === false)
+              {
+                break;
+              }
             }
           }
         }

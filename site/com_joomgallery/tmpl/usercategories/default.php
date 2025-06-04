@@ -51,14 +51,10 @@ $returnURL      = $categoriesView;
 $panelView  = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
 $imagesView = Route::_('index.php?option=com_joomgallery&view=images');
-// Org here: $newCategoryView = Route::_('index.php?option=com_joomgallery&task=category.add&return='.$returnURL, false, 0)
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0&return='.$returnURL);
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0&return=' . $returnURL);
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
 
-//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&usercategory&layout=editCat&id=';
 $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=';
-//$baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=categoryform&id=';
+$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_category=';
 
 ?>
 
@@ -279,22 +275,25 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
                     <?php endif; ?>
                     <?php
                     $itemId = $item->id;
-                    // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . (int) $item->id);
-                    // $route = Route::_('index.php?option=com_joomgallery&view=category&id=' . $item->id);
-                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . $item->id);
-                    $route = Route::_('index.php?option=com_joomgallery&view=categoryform&id=' . $item->id);
-                    $route = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=' . $item->id);
-                    $route= Route::_($baseLink_CategorEdit . (int) $item->id);
                     $title = $this->escape($item->title);
                     ?>
                     <a href="<?php echo Route::_($baseLink_CategorEdit . (int) $item->id); ?>">
                         <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
                   </th>
 
+<!--                  <td class="d-none d-lg-table-cell text-center">-->
+<!--                    <span class="badge bg-info">-->
+<!--                      --><?php //echo (int) $item->img_count; ?>
+<!--                    </span>-->
+<!--                  </td>-->
+
+<!--                  <td class="d-none d-lg-table-cell text-center">-->
                   <td class="d-none d-lg-table-cell text-center">
-                    <span class="badge bg-info">
+                    <a class="badge bg-info"
+                       title="ToDo: Number of images in the category. Click to view images list of gallery"
+                       href="<?php echo $baseLink_ImagesFilter . (int) $item->id; ?>">
                       <?php echo (int) $item->img_count; ?>
-                    </span>
+                    </a>
                   </td>
 
                   <td class="d-none d-lg-table-cell text-center">
@@ -314,7 +313,7 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
                         <button class="js-grid-item-delete tbody-icon <?php echo $disabled; ?>"
                                 data-item-confirm="<?php echo Text::_('JGLOBAL_CONFIRM_DELETE'); ?>"
                                 data-item-id="cb<?php echo $i; ?>"
-                                data-item-task="categoryform.remove" <?php echo $disabled; ?>>
+                                data-item-task="usercategory.remove" <?php echo $disabled; ?>>
                           <span class="icon-trash" aria-hidden="true"></span>
                         </button>
                       <?php endif; ?>
@@ -326,7 +325,7 @@ $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layo
                       <?php $statetask = ((int) $item->published) ? 'unpublish' : 'publish'; ?>
                       <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                               data-item-id="cb<?php echo $i; ?>"
-                              data-item-task="categoryform.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
+                              data-item-task="usercategory.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
                         <span class="icon-<?php echo (int) $item->published ? 'check' : 'cancel'; ?>"
                               aria-hidden="true"></span>
                       </button>
