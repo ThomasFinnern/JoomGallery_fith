@@ -203,8 +203,6 @@ class UserCategoryController extends FormController // ? JoomFormController
 			$app->setUserState('com_joomgallery.edit.category.data', $data);
 
 			// Redirect back to the edit screen.
-			//$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=categoryform&'.$this->getItemAppend($recordId), false));
-			//$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=usercategory&layout=editCat&id=' . $recordId, false));
       $this->setRedirect($backLink);
 
 			$this->redirect();
@@ -271,7 +269,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 		$recordId = $this->input->getInt('id');
 
 		// Get the model.
-		$model = $this->getModel('Categoryform', 'Site');
+    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
+		$model = $this->getModel('Usercategory', 'Site');
 
 		// Attempt to check-in the current record.
 		if($recordId && $model->checkin($recordId) === false)
@@ -342,7 +341,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 //		}
 //
 //    // Get the model.
-//    $model = $this->getModel('Categoryform', 'Site');
+//    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
+//    $model = $this->getModel('Usercategory', 'Site');
 //
 //		// Attempt to delete the record.
 //		if($model->delete($removeId) === false)
@@ -353,7 +353,7 @@ class UserCategoryController extends FormController // ? JoomFormController
 //			return false;
 //		}
 //
-//		// Attempt to check-in the current record.
+//		// Attempt to check in the current record.
 //		if($model->checkin($removeId) === false)
 //		{
 //			// Check-in failed, go back to the record and display a notice.
@@ -425,7 +425,8 @@ class UserCategoryController extends FormController // ? JoomFormController
 		}
 
 		// Get the model.
-		$model  = $this->getModel('Categoryform', 'Site');
+    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
+    $model = $this->getModel('Usercategory', 'Site');
 
 		// Attempt to check-in the current record.
 		if($model->checkin($id) === false)
@@ -498,7 +499,8 @@ class UserCategoryController extends FormController // ? JoomFormController
     $value = $data[$task];
 
     // Get the model
-    $model  = $this->getModel('Categoryform', 'Site');
+    // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
+    $model = $this->getModel('Usercategory', 'Site');
 
     // Attempt to change state the current record.
 		if($model->publish($id, $value) === false)

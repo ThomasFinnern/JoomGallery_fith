@@ -315,16 +315,6 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
                 </td>
               </tr>
 
-              <tr>
-                <td class="d-md-table-cell">
-                  <?php echo Text::sprintf('COM_JOOMGALLERY_POST_MAX_SIZE_IS', $maxSize); ?>
-                </td>
-                <td class="d-md-table-cell">
-                  <?php // echo $value;
-                  ?>
-                </td>
-              </tr>
-
               </tbody>
             </table>
           </div>
