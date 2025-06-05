@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CategoryList extends AbstractCommand
+class ImageList extends AbstractCommand
 {
 //  use MVCFactoryAwareTrait;
   use DatabaseAwareTrait;
@@ -25,7 +25,7 @@ class CategoryList extends AbstractCommand
    *
    * @var    string
    */
-  protected static $defaultName = 'joomgallery:category:list';
+  protected static $defaultName = 'joomgallery:image:list';
 
   /**
    * @var   SymfonyStyle
@@ -86,21 +86,21 @@ class CategoryList extends AbstractCommand
 
     $this->addOption('owner', null, InputOption::VALUE_OPTIONAL, 'user ID (created_by)');
     $this->addOption('created', null, InputOption::VALUE_OPTIONAL, 'created_by');
-    $this->addOption('parent', null, InputOption::VALUE_OPTIONAL, 'parent category');
+    $this->addOption('category', null, InputOption::VALUE_OPTIONAL, 'category id');
 
 //    // ToDo: option to limit by user (owner), ?parent ...
 //    $this->addOption('owner', null, InputOption::VALUE_OPTIONAL, 'username (created_by)');
 //     		\nYou may filter on the user of category using the <info>--owner</info> option:
     // $this->addOption('search', 's', InputOption::VALUE_OPTIONAL, Text::_('COM_JOOMGALLERY_CLI_CONFIG_SEARCH'));
 
-    $help = "<info>%command.name%</info>will list all joomgallery categories
+    $help = "<info>%command.name%</info>will list all joomgallery images
   Usage: <info>php %command.full_name%</info>
-    * You may filter on the user id of category using the <info>--owner</info> option.
-    * You may filter on created_by of category using the <info>--created</info> option.
-    * You may filter on the parent id of category using the <info>--parent_id</info> option.
-    Example: <info>php %command.full_name% --created_by=291</info>"
+    * You may filter on the user id of image using the <info>--owner</info> option.
+    * You may filter on created_by of image using the <info>--created</info> option.
+    * You may filter on the category id of image using the <info>--category</info> option.
+    Example: <info>php %command.full_name% --created_by=14</info>"
     ;
-    $this->setDescription(Text::_('List all joomgallery categories'));
+    $this->setDescription(Text::_('List all joomgallery images'));
     $this->setHelp($help);
   }
 
@@ -113,43 +113,8 @@ class CategoryList extends AbstractCommand
     // Configure the Symfony output helper
     $this->configureIO($input, $output);
 //    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
-    $this->ioStyle->title('JoomGallery Category list');
+    $this->ioStyle->title('JoomGallery Image list');
 
-
-////--- First try ---------------------------------------------------------------------------
-//    // Get the categories, using the backend model
-//    /** @var Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel;  */
-//    $categoriesModel = $this->getMVCFactory()->createModel('Categories', 'Administrator');
-//
-//    //--- assign option ----------------------------
-//
-////    $search = $input->getOption('search') ?? null;
-////    if ($search)
-////    {
-////      $categoriesModel->setState('filter.search', $search);
-////    }
-//
-//    $owner = $input->getOption('owner') ?? null;
-//
-//    if ($owner) // created_by
-//    {
-//      $categoriesModel->setState('filter.created_by', $owner);
-//      // rename
-//      // not matching option error
-//      // $input->setOption('created_by', $owner);
-//
-//      $app = $this->getApplication();
-//      $input = $app->getInput();
-//      // $input->set('created_by', $owner);
-//
-//      //$filter = $input->get('filter');
-//
-////      $filter = $input->getFilter();
-////
-////      $filter->set('filter.created_by', $owner);
-//    }
-//
-//    $categories = $categoriesModel->getItems();
 
     $created_by_id = $input->getOption('created') ?? '';
     if ( empty ($created_by_id) )
@@ -157,21 +122,21 @@ class CategoryList extends AbstractCommand
       $created_by_id = $input->getOption('owner') ?? '';
     }
 
-    $parent_id = $input->getOption('parent') ?? '';
+    $cat_id = $input->getOption('category') ?? '';
 
-    $categories = $this->getItemsFromDB($created_by_id, $parent_id);
+    $images = $this->getItemsFromDB($created_by_id, $cat_id);
 
 
-    // If no categories are found show a warning and set the exit code to 1.
-    if (empty($categories))
+    // If no images are found show a warning and set the exit code to 1.
+    if (empty($images))
     {
-      $this->ioStyle->warning('No categories found matching your criteria');
+      $this->ioStyle->warning('No images found matching your criteria');
 
-      return Command::FAILURE;
+      return 1;
     }
 
-    // Reshape the categories into something humans can read.
-    $categories = array_map(
+    // Reshape the images into something humans can read.
+    $images = array_map(
       function (object $item): array
       {
         return [
@@ -183,23 +148,20 @@ class CategoryList extends AbstractCommand
           $item->created_time,
           $item->modified_by,
           $item->modified_time,
-          $item->parent_id, // JGLOBAL_ROOT
+          $item->catid, // JGLOBAL_ROOT
           // $item->,
 
         ];
       },
-      $categories
+      $images
     );
 
-    // echo 'title: ' . json_encode(['ID', 'Title', 'Published', 'Hidden', 'Created/Owner','Created','Modified by','Modified','Parent',], JSON_UNESCAPED_SLASHES) . "\n" . "\n";
-    // echo 'categories: ' . json_encode($categories, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
-
-    // Display the categories in a table and set the exit code to 0
+    // Display the images in a table and set the exit code to 0
     $this->ioStyle->table(
       [
-        'ID', 'Title', 'Published', 'Hidden', 'Created/Owner','Created','Modified by','Modified','Parent',
+        'ID', 'Title', 'Published', 'Hidden', 'Created/Owner','Created','Modified by','Modified','Category',
       ],
-      $categories
+      $images
     );
 
     return Command::SUCCESS;
@@ -212,29 +174,29 @@ class CategoryList extends AbstractCommand
    *
    * @since 4.0.0
    */
-  private function getItemsFromDB(string $userId, string $parent_id): array
+  private function getItemsFromDB(string $userId, string $cat_id): array
   {
     $db    = $this->getDatabase();
     $query = $db->getQuery(true);
     $query
       ->select('*')
-      ->from('#__joomgallery_categories');
+      ->from('#__joomgallery');
 
     if ( ! empty ($userId) )
     {
       $query->where($db->quoteName('created_by') . ' = ' . (int) $userId);
     }
 
-    if ( ! empty ($parent_id) )
+    if ( ! empty ($cat_id) )
     {
-      $query->where($db->quoteName('parent_id') . ' = ' . (int) $parent_id);
+      $query->where($db->quoteName('catid') . ' = ' . (int) $cat_id);
     }
 
     $db->setQuery($query);
-//    $categories = $db->loadAssocList('id');
-    $categories = $db->loadObjectList();
+//    $images = $db->loadAssocList('id');
+    $images = $db->loadObjectList();
 
-    return $categories;
+    return $images;
   }
 
 
