@@ -48,21 +48,23 @@
            label="JALIAS"
            description="JFIELD_ALIAS_DESC" />
 
-    <!-- popup form to select ... -->
-<!--    <field name="parent_id"-->
-<!--           type="jgcategory"-->
-<!--           children="false"-->
-<!--           default="1"-->
-<!--           label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL" />-->
+    <!-- root replacement for drop down list  -->
+    <field
+      name="parent_id_root"
+      type="text"
+      label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL"
+      readonly="true"
+      >
+    </field>
 
     <!-- drop down list -->
-    <field name="parent_id"
+    <field
+        name="parent_id"
            type="jgcategorydropdown"
            label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL"
            categoriesOfUser="true"
            default="1"
            show_root="false"
-           required="true"
            message="COM_JOOMGALLERY_COMMON_ALERT_YOU_MUST_SELECT_CATEGORY" />
 
     <field name="published"

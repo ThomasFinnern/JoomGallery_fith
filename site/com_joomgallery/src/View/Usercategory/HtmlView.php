@@ -65,7 +65,7 @@ class HtmlView extends JoomGalleryView
 	 *
 	 * @return void
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -84,7 +84,7 @@ class HtmlView extends JoomGalleryView
       $this->item->id = 0;
     }
 
-    if ( ! empty($this->item->id) && ! empty($this->item->parent_id) )
+    if ( (! empty($this->item->id)) && $this->item->parent_id == 1)
     {
       $this->isUserRootCategory = true;
     }
