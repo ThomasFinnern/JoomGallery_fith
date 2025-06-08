@@ -95,18 +95,24 @@ class HtmlView extends JoomGalleryView
   public function display($tpl = null)
   {
     $user = $this->getCurrentUser();
-    // $app  = Factory::getApplication();
+    $app  = Factory::getApplication();
 
-    // Get model data
-    $model       = $this->getModel();
+    //--- include both views -----------------------------
 
-    $this->state = $model->getState();
-    $this->params = $model->getParams();
+    // https://joomla.stackexchange.com/questions/33248/how-to-load-and-render-a-view-of-a-component-from-anothers-component-template-f
+    // below
 
-    $this->items         = $model->getItems();
-    $this->pagination    = $model->getPagination();
-    $this->filterForm    = $model->getFilterForm();
-    $this->activeFilters = $model->getActiveFilters();
+    // Get modImages data
+    $modImages = $this->getModel('Userpanel');
+    // $modCategories = $this->getModel('Usercategories');
+
+    $this->state = $modImages->getState();
+    $this->params = $modImages->getParams();
+
+    $this->items         = $modImages->getItems();
+    $this->pagination    = $modImages->getPagination();
+    $this->filterForm    = $modImages->getFilterForm();
+    $this->activeFilters = $modImages->getActiveFilters();
 
     // Check for errors.
     if(\count($errors = $this->get('Errors')))
@@ -124,7 +130,7 @@ class HtmlView extends JoomGalleryView
     }
 
     // at least one category is needed for upload view
-    $this->isUserHasCategory = $model->getUserHasACategory($user);
+    $this->isUserHasCategory = $modImages->getUserHasACategory($user);
 
     $this->userId = $user->id;
 

@@ -238,6 +238,18 @@ class UseruploadModel extends JoomAdminModel
         return $this->acl;
     }
 
+  /**
+   * Method to check if user owns at least one category. Without
+   * only a matching request message will be displayed
+   *
+   * @param   \Joomla\CMS\User\User $user ToDO: Id would suffice
+   *
+   * @return  bool true wnhen user owns a
+   *
+   * @throws  \Exception
+   *
+   * @since   4.0.1
+   */
   public function getUserHasACategory(\Joomla\CMS\User\User $user)
   {
     $isUserHasACategory = true;

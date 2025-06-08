@@ -23,7 +23,8 @@ use Joomla\Database\DatabaseInterface;
  * @since   4.0.0
  */
 //class UserpanelModel extends AdminCategoriesModel
-// class UserpanelModel extends ImagesModel  orientieren an categorty model hat zwei listen die geladen werden
+// class UserpanelModel extends ImagesModel  orientieren an category model hat
+// zwei listen die geladen werden
 //class UserpanelModel extends JoomItemModel oder besser gallery model hat getimages
 //
 // soll !!! wenn imagelist und categories list
@@ -83,6 +84,7 @@ class UserpanelModel extends ImagesModel
 	 *
 	 * @since   4.0.0
 	 */
+// see
 //	protected function populateState($ordering = 'a.lft', $direction = 'DESC')
 //	protected function populateState($ordering = 'a.id', $direction = 'desc')
 	protected function populateState($ordering = 'a.ordering', $direction = 'asc')
@@ -96,30 +98,6 @@ class UserpanelModel extends ImagesModel
     	$this->setState('filter.created_by.include', true);
 
 	    $this->loadComponentParams();
-	}
-
-	/**
-	 * Build an SQL query to load the list data.
-	 *
-	 * @return  DatabaseQuery
-	 *
-	 * @since   4.0.0
-	 */
-	protected function getListQuery()
-	{
-    $query = parent::getListQuery();
-
-//    // restrict to actual user
-//    $user = Factory::getApplication()->getIdentity();
-//    $db    = $this->getDbo();
-//////    $query->where($db->quoteName('a.created_by') . ' = ' . (int) $user->id);
-//////    $query->where($db->quoteName('created_by_id') . ' = ' . (int) $user->id);
-////    $query->where($db->quoteName('id') . ' = ' . (int) $user->id);
-//    //$query->where($db->quoteName('created_by') . ' = ' . (int) $user->id);
-////    $query->where($db->quoteName('ua.name') . ' = ' . (int) $user->id);
-//    $query->where($db->quoteName('ua.id') . ' = ' . (int) $user->id);
-
-    return $query;
 	}
 
 //
@@ -137,6 +115,18 @@ class UserpanelModel extends ImagesModel
 
 
 
+  /**
+   * Method to check if user owns at least one category. Without
+   * only a matching request message will be displayed
+   *
+   * @param   \Joomla\CMS\User\User $user ToDO: Id would suffice
+   *
+   * @return  bool true wnhen user owns a
+   *
+   * @throws  \Exception
+   *
+   * @since   4.0.1
+   */
   public function getUserHasACategory(\Joomla\CMS\User\User $user)
   {
     $isUserHasACategory = true;

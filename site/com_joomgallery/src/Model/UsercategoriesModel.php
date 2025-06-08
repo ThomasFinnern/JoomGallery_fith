@@ -129,8 +129,8 @@ class UsercategoriesModel extends CategoriesModel
    *
    * @since   4.0.0
    */
-//	protected function populateState($ordering = 'a.lft', $direction = 'DESC')
-  protected function populateState($ordering = 'a.id', $direction = 'desc')
+//	protected function populateState($ordering = 'a.lft', $direction = 'desc')
+  protected function populateState($ordering = 'a.id', $direction = 'asc')
   {
     // List state information.
     parent::populateState($ordering, $direction);
@@ -144,6 +144,18 @@ class UsercategoriesModel extends CategoriesModel
   }
 
 
+  /**
+   * Method to check if user owns at least one category. Without
+   * only a matching request message will be displayed
+   *
+   * @param   \Joomla\CMS\User\User $user ToDO: Id would suffice
+   *
+   * @return  bool true wnhen user owns a
+   *
+   * @throws  \Exception
+   *
+   * @since   4.0.1
+   */
   public function getUserHasACategory(\Joomla\CMS\User\User $user)
   {
     $isUserHasACategory = true;

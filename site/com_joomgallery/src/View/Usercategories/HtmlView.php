@@ -167,11 +167,11 @@ class HtmlView extends JoomGalleryView
     }
     elseif($this->app->get('sitename_pagetitles', 0) == 1)
     {
-      $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+      $title = Text::sprintf('JPAGETITLE', $this->app->get('sitename'), $title);
     }
     elseif($this->app->get('sitename_pagetitles', 0) == 2)
     {
-      $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+      $title = Text::sprintf('JPAGETITLE', $title, $this->app->get('sitename'));
     }
 
     $this->document->setTitle($title);
@@ -195,7 +195,7 @@ class HtmlView extends JoomGalleryView
     {
       // Add Breadcrumbs
       $pathway = $this->app->getPathway();
-      $breadcrumbTitle = Text::_('COM_JOOMGALLERY_CATEGORIES');
+      $breadcrumbTitle = Text::_('COM_JOOMGALLERY_USER_CATEGORIES');
 
       if(!\in_array($breadcrumbTitle, $pathway->getPathwayNames()))
       {
