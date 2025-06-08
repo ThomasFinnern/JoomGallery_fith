@@ -23,7 +23,7 @@ use \Joomla\CMS\Language\Text;
  * @package JoomGallery
  * @since   4.0.0
  */
-class UserUploadController extends JoomFormController
+class UseruploadController extends JoomFormController
 {
 
   /**
@@ -64,7 +64,7 @@ class UserUploadController extends JoomFormController
 	 */
 	public function getModel($name = 'UserUpload', $prefix = 'Site', $config = ['ignore_request' => true])
 	{
-		return parent::getModel($name, $prefix, ['ignore_request' => false]);
+    return parent::getModel($name, $prefix, $config);
 	}
 
 

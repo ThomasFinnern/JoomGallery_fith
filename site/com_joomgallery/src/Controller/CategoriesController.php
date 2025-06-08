@@ -33,9 +33,9 @@ class CategoriesController extends FormController
 	 *
 	 * @since   4.0.0
 	 */
-	public function getModel($name = 'Categories', $prefix = 'Site', $config = array())
+  public function getModel($name = 'Categories', $prefix = 'Site', $config = ['ignore_request' => true])
 	{
-		return parent::getModel($name, $prefix, array('ignore_request' => true));
+    return parent::getModel($name, $prefix, $config);
 	}
 
   /**

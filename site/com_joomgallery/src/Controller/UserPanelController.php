@@ -59,9 +59,9 @@ class UserpanelController extends JoomBaseController
 //	 *
 //	 * @since   1.6.4
 //	 */
-//	public function getModel($name = 'form', $prefix = '', $config = ['ignore_request' => true])
+//  public function getModel($name = 'Form', $prefix = 'Site', $config = ['ignore_request' => true])
 //	{
-//		return parent::getModel($name, $prefix, ['ignore_request' => false]);
+//    return parent::getModel($name, $prefix, $config);
 //	}
-//
+
 }
