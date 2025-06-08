@@ -272,7 +272,7 @@ class ImageController extends JoomFormController
    *
    * @return  boolean  True if metada was saved successfully, false otherwise.
    *
-   * @since   4.0
+   * @since   4.1.0
    */
   public function savemetadata()
   {

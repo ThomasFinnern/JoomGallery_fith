@@ -21,7 +21,7 @@ use \Joomgallery\Component\Joomgallery\Administrator\Extension\ServiceTrait;
  * Metadata Base Class
  *
  * @package JoomGallery
- * @since   4.0.0
+ * @since   4.1.0
  */
 class Metadata implements MetadataInterface
 {
@@ -37,7 +37,7 @@ class Metadata implements MetadataInterface
     return false;
   }
 
-  public function writeMetadata($img, $imgmetadata, $local_source): mixed
+  public function writeMetadata($img, $imgmetadata, $local_source=true): mixed
   {
     return false;
   }
@@ -50,7 +50,7 @@ class Metadata implements MetadataInterface
    * 
    * @return  bool           True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToExif(string $img, $edits): bool
   {
@@ -65,7 +65,7 @@ class Metadata implements MetadataInterface
    * 
    * @return  bool          True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToIptc(string $img, $edits): bool
   {

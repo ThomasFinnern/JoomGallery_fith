@@ -108,7 +108,6 @@ $tmpl    = $isModal || $app->input->get('tmpl', '', 'cmd') === 'component' ? '&t
           <?php echo $this->form->renderField('downloads'); ?>
           <?php echo $this->form->renderField('votes'); ?>
           <?php echo $this->form->renderField('rating'); ?>
-          <?php echo $this->form->renderField('imgmetadata'); ?>
         </div>          
       </fieldset>
     </div>
@@ -174,7 +173,7 @@ $tmpl    = $isModal || $app->input->get('tmpl', '', 'cmd') === 'component' ? '&t
 
   <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'Metadata', Text::_('COM_JOOMGALLERY_METADATA', true)); ?>
   <div class="row">
-    <div class="col-6">
+    <div class="col-12">
       <fieldset id="fieldset-images-metadata" class="options-form">
         <legend><?php echo Text::_('COM_JOOMGALLERY_METADATA'); ?></legend>
         <div class="control-group">

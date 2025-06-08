@@ -131,7 +131,6 @@ class IptcDataEditor
     {
         $retval = "";
         foreach ($app13 as $tag => $value) {
-            var_dump($value);
             $explode = explode("#", $tag);
             $retval .= self::makeTag(intval($explode[0]), intval($explode[1]), $value[0]);
         }

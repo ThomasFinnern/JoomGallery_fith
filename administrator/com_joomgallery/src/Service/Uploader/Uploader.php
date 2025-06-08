@@ -241,9 +241,6 @@ abstract class Uploader implements UploaderInterface
       return true;
     }
 
-    // Create the IMGtools service
-    $this->component->createIMGtools($this->component->getConfig()->get('jg_imgprocessor'));
-
     // Create the Metadata service
     $this->component->createMetadata($this->component->getConfig()->get('jg_metaprocessor', 'php'));
 

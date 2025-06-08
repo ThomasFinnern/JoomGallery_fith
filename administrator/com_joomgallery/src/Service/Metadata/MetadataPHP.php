@@ -40,7 +40,7 @@ use \lsolesen\pel\PelTiff;
  * PHP implementation of Metadata Class
  *
  * @package JoomGallery
- * @since   4.0.0
+ * @since   4.1.0
  */
 class MetadataPHP extends BaseMetadata implements MetadataInterface
 {
@@ -152,7 +152,7 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
    * 
    * @return  bool           True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToExif(string $img, $edits): bool
   {
@@ -213,7 +213,7 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
    * 
    * @return  bool          True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToIptc(string $img, $edits): bool
   {
@@ -261,7 +261,7 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
    * 
    * @return array         Metadata in array format
    * 
-   * @since 4.0.0
+   * @since 4.1.0
    */
   public function readJpegMetadata(string $file)
   {
@@ -307,9 +307,9 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
    * 
    * @return array|false    File and tiff objects on success, false on failure.
    * 
-   * @since 4.0.0
+   * @since 4.1.0
    */
-  private function getPelImageObjects(string $img)
+  protected function getPelImageObjects(string $img)
   {
     $file = file_get_contents($img);
     $data = new PelDataWindow($file);
@@ -433,7 +433,7 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
    * 
    * @return int
    * 
-   * @since 4.0.0
+   * @since 4.1.0
    */
   public function copyExifData($srcPath, $dstPath, $newOrient = false)
   {
