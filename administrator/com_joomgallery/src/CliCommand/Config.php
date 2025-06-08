@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class Image extends AbstractCommand
+class Config extends AbstractCommand
 {
 //  use MVCFactoryAwareTrait;
   use DatabaseAwareTrait;
@@ -26,7 +26,7 @@ class Image extends AbstractCommand
    *
    * @var    string
    */
-  protected static $defaultName = 'joomgallery:image';
+  protected static $defaultName = 'joomgallery:config';
 
   /**
    * @var   SymfonyStyle
@@ -85,17 +85,17 @@ class Image extends AbstractCommand
 
     // ToDo: Full with all items automatically
 
-    $this->addOption('id', null, InputOption::VALUE_REQUIRED, 'image ID');
+    $this->addOption('id', null, InputOption::VALUE_OPTIONAL, 'configuration ID');
     $this->addOption('max_line_length', null, InputOption::VALUE_OPTIONAL, 'trim lenght of variable for item keeps in one line');
-    //$this->addOption('id', null, InputOption::VALUE_OPTIONAL, 'image ID');
+    //$this->addOption('id', null, InputOption::VALUE_OPTIONAL, 'configuration ID');
 
-    $help = "<info>%command.name%</info> lists variables of one image
-  Usage: <info>php %command.full_name%</info>
-    * You must specify an ID of the image with the <info>--id<info> option. Otherwise, it will be requested
+    $help = "<info>%command.name%</info> lists variables of one configuration
+  Usage: <info>php %command.full_name% </info>
+    * You may specify an ID of the configuration with the <info>--id<info> option. Otherwise, it will be '1'
     * You may restrict the value sting length using the <info>--max_line_length</info> option. A result line that is too long will confuse the output lines
   "
     ;
-    $this->setDescription(Text::_('List all variables of a joomgallery image'));
+    $this->setDescription(Text::_('List all variables of a joomgallery configuration'));
     $this->setHelp($help);
   }
 
@@ -108,35 +108,35 @@ class Image extends AbstractCommand
     // Configure the Symfony output helper
     $this->configureIO($input, $output);
 //    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
-    $this->ioStyle->title('JoomGallery Image');
+    $this->ioStyle->title('JoomGallery Configuration');
 
-    $imageId = $input->getOption('id') ?? '';
+    $configId = $input->getOption('id') ?? '1';
     $max_line_length = $input->getOption('max_line_length') ?? null;
 
-    if (empty ($imageId)){
-      $this->ioStyle->error("The image id '" . $imageId . "' is invalid (empty) !");
+//    if (empty ($configId)){
+//      $this->ioStyle->error("The configuration id '" . $configId . "' is invalid (empty) !");
+//
+//      return Command::FAILURE;
+//    }
+
+    $configurationAssoc = $this->getItemAssocFromDB($configId);
+
+    if (empty ($configurationAssoc)){
+      $this->ioStyle->error("The configuration id '" . $configId . "' is invalid, No configuration found matching your criteria!");
 
       return Command::FAILURE;
     }
 
-    $imageAssoc = $this->getItemAssocFromDB($imageId);
-
-    if (empty ($imageAssoc)){
-      $this->ioStyle->error("The image id '" . $imageId . "' is invalid, No image found matching your criteria!");
-
-      return Command::FAILURE;
-    }
-
-//    echo 'imageAssoc: ' . json_encode($imageAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
-//    echo 'imageAssoc count: ' . count($imageAssoc) . "\n\n";
+//    echo 'configurationAssoc: ' . json_encode($configurationAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
+//    echo 'configurationAssoc count: ' . count($configurationAssoc) . "\n\n";
 //    echo '---------------------------' . "\n";
 
-    $strImageAssoc = $this->assoc2DefinitionList($imageAssoc, $max_line_length);
+    $strConfigurationAssoc = $this->assoc2DefinitionList($configurationAssoc, $max_line_length);
 
-//    echo 'strImageAssoc: ' . json_encode($strImageAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
+//    echo 'strConfigurationAssoc: ' . json_encode($strConfigurationAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
 
     // ToDo: Use horizontal table again ;-)
-    foreach ($strImageAssoc as $value) {
+    foreach ($strConfigurationAssoc as $value) {
 //      if (\is_string($value)) {
 //        $headers[] = new TableCell($value, ['colspan' => 2]);
 //        $row[] = null;
@@ -162,23 +162,23 @@ class Image extends AbstractCommand
    *
    * @since 4.0.0
    */
-  private function getItemAssocFromDB(string $imageId): array | null
+  private function getItemAssocFromDB(string $configId): array | null
   {
     $db    = $this->getDatabase();
     $query = $db->getQuery(true);
     $query
       ->select('*')
-      ->from('#__joomgallery')
-      ->where($db->quoteName('id') . ' = ' . (int) $imageId);
+      ->from('#__joomgallery_configs')
+      ->where($db->quoteName('id') . ' = ' . (int) $configId);
 
     $db->setQuery($query);
-    $imageAssoc = $db->loadAssoc();
+    $configurationAssoc = $db->loadAssoc();
 
-    return $imageAssoc;
+    return $configurationAssoc;
   }
 
 
-  private function assoc2DefinitionList(array $imageAssoc, $max_len = 70)
+  private function assoc2DefinitionList(array $configurationAssoc, $max_len = 70)
   {
     $items = [];
 
@@ -187,7 +187,7 @@ class Image extends AbstractCommand
     }
 
 //    $count = 0;
-    foreach ($imageAssoc as $key => $value) {
+    foreach ($configurationAssoc as $key => $value) {
 //      $count++;
 //      if ($count > 8) {
 //        break;

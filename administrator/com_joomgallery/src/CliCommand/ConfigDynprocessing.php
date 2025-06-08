@@ -6,7 +6,8 @@ defined('_JEXEC') or die;
 use InvalidArgumentException;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-//use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
+use Joomla\CMS\Response\JsonResponse;
+
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class Image extends AbstractCommand
+class ConfigDynprocessing extends AbstractCommand
 {
 //  use MVCFactoryAwareTrait;
   use DatabaseAwareTrait;
@@ -26,7 +27,7 @@ class Image extends AbstractCommand
    *
    * @var    string
    */
-  protected static $defaultName = 'joomgallery:image';
+  protected static $defaultName = 'joomgallery:config:dynamicprocessing';
 
   /**
    * @var   SymfonyStyle
@@ -85,17 +86,14 @@ class Image extends AbstractCommand
 
     // ToDo: Full with all items automatically
 
-    $this->addOption('id', null, InputOption::VALUE_REQUIRED, 'image ID');
-    $this->addOption('max_line_length', null, InputOption::VALUE_OPTIONAL, 'trim lenght of variable for item keeps in one line');
-    //$this->addOption('id', null, InputOption::VALUE_OPTIONAL, 'image ID');
+    $this->addOption('id', null, InputOption::VALUE_REQUIRED, 'config ID');
 
-    $help = "<info>%command.name%</info> lists variables of one image
+    $help = "<info>%command.name%</info> displays parameters of one config
   Usage: <info>php %command.full_name%</info>
-    * You must specify an ID of the image with the <info>--id<info> option. Otherwise, it will be requested
-    * You may restrict the value sting length using the <info>--max_line_length</info> option. A result line that is too long will confuse the output lines
+    * You must specify an ID of the config with the <info>--id<info> option. Otherwise, it will be requested
   "
     ;
-    $this->setDescription(Text::_('List all variables of a joomgallery image'));
+    $this->setDescription(Text::_('List all variables of a joomgallery config'));
     $this->setHelp($help);
   }
 
@@ -107,50 +105,32 @@ class Image extends AbstractCommand
   {
     // Configure the Symfony output helper
     $this->configureIO($input, $output);
-//    $this->ioStyle->title(Text::_('COM_JOOMGALLERY_CLI_ITEMS_LIST_DESC'));
-    $this->ioStyle->title('JoomGallery Image');
+    $this->ioStyle->title('JoomGallery dynamicprocessing Data');
 
-    $imageId = $input->getOption('id') ?? '';
-    $max_line_length = $input->getOption('max_line_length') ?? null;
+    $configId = $input->getOption('id') ?? '';
 
-    if (empty ($imageId)){
-      $this->ioStyle->error("The image id '" . $imageId . "' is invalid (empty) !");
+    if (empty ($configId)){
+      $this->ioStyle->error("The config id '" . $configId . "' is invalid (empty) !");
 
       return Command::FAILURE;
     }
 
-    $imageAssoc = $this->getItemAssocFromDB($imageId);
+    $jsonParams = $this->getParamsAsJsonFromDB($configId);
 
-    if (empty ($imageAssoc)){
-      $this->ioStyle->error("The image id '" . $imageId . "' is invalid, No image found matching your criteria!");
+    // If no params returned  show a warning and set the exit code to 1.
+    if ( empty ($jsonParams)) {
+
+      $this->ioStyle->error("The config id '" . $configId . "' is invalid or parameters are empty !");
 
       return Command::FAILURE;
     }
 
-//    echo 'imageAssoc: ' . json_encode($imageAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
-//    echo 'imageAssoc count: ' . count($imageAssoc) . "\n\n";
-//    echo '---------------------------' . "\n";
+    // pretty print json data
 
-    $strImageAssoc = $this->assoc2DefinitionList($imageAssoc, $max_line_length);
+    $encoded = json_decode($jsonParams);
+    $jsonParams = json_encode($encoded, JSON_PRETTY_PRINT);
 
-//    echo 'strImageAssoc: ' . json_encode($strImageAssoc, JSON_UNESCAPED_SLASHES) . "\n" . "\n";
-
-    // ToDo: Use horizontal table again ;-)
-    foreach ($strImageAssoc as $value) {
-//      if (\is_string($value)) {
-//        $headers[] = new TableCell($value, ['colspan' => 2]);
-//        $row[] = null;
-//        continue;
-//      }
-      if (!\is_array($value)) {
-        throw new InvalidArgumentException('Value should be an array, string, or an instance of TableSeparator.');
-      }
-
-      $headers[] = key($value);
-      $row[] = current($value);
-    }
-
-    $this->ioStyle->horizontalTable($headers, [$row]);
+    $this->ioStyle->writeln($jsonParams);
 
     return Command::SUCCESS;
   }
@@ -162,23 +142,23 @@ class Image extends AbstractCommand
    *
    * @since 4.0.0
    */
-  private function getItemAssocFromDB(string $imageId): array | null
+  private function getParamsAsJsonFromDB(string $dynamicprocessing): string
   {
+    $sParams = '';
     $db    = $this->getDatabase();
     $query = $db->getQuery(true);
     $query
-      ->select('*')
+      ->select('jg_dynamicprocessing')
       ->from('#__joomgallery')
-      ->where($db->quoteName('id') . ' = ' . (int) $imageId);
+      ->where($db->quoteName('id') . ' = ' . (int) $dynamicprocessing);
 
     $db->setQuery($query);
-    $imageAssoc = $db->loadAssoc();
+    $sParams = $db->loadResult();
 
-    return $imageAssoc;
+    return $sParams;
   }
 
-
-  private function assoc2DefinitionList(array $imageAssoc, $max_len = 70)
+  private function assoc2DefinitionList(array $configAssoc, $max_len = 70)
   {
     $items = [];
 
@@ -187,7 +167,7 @@ class Image extends AbstractCommand
     }
 
 //    $count = 0;
-    foreach ($imageAssoc as $key => $value) {
+    foreach ($configAssoc as $key => $value) {
 //      $count++;
 //      if ($count > 8) {
 //        break;
