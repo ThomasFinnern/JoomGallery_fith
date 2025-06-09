@@ -94,10 +94,10 @@ class UserpanelModel extends ImagesModel
 
 		// Set filters based on how the view is used.
 		//  e.g. user list of categories:
-	    $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
-    	$this->setState('filter.created_by.include', true);
+    $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
+    $this->setState('filter.created_by.include', true);
 
-	    $this->loadComponentParams();
+    $this->loadComponentParams();
 	}
 
 //

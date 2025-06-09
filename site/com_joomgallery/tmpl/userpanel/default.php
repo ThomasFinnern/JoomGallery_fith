@@ -1,5 +1,7 @@
 <?php
 
+namespace Joomgallery\Component\Joomgallery\Site\Controller;
+
 defined('_JEXEC');
 
 use Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
@@ -257,7 +259,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                       <th scope="row" class="has-context title-cell">
                         <?php if ($canCheckin && $item->checked_out > 0) : ?>
                           <button class="js-grid-item-action tbody-icon" data-item-id="cb<?php echo $i; ?>"
-                                  data-item-task="imageform.checkin">
+                                  data-item-task="Userform.checkin">
                             <span class="icon-checkedout" aria-hidden="true"></span>
                           </button>
                         <?php endif; ?>
@@ -296,7 +298,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                             <button class="js-grid-item-delete tbody-icon <?php echo $disabled; ?>"
                                     data-item-confirm="<?php echo Text::_('JGLOBAL_CONFIRM_DELETE'); ?>"
                                     data-item-id="cb<?php echo $i; ?>"
-                                    data-item-task="imageform.remove" <?php echo $disabled; ?>>
+                                    data-item-task="Userform.remove" <?php echo $disabled; ?>>
                               <span class="icon-trash" aria-hidden="true"></span>
                             </button>
                           <?php endif; ?>
@@ -308,7 +310,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                           <?php $statetask = ((int) $item->published) ? 'unpublish' : 'publish'; ?>
                           <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                                   data-item-id="cb<?php echo $i; ?>"
-                                  data-item-task="imageform.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
+                                  data-item-task="Userform.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
                             <span class="icon-<?php echo (int) $item->published ? 'check' : 'cancel'; ?>"
                                   aria-hidden="true"></span>
                           </button>

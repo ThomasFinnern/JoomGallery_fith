@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <layout title="COM_JOOMGALLERY_VIEW_USER_IMAGE_EDIT_TITLE" option="JDEFAULT">
+    <message>
+      <![CDATA[COM_JOOMGALLERY_VIEW_USER_IMAGE_EDIT_DESC]]>
+    </message>
+  </layout>
+
+  <fields name="request">
+    <fieldset name="request" >
+
+      <field
+        name="id"
+        type="text"
+        label="JGLOBAL_FIELD_ID_LABEL"
+        default="1"
+      />
+
+    </fieldset>
+  </fields>
+
+  <!--  <fields name="request">-->
+<!--    <fieldset name="request">-->
+<!--      <field name="id"-->
+<!--             type="sql"-->
+<!--             default="0"-->
+<!--             query="SELECT `id`,`title` FROM #__joomgallery ORDER BY `id` DESC"-->
+<!--             key_field="id"-->
+<!--             value_field="title"-->
+<!--             label="JIMAGE"-->
+<!--             require="true">-->
+<!--      </field>-->
+<!--    </fieldset>-->
+<!--  </fields>-->
+</metadata>

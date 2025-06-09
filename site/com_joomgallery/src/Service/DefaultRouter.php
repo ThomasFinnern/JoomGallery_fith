@@ -144,6 +144,15 @@ class DefaultRouter extends RouterView
     $usercategory->setKey('id');
     $this->registerView($usercategory);
 
+    $userimages = new RouterViewConfiguration('userimages');
+//    $userimages->setParent($gallery);
+    $this->registerView($userimages);
+
+    $userimage = new RouterViewConfiguration('userimage');
+    $userimage->setKey('id');
+    $this->registerView($userimage);
+
+
     $this->attachRule(new MenuRules($this));
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));

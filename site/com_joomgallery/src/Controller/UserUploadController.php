@@ -63,9 +63,9 @@ class UseruploadController extends JoomFormController
 	 * @since   1.6.4
 	 */
 	public function getModel($name = 'UserUpload', $prefix = 'Site', $config = ['ignore_request' => true])
-	{
+  {
     return parent::getModel($name, $prefix, $config);
-	}
+  }
 
 
 

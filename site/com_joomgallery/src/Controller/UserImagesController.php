@@ -15,12 +15,12 @@ namespace Joomgallery\Component\Joomgallery\Site\Controller;
 use \Joomla\CMS\MVC\Controller\FormController;
 
 /**
- * Categories list controller class.
+ * User images list controller class.
  * 
  * @package JoomGallery
  * @since   4.0.0
  */
-class CategoriesController extends FormController
+class UserImagesController extends FormController
 {
 	/**
 	 * Proxy for getModel.
@@ -33,7 +33,7 @@ class CategoriesController extends FormController
 	 *
 	 * @since   4.0.0
 	 */
-  public function getModel($name = 'Categories', $prefix = 'Site', $config = ['ignore_request' => true])
+  public function getModel($name = 'Form', $prefix = 'Site', $config = ['ignore_request' => true])
   {
     return parent::getModel($name, $prefix, $config);
   }
@@ -65,7 +65,7 @@ class CategoriesController extends FormController
     }
 
     // Get the model
-    $model = $this->getModel('Categoryform', 'Site');
+    $model = $this->getModel('userimage', 'Site');
 
     // Save the ordering
     $return = $model->saveorder($pks, $order);

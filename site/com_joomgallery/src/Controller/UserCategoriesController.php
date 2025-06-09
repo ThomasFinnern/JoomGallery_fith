@@ -63,8 +63,8 @@ class UsercategoriesController extends CategoriesController
 //	 * @since   1.6.4
 //	 */
 //  public function getModel($name = 'Form', $prefix = 'Site', $config = ['ignore_request' => true])
-//	{
+//  {
 //    return parent::getModel($name, $prefix, $config);
-//	}
+//  }
 //
 }
