@@ -2,10 +2,9 @@
 
 /**
  ******************************************************************************************
- **   @version    4.0.0-dev                                                              **
  **   @package    com_joomgallery                                                        **
  **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
- **   @copyright  2008 - 2024  JoomGallery::ProjectTeam                                  **
+ **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
  **   @license    GNU General Public License version 3 or later                          **
  *****************************************************************************************/
 
@@ -18,7 +17,7 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\Metadata;
  * Editor class to handle iptc data type editing
  * 
  * @package JoomGallery
- * @since 4.0.0
+ * @since 4.1.0
  */
 class IptcDataEditor
 {
@@ -68,7 +67,7 @@ class IptcDataEditor
      * 
      * @return  mixed       Octet structure that complies to IPTC's specification
      * 
-     * @since   4.0.0
+     * @since   4.1.0
      */
     public function createEdit(string $tag, mixed $data): mixed
     {
@@ -101,7 +100,7 @@ class IptcDataEditor
      * 
      * @return  string        String of chars to embed
      * 
-     * @since   4.0.0
+     * @since   4.1.0
      */
     private function makeTag(int $rec, int $data, mixed $value): string
     {
@@ -135,7 +134,7 @@ class IptcDataEditor
      * 
      * @return string        APP13 as an iptcembed() compatible string
      * 
-     * @since 4.0.0
+     * @since 4.1.0
      */
     public function convertIptcToString(array $app13): string
     {

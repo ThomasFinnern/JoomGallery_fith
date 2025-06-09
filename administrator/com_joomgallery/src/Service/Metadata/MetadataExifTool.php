@@ -1,12 +1,12 @@
 <?php
+
 /**
-******************************************************************************************
-**   @version    4.0.0-dev                                                              **
-**   @package    com_joomgallery                                                        **
-**   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
-**   @copyright  2008 - 2024  JoomGallery::ProjectTeam                                  **
-**   @license    GNU General Public License version 3 or later                          **
-*****************************************************************************************/
+ ******************************************************************************************
+ **   @package    com_joomgallery                                                        **
+ **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+ **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+ **   @license    GNU General Public License version 3 or later                          **
+ *****************************************************************************************/
 
 namespace Joomgallery\Component\Joomgallery\Administrator\Service\Metadata;
 
@@ -22,7 +22,7 @@ use \Joomgallery\Component\Joomgallery\Administrator\Service\Metadata\Metadata a
  * ExifTools (CGI) implementation of Metadata Class
  *
  * @package JoomGallery
- * @since   4.0.0
+ * @since   4.1.0
  */
 class MetadataExifTool extends BaseMetadata implements MetadataInterface
 {
@@ -36,7 +36,7 @@ class MetadataExifTool extends BaseMetadata implements MetadataInterface
    * 
    * @return  bool           True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToExif(string $img, $edits): bool
   {
@@ -51,7 +51,7 @@ class MetadataExifTool extends BaseMetadata implements MetadataInterface
    * 
    * @return  bool           True on success, false on failure
    * 
-   * @since   4.0.0
+   * @since   4.1.0
    */
   public function writeToIptc(string $img, $edits): bool
   {
