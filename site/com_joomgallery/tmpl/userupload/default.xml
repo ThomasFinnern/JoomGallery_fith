@@ -21,7 +21,7 @@
     </fields>
     <fields name="params">
         <fieldset name="basic">
-            <field name="userUploadShowTitle"
+            <field name="showTitle"
                    type="radio"
                    default="1"
                    label="COM_JOOMGALLERY_MENU_SHOW_TITLE"

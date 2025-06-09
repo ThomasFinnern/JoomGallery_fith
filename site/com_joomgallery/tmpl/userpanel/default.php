@@ -1,8 +1,14 @@
 <?php
+/**
+ ******************************************************************************************
+ **   @package    com_joomgallery                                                        **
+ **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+ **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+ **   @license    GNU General Public License version 3 or later                          **
+ *****************************************************************************************/
 
-namespace Joomgallery\Component\Joomgallery\Site\Controller;
-
-defined('_JEXEC');
+// No direct access
+defined('_JEXEC') or die;
 
 use Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 use Joomla\CMS\Factory;
@@ -12,10 +18,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-//$wa = $this->document->getWebAssetManager();
-//$wa->
-
-// Import CSS
+// Import CSS & JS
 $wa = $this->document->getWebAssetManager();
 $wa->useStyle('com_joomgallery.list')
   ->useStyle('com_joomgallery.site')
@@ -27,11 +30,10 @@ $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
 $canOrder  = $this->getAcl()->checkACL('editstate', 'com_joomgallery.image', 0, 1, true);
 $saveOrder = ($listOrder == 'a.ordering' && strtolower($listDirn) == 'asc');
-$returnURL = base64_encode(JoomHelper::getListRoute('categories', null, $this->getLayout()));
 
 if ($saveOrder && !empty($this->items))
 {
-  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=images.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=userpanel.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
   HTMLHelper::_('draggablelist.draggable');
 }
 
@@ -40,25 +42,18 @@ $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUse
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('show_page_heading');
-$isShowTitle = true;
+$isShowTitle = $menuParam->get('showTitle');
 
-$panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
-$uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
-$imagesView = Route::_('index.php?option=com_joomgallery&view=images');
-$categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
+$panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
+$uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
+$imagesView      = Route::_('index.php?option=com_joomgallery&view=userimages');
+$categoriesView  = Route::_('index.php?option=com_joomgallery&view=usercategories');
 
-//--- new category URL link -----------------------
-
-// return to uploadView;
+// return to userupload;
 $returnURL = base64_encode('index.php?option=com_joomgallery&view=userpanel');
-//$returnURL = htmlspecialchars($uploadView);
-
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=editCat');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
+
+$baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimages&layout=editCat&id=';
 
 ?>
 
@@ -71,7 +66,6 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
     <?php if ($isShowTitle): ?>
       <h3><?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?></h3>
       <hr>
-
     <?php endif; ?>
 
     <?php if (empty($isHasAccess)): ?>
@@ -84,15 +78,10 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
               <span class="icon-key"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
             </div>
-            </p>
           </div>
+            </p>
+
         <?php else: ?>
-          <!--              <div class="mb-2">-->
-          <!--                <a class="btn btn-primary" href="--><?php //echo $uploadView; ?><!--" role="button">-->
-          <!--                  <span class="icon-upload"></span>-->
-          <!--                  --><?php //echo Text::_('upload'); ?>
-          <!--                </a>-->
-          <!--              </div>-->
 
           <?php if (!$this->isUserHasCategory): ?>
             <p>
@@ -114,6 +103,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
           <?php endif; ?>
         <?php endif; ?>
       </div>
+
     <?php else: ?>
 
       <div class="form-group">
@@ -259,13 +249,13 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                       <th scope="row" class="has-context title-cell">
                         <?php if ($canCheckin && $item->checked_out > 0) : ?>
                           <button class="js-grid-item-action tbody-icon" data-item-id="cb<?php echo $i; ?>"
-                                  data-item-task="Userform.checkin">
+                              data-item-task="userimages.checkin">
                             <span class="icon-checkedout" aria-hidden="true"></span>
                           </button>
                         <?php endif; ?>
                         <a
                           href="<?php echo Route::_(JoomHelper::getViewRoute('image', (int) $item->id, (int) $item->catid)); ?>">
-                          <?php echo $this->escape($item->title); ?>
+                      <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
                         </a>
                       </th>
 
@@ -290,7 +280,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                           <?php if ($canEdit): ?>
                             <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                                     data-item-id="cb<?php echo $i; ?>"
-                                    data-item-task="image.edit" <?php echo $disabled; ?>>
+                                    data-item-task="userimage.edit" <?php echo $disabled; ?>>
                               <span class="icon-edit" aria-hidden="true"></span>
                             </button>
                           <?php endif; ?>
@@ -298,7 +288,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                             <button class="js-grid-item-delete tbody-icon <?php echo $disabled; ?>"
                                     data-item-confirm="<?php echo Text::_('JGLOBAL_CONFIRM_DELETE'); ?>"
                                     data-item-id="cb<?php echo $i; ?>"
-                                    data-item-task="Userform.remove" <?php echo $disabled; ?>>
+                                    data-item-task="Userimage.remove" <?php echo $disabled; ?>>
                               <span class="icon-trash" aria-hidden="true"></span>
                             </button>
                           <?php endif; ?>
@@ -310,7 +300,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
                           <?php $statetask = ((int) $item->published) ? 'unpublish' : 'publish'; ?>
                           <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                                   data-item-id="cb<?php echo $i; ?>"
-                                  data-item-task="Userform.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
+                              data-item-task="Userimage.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
                             <span class="icon-<?php echo (int) $item->published ? 'check' : 'cancel'; ?>"
                                   aria-hidden="true"></span>
                           </button>
@@ -332,8 +322,13 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
       </div>
     <?php endif; ?>
 
-    <input type="hidden" name="task" value="image.???"/>
-    <input type="hidden" name="id" value="0"/>
+    <input type="hidden" name="task" value=""/>
+    <!--input type="hidden" name="id" value="0"/-->
+    <input type="hidden" name="return" value="<?php echo $returnURL; ?>"/>
+    <input type="hidden" name="boxchecked" value="0"/>
+    <input type="hidden" name="form_submited" value="1"/>
+        <input type="hidden" name="filter_order" value=""/>
+        <input type="hidden" name="filter_order_Dir" value=""/>
 
     <?php echo HTMLHelper::_('form.token'); ?>
   </form>

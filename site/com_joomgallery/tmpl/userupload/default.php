@@ -7,7 +7,7 @@
  *****************************************************************************************/
 
 // No direct access
-defined('_JEXEC');
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -31,21 +31,13 @@ HTMLHelper::_('bootstrap.tooltip');
 
 $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUserCoreManager;
 
-$panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
-$uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
-$categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
-$imagesView = Route::_('index.php?option=com_joomgallery&view=images');
+$panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
+$uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
+$categoriesView  = Route::_('index.php?option=com_joomgallery&view=usercategories');
+$imagesView      = Route::_('index.php?option=com_joomgallery&view=userimages');
 
-//--- new category URL link -----------------------
-
-// return to uploadView;
+// return to userPanel;
 $returnURL = base64_encode('index.php?option=com_joomgallery&view=userupload');
-//$returnURL = htmlspecialchars($uploadView);
-
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=user-categories/edit');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=categoryform&id=0');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=category&layout=editCat');
-//$newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
 
 $config    = $this->params['configs'];
@@ -53,8 +45,7 @@ $menuParam = $this->params['menu'];
 
 $isUseOrigFilename   = $config->get('jg_useorigfilename');
 $isUseFilenameNumber = $config->get('jg_filenamenumber');
-//$isShowTitle = $this->config->get('userUploadShowTitle');
-$isShowTitle = $menuParam->get('userUploadShowTitle');
+$isShowTitle = $menuParam->get('showTitle');
 
 $app = Factory::getApplication();
 
@@ -231,6 +222,8 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
         <input type="hidden" name="jform[title]" value="title"/>
       <?php endif; ?>
       <input type="hidden" name="id" value="0"/>
+      <input type="hidden" name="return" value="<?php echo $returnURL; ?>"/>
+
 
       <?php echo HTMLHelper::_('form.token'); ?>
 

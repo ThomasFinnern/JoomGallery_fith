@@ -46,12 +46,14 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-//$isShowTitle = $this->config->get('userUploadShowTitle');
-// ToDo: set it in config
-// $isShowTitle = $menuParam->get('userUploadShowTitle');
-$isShowTitle = true;
+$isShowTitle = $menuParam->get('showTitle');
 
-?>
+// ToDo: may backfire for close, cancel usw ? save ?
+// return to userImage;
+//$returnURL = base64_encode('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id='.$this->item->id);
+
+
+?>for close
 
 <div class="jg category-edit front-end-edit item-page">
 	<?php if (!$canEdit) : ?>

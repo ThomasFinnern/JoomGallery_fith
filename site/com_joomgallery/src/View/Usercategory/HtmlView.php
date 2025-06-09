@@ -91,9 +91,11 @@ class HtmlView extends JoomGalleryView
 
     $this->form		= $this->get('Form');
 
+//    // Get return page
+//    $return_page = $this->state->get('return_page');
+//    $this->return_page = base64_encode($return_page); // base64 encoded
     // Get return page
-    $return_page = $this->state->get('return_page');
-    $this->return_page = base64_encode($return_page); // base64 encoded
+    $this->return_page = $this->get('ReturnPage');
 
     // Check access view level
 		if(!\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))

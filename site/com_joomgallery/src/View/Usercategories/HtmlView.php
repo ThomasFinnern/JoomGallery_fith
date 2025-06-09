@@ -53,6 +53,7 @@ class HtmlView extends JoomGalleryView
   protected $isUserHasCategory = false;
 
   protected $isUserCoreManager = false;
+
   protected $userId = 0;
 
   /**

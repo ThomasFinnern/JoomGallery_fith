@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-  <layout title="COM_JOOMGALLERY_VIEW_USER_IMAGE_EDIT_TITLE" option="JDEFAULT">
+  <layout title="COM_JOOMGALLERY_MENU_VIEW_USER_IMAGE_EDIT_TITLE" option="JDEFAULT">
     <message>
-      <![CDATA[COM_JOOMGALLERY_VIEW_USER_IMAGE_EDIT_DESC]]>
+      <![CDATA[COM_JOOMGALLERY_MENU_VIEW_USER_IMAGE_EDIT_DESC]]>
     </message>
   </layout>
 
-  <fields name="request">
-    <fieldset name="request" >
+    <fields name="request">
+      <fieldset name="request" >
 
-      <field
-        name="id"
-        type="text"
-        label="JGLOBAL_FIELD_ID_LABEL"
-        default="1"
-      />
+        <field
+          name="id"
+          type="text"
+          label="JGLOBAL_FIELD_ID_LABEL"
+          default="1"
+        />
 
-    </fieldset>
+      </fieldset>
+    </fields>
+  <fields name="params">
+	<fieldset name="basic">
+
+	  <field name="showTitle"
+			 type="radio"
+			 default="1"
+             label="COM_JOOMGALLERY_MENU_SHOW_TITLE"
+             description="COM_JOOMGALLERY_MENU_SHOW_TITLE_DESC"
+			 class="btn-group btn-group-yesno">
+		<option value="1">JYES</option>
+		<option value="0">JNO</option>
+	  </field>
+	</fieldset>
   </fields>
 
   <!--  <fields name="request">-->

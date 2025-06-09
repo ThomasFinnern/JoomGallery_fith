@@ -32,26 +32,26 @@ $listDirn  = $this->state->get('list.direction');
 $canAdd    = $this->getAcl()->checkACL('add', 'com_joomgallery.category', 0, 1, true);
 $canOrder  = $this->getAcl()->checkACL('editstate', 'com_joomgallery.category');
 $saveOrder = ($listOrder == 'a.lft' && strtolower($listDirn) == 'asc');
-//$returnURL = base64_encode(JoomHelper::getListRoute('categories', null, $this->getLayout()));
 
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('userPanelShowTitle');
+$isShowTitle = $menuParam->get('showTitle');
 
 if ($saveOrder && !empty($this->items))
 {
-  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=categories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=usercategories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
   HTMLHelper::_('draggablelist.draggable');
 }
 
 $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
-$returnURL      = $categoriesView;
-
-$panelView  = Route::_('index.php?option=com_joomgallery&view=userpanel');
-$uploadView = Route::_('index.php?option=com_joomgallery&view=userupload');
-$imagesView = Route::_('index.php?option=com_joomgallery&view=images');
+$panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
+$uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
+$imagesView      = Route::_('index.php?option=com_joomgallery&view=userimages');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=0');
+
+// return to usercategories;
+$returnURL = base64_encode('index.php?option=com_joomgallery&view=usercategories');
 
 $baseLink_CategorEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=';
 $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_category=';
@@ -86,12 +86,6 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
           </div>
         </p>
       <?php else: ?>
-        <!--                  <div class="mb-2">-->
-        <!--                      <a class="btn btn-primary" href="--><?php //echo $panelView; ?><!--" role="button">-->
-        <!--                          <span class="icon-home"></span>-->
-        <!--                          --><?php //echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-        <!--                      </a>-->
-        <!--                  </div>-->
 
         <?php if (!$this->isUserHasCategory): ?>
           <p>
@@ -140,9 +134,6 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
 
     </div>
 
-    <?php if (!empty($this->filterForm)) {
-      echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-    } ?>
     <div class="row">
       <div class="col-md-12">
 
@@ -153,6 +144,11 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
             <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
           </div>
         <?php else : ?>
+
+          <?php if (!empty($this->filterForm)) {
+            echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+          } ?>
+
           <div class="clearfix"></div>
           <div class="table-responsive">
             <table class="table table-striped itemList" id="categoryList">
@@ -264,22 +260,24 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
                     </td>
                   <?php endif; ?>
 
-                  <th scope="row" class="has-context title-cell">
+                  <td scope="row" class="has-context title-cell">
                     <?php echo LayoutHelper::render('joomla.html.treeprefix', array('level' => $item->level)); ?>
                     <?php if ($canCheckin && $item->checked_out > 0) : ?>
                       <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                               data-item-id="cb<?php echo $i; ?>"
-                              data-item-task="category.checkin" <?php echo $disabled; ?>>
+                              data-item-task="usercategory.checkin" <?php echo $disabled; ?>>
                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->uEditor, $item->checked_out_time, 'category.', false); ?>
                       </button>
                     <?php endif; ?>
                     <?php
+                    // ToDo: canEdit see userimages if ($canEdit):
                     $itemId = $item->id;
                     $title = $this->escape($item->title);
+                    $route = Route::_($baseLink_CategorEdit . (int) $item->id);
                     ?>
-                    <a href="<?php echo Route::_($baseLink_CategorEdit . (int) $item->id); ?>">
+                    <a href="<?php echo $route; ?>">
                         <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
-                  </th>
+                  </td>
 
 <!--                  <td class="d-none d-lg-table-cell text-center">-->
 <!--                    <span class="badge bg-info">-->
@@ -305,7 +303,7 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
                       <?php if ($canEdit): ?>
                         <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                                 data-item-id="cb<?php echo $i; ?>"
-                                data-item-task="category.edit" <?php echo $disabled; ?>>
+                                data-item-task="usercategory.edit" <?php echo $disabled; ?>>
                           <span class="icon-edit" aria-hidden="true"></span>
                         </button>
                       <?php endif; ?>

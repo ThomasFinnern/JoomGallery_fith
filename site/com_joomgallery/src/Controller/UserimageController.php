@@ -58,7 +58,8 @@ class UserimageController extends FormController
   {
     parent::__construct($config, $factory, $app, $input);
 
-    $this->default_view = 'userimage';
+    // parent view
+    $this->default_view = 'userimages';
 
     // JoomGallery extension class
 		$this->component = $this->app->bootComponent(_JOOM_OPTION);
@@ -310,7 +311,10 @@ class UserimageController extends FormController
    */
   public function edit($key = null, $urlVar = null)
   {
-    throw new \Exception('Edit image not possible. Use image controller instead.', 503);
+//    throw new \Exception('Edit image not possible. Use image controller instead.', 503);
+    $test = 'Edit image not possible. Use image controller instead.';
+
+    return parent::edit($key, $urlVar);
   }
 
 	/**
@@ -343,7 +347,7 @@ class UserimageController extends FormController
 		if(!$id)
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id),false));
 
 			return false;
 		}
@@ -353,7 +357,7 @@ class UserimageController extends FormController
 		if(!$this->acl->checkACL('editstate', 'image', $id, $parent_id, true))
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id),false));
 
 			return false;
 		}
@@ -377,7 +381,7 @@ class UserimageController extends FormController
 
 		// Redirect to the list screen.
 		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_CHECKIN_SUCCESSFUL'), 'success');
-		$this->app->redirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id), false));
+		$this->app->redirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id), false));
 	}
 
   /**
@@ -410,7 +414,7 @@ class UserimageController extends FormController
 		if(!$id)
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id),false));
 
 			return false;
 		}
@@ -420,7 +424,7 @@ class UserimageController extends FormController
 		if(!$this->acl->checkACL('editstate', 'image', $id, $parent_id, true))
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id),false));
 
 			return false;
 		}
@@ -440,14 +444,14 @@ class UserimageController extends FormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('COM_JOOMGALLERY_ITEM_STATE_ERROR', $model->getError()), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('categories').'&'.$this->getItemAppend($id), false));
+			$this->setRedirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend($id), false));
 
 			return false;
 		}
 
     // Redirect to the list screen.
 		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_'.\strtoupper($task).'_SUCCESSFUL'), 'success');
-		$this->app->redirect(Route::_($this->getReturnPage('categories').'&'.$this->getItemAppend($id), false));
+		$this->app->redirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend($id), false));
   }
 
   /**

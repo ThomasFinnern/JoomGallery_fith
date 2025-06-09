@@ -42,23 +42,22 @@ $lang->load('joomla', JPATH_ADMINISTRATOR);
 //}
 //$canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 
-//$isShowTitle = $this->config->get('userUploadShowTitle');
-// ToDo: set it in config
-// $isShowTitle = $menuParam->get('userUploadShowTitle');
-$isShowTitle = true;
-
-
-
+$isShowTitle = $menuParam->get('showTitle');
 
 $canEdit  = true;
 $canAdmin = true;
+
+// ToDo: may backfire for close, cancel usw ? save ?
+// return to userImage;
+//$returnURL = base64_encode('index.php?option=com_joomgallery&view=userimage&layout=editImg&id='.$this->item->id);
+
 ?>
 
 <div class="jg image-edit front-end-edit item-page">
 	<?php if(!$canEdit) : ?>
     <?php Factory::getApplication()->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_ACCESS_VIEW'), 'error'); ?>
 	<?php else : ?>
-		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&controller=userimage&id='.$this->item->id); ?>"
+		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&view=userimage$layout=editImg&id='.$this->item->id); ?>"
 			    method="post" name="adminForm" class="form-validate form-horizontal" enctype="multipart/form-data">
 
       <?php if ($isShowTitle): ?>
