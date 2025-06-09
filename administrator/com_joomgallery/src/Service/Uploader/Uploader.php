@@ -253,9 +253,6 @@ abstract class Uploader implements UploaderInterface
     // Check if there is something to override
     if(!\property_exists($this->component->getConfig()->get('jg_replaceinfo'), 'jg_replaceinfo0'))
     {
-      // Destroy the IMGtools service
-      $this->component->delIMGtools();
-
       return true;
     }
 
