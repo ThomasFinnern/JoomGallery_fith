@@ -221,6 +221,9 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
     $tagString = "";
     foreach ($edits as $tag => $edit) {
       if ($edit != "") {
+        if ($tag == "2#025") {
+          $edit = explode(", ", $edit);
+        }
         $result = $editor->createEdit($tag, $edit);
         if ($result != false) {
           $tagString .= $result;
@@ -266,8 +269,17 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
   public function readJpegMetadata(string $file)
   {
     // Output to the same format as before. Comment field has been left out on purpose.
-    $metadata = array('exif' => array(), 'iptc' => array());
-    $size = getimagesize($file, $info);
+    $metadata = array('exif' => array(), 'iptc' => array(), 'comment' => "");
+    $size = \getimagesize($file, $info);
+
+    if (\extension_loaded('exif') && \function_exists('exif_read_data') && $size[2] == 2) {
+      // Read COMMENT data
+      $exif_tmp = \exif_read_data($file, null, 1);
+      // Read COMMENT
+      if (isset($exif_tmp['COMMENT']) && isset($exif_tmp['COMMENT'][0])) {
+        $metadata['comment'] = $exif_tmp['COMMENT'][0];
+      }
+    }
 
     // EXIF with PEL
     $imageObjects = self::getPelImageObjects($file);
@@ -294,6 +306,15 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
     if (isset($info["APP13"])) {
       $iptc = iptcparse($info['APP13']);
       foreach ($iptc as $key => $value) {
+        // Convert keywords to string
+        if ($key == "2#025") {
+          $keywords = "";
+          foreach ($value as $tag) {
+            $keywords .= $tag . ", ";
+          }
+          $value[0] = substr($keywords, 0, -2);
+        }
+
         $metadata['iptc'][$key] = $value[0];
       }
     }

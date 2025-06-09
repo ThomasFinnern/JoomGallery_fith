@@ -72,10 +72,20 @@ class IptcDataEditor
      */
     public function createEdit(string $tag, mixed $data): mixed
     {
-        if ((isset($this->iptcStringArray) && $this->iptcStringArray[$tag][0] <= strlen($data) && strlen($data) <= $this->iptcStringArray[$tag][1]) ||
+        if ((isset($this->iptcStringArray) && $tag != "2#025" && $this->iptcStringArray[$tag][0] <= strlen($data) && strlen($data) <= $this->iptcStringArray[$tag][1]) ||
             (isset($this->iptcDigitsArray) && $this->iptcDigitsArray[$tag] >= $data)) {
             $explode = explode("#", $tag);
             $octetStruct = self::makeTag(intval($explode[0]), intval($explode[1]), $data);
+            return $octetStruct;
+        } elseif (isset($this->iptcStringArray) && $tag == "2#025") {
+            // Special case for keywords array
+            $octetStruct = "";
+            foreach ($data as $keyword) {
+                $keyword = trim($keyword);
+                if (strlen($keyword) > 0 && $this->iptcStringArray[$tag][0] <= strlen($keyword) && strlen($keyword) <= $this->iptcStringArray[$tag][1]) {
+                    $octetStruct .= self::makeTag(2, 25, $keyword);
+                }
+            }
             return $octetStruct;
         }
         return false;
