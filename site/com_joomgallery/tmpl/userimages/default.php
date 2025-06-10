@@ -253,7 +253,7 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
                   <th scope="row" class="has-context title-cell">
                     <?php if ($canCheckin && $item->checked_out > 0) : ?>
                       <button class="js-grid-item-action tbody-icon" data-item-id="cb<?php echo $i; ?>"
-                              data-item-task="userimages.checkin">
+                              data-item-task="userimage.checkin">
                         <span class="icon-checkedout" aria-hidden="true"></span>
                       </button>
                     <?php endif; ?>
