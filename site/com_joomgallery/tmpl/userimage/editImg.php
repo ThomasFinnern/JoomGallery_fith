@@ -61,7 +61,7 @@ $canAdmin = true;
 	<?php if(!$canEdit) : ?>
     <?php Factory::getApplication()->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_ACCESS_VIEW'), 'error'); ?>
 	<?php else : ?>
-		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&view=userimage$layout=editImg&id='.$this->item->id); ?>"
+		<form id="adminForm" action="<?php echo Route::_('index.php?option=com_joomgallery&controller=userimage&id='.$this->item->id); ?>"
 			    method="post" name="adminForm" class="form-validate form-horizontal" enctype="multipart/form-data">
 
       <?php if ($isShowTitle): ?>
@@ -137,18 +137,16 @@ $canAdmin = true;
           <?php echo HTMLHelper::_('uitab.endTab'); ?>
         <?php endif; ?>
 
-        <?php
-        /*<input type="hidden" name="jform[ordering]" value="<?php echo isset($this->item->ordering) ? $this->item->ordering : ''; ?>" />
+        <input type="hidden" name="jform[ordering]" value="<?php echo isset($this->item->ordering) ? $this->item->ordering : ''; ?>" />
         <input type="hidden" name="jform[checked_out]" value="<?php echo isset($this->item->checked_out) ? $this->item->checked_out : ''; ?>" />
         <input type="hidden" name="jform[hits]" value="<?php echo isset($this->item->hits) ? $this->item->hits : ''; ?>" />
         <input type="hidden" name="jform[downloads]" value="<?php echo isset($this->item->downloads) ? $this->item->downloads : ''; ?>" />
         <input type="hidden" name="jform[votes]" value="<?php echo isset($this->item->votes) ? $this->item->votes : ''; ?>" />
         <input type="hidden" name="jform[votesum]" value="<?php echo isset($this->item->votesum) ? $this->item->votesum : ''; ?>" />
         <input type="hidden" name="jform[approved]" value="<?php echo isset($this->item->approved) ? $this->item->approved : ''; ?>" />
-        <input type="hidden" name="jform[useruploaded]" value="<?php echo isset($this->item->useruploaded) ? $this->item->useruploaded : ''; ?>" /> */
-        ?>
+        <input type="hidden" name="jform[useruploaded]" value="<?php echo isset($this->item->useruploaded) ? $this->item->useruploaded : ''; ?>" />
         
-        <input type="hidden" name="type" id ="itemType" value="imageform"/>
+        <input type="hidden" name="type" id ="itemType" value="userimage"/>
         <input type="hidden" name="return" value="<?php echo $this->return_page; ?>"/>
 			  <input type="hidden" name="task" value=""/>
 			  <?php echo HTMLHelper::_('form.token'); ?>

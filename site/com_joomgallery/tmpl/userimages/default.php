@@ -126,26 +126,21 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
 
           <div class="form-group">
 
-            <div class="mb-2">
-              <a class="btn btn-info" href="<?php echo $imagesView; ?>" role="button">
-                <span class="icon-list"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?>
-              </a>
-
               <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
                 <span class="icon-images"></span>
                 <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
-              </a>
-
-              <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
-                <span class="icon-plus"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USER_NEW_CATEGORY'); ?>
               </a>
 
               <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
                 <span class="icon-upload"></span>
                 <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
               </a>
+
+              <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+                <span class="icon-home"></span>
+                <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+              </a>
+
             </div>
 
           </div>
@@ -250,18 +245,23 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
                          alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
                   </td>
 
-                  <th scope="row" class="has-context title-cell">
+                  <td scope="row" class="has-context title-cell">
                     <?php if ($canCheckin && $item->checked_out > 0) : ?>
                       <button class="js-grid-item-action tbody-icon" data-item-id="cb<?php echo $i; ?>"
                               data-item-task="userimage.checkin">
                         <span class="icon-checkedout" aria-hidden="true"></span>
                       </button>
                     <?php endif; ?>
-                    <a
-                      href="<?php echo Route::_(JoomHelper::getViewRoute('image', (int) $item->id, (int) $item->catid)); ?>">
+<!--                      <a href="--><?php //echo Route::_(JoomHelper::getViewRoute('image', (int) $item->id, (int) $item->catid)); ?><!--">-->
+<!--                        --><?php //echo $this->escape($item->title); ?><!-- (--><?php //echo $this->escape($item->id); ?><!--)</a>-->
+<!--                      </a>-->
+                    <?php
+                      $route = Route::_($baseLink_ImageEdit . (int) $item->id);
+                    ?>
+                    <a href="<?php echo $route; ?>">
                       <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
                     </a>
-                  </th>
+                  </td>
 
                   <td class="d-none d-lg-table-cell text-center">
                     <span class="badge bg-info">
@@ -283,21 +283,23 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
                     <?php if ($canEdit || $canDelete): ?>
                       <?php if ($canEdit): ?>
                         <!--button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
-                                data-item-id="cb<?php echo $i; ?>" 
-								data-item-task="userimage.edit" <?php echo $disabled; ?>>
+                            data-item-id="cb<?php echo $i; ?>"
+								            data-item-task="userimage.edit" <?php echo $disabled; ?>>
                           <span class="icon-edit" aria-hidden="true"></span>
                         </button-->
                         <?php
                         // ToDo: canEdit
                         $itemId = $item->id;
                         $title = $this->escape($item->title);
-                        // $route = Route::_($baseLink_ImageEdit . (int) $item->id);
-                        $route = '';
+                        $baseRoute = $baseLink_ImageEdit . (int) $item->id;
+                        $route = Route::_($baseLink_ImageEdit . (int) $item->id);
+                        $test = $route;
                         ?>
                         <a href="<?php echo $route; ?>">
-                          <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
-
+                          <span class="icon-edit" aria-hidden="true"></span>
+                        </a>
                       <?php endif; ?>
+
                       <?php if ($canDelete): ?>
                         <button class="js-grid-item-delete tbody-icon <?php echo $disabled; ?>"
                                 data-item-confirm="<?php echo Text::_('JGLOBAL_CONFIRM_DELETE'); ?>"
