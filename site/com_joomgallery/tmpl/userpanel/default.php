@@ -286,17 +286,12 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                         <?php if ($canEdit || $canDelete): ?>
                           <?php if ($canEdit): ?>
                             <!--button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
-                            data-item-id="cb<?php echo $i; ?>"
-								            data-item-task="userimage.edit" <?php echo $disabled; ?>>
-                          <span class="icon-edit" aria-hidden="true"></span>
-                        </button-->
+                              data-item-id="cb<?php echo $i; ?>"
+                              data-item-task="userimage.edit" <?php echo $disabled; ?>>
+                              <span class="icon-edit" aria-hidden="true"></span>
+                            </button-->
                             <?php
-                            // ToDo: canEdit
-                            $itemId = $item->id;
-                            $title = $this->escape($item->title);
-                            $baseRoute = $baseLink_ImageEdit . (int) $item->id;
                             $route = Route::_($baseLink_ImageEdit . (int) $item->id);
-                            $test = $route;
                             ?>
                             <a href="<?php echo $route; ?>">
                               <span class="icon-edit" aria-hidden="true"></span>
