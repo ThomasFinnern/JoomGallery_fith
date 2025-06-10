@@ -92,7 +92,7 @@ class Config extends AbstractCommand
     $help = "<info>%command.name%</info> lists variables of one configuration
   Usage: <info>php %command.full_name% </info>
     * You may specify an ID of the configuration with the <info>--id<info> option. Otherwise, it will be '1'
-    * You may restrict the value sting length using the <info>--max_line_length</info> option. A result line that is too long will confuse the output lines
+    * You may restrict the value string length using the <info>--max_line_length</info> option. A result line that is too long will confuse the output lines
   "
     ;
     $this->setDescription(Text::_('List all variables of a joomgallery configuration'));
