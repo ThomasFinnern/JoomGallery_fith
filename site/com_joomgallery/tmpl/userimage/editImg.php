@@ -42,6 +42,10 @@ $lang->load('joomla', JPATH_ADMINISTRATOR);
 //}
 //$canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 
+$config    = $this->params['configs'];
+$menuParam = $this->params['menu'];
+
+
 $isShowTitle = $menuParam->get('showTitle');
 
 $canEdit  = true;

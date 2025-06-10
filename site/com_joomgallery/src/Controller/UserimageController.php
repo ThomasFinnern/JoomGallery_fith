@@ -69,7 +69,21 @@ class UserimageController extends FormController
 		$this->acl = $this->component->getAccess();
   }
 
-	/**
+  public function saveAndClose($key = NULL, $urlVar = NULL)
+  {
+    // Check for request forgeries.
+    $this->checkToken();
+
+    $isSaved = $this->save($key, $urlVar) != false;
+    $isCanceled = $this->cancel($key) != false;
+
+    if ( !$isSaved || !$isCanceled) {
+      return false;
+    }
+
+  }
+
+  /**
 	 * Method to save data.
 	 *
 	 * @return  void
@@ -101,12 +115,15 @@ class UserimageController extends FormController
 			return false;
 		}
 
+    $baseLink = 'index.php?option=com_joomgallery&view=userimage&layout=editImg&id=' . (int) $data['id'];
+    $backLink = Route::_($baseLink, false);
+
     // Access check
 		$parent_id = JoomHelper::getParent('image', $recordId);
 		if(!$this->acl->checkACL('edit', 'image', $recordId, $parent_id, true))
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId),false));
+      $this->setRedirect($backLink);
 
 			return false;
 		}
@@ -149,7 +166,7 @@ class UserimageController extends FormController
 			$app->setUserState('com_joomgallery.edit.image.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=userimage&'.$this->getItemAppend($recordId), false));
+      $this->setRedirect($backLink);
 
 			$this->redirect();
 		}
@@ -162,7 +179,7 @@ class UserimageController extends FormController
 
 			// Redirect back to the edit screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(Route::_('index.php?option=com_joomgallery&view=userimage&'.$this->getItemAppend($recordId), false));
+      $this->setRedirect($backLink);
 
 			return false;
 		}
@@ -175,7 +192,7 @@ class UserimageController extends FormController
 
 			// Redirect to list screen.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
+      $this->setRedirect($backLink);
 
 			return false;
 		}
@@ -186,7 +203,7 @@ class UserimageController extends FormController
 
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
-		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId),false));
+    $this->setRedirect($backLink);
 		
 		return true;
 	}
@@ -274,7 +291,7 @@ class UserimageController extends FormController
 		}
 
     // Get the model.
-		$model = $this->getModel('Userform', 'Site');
+		$model = $this->getModel('Userimage', 'Site');
 
 		// Attempt to delete the record.
 		if($model->delete($removeId) === false)
@@ -363,7 +380,7 @@ class UserimageController extends FormController
 		}
 
 		// Get the model.
-		$model  = $this->getModel('Userform', 'Site');
+		$model  = $this->getModel('Userimage', 'Site');
 
 		// Attempt to check-in the current record.
 		if($model->checkin($id) === false)
@@ -437,7 +454,7 @@ class UserimageController extends FormController
     $value = $data[$task];
 
     // Get the model
-    $model  = $this->getModel('Userform', 'Site');
+    $model  = $this->getModel('Userimage', 'Site');
 
     // Attempt to change state the current record.
 		if($model->publish($id, $value) === false)
