@@ -152,6 +152,10 @@ class DefaultRouter extends RouterView
     $userimage->setKey('id');
     $this->registerView($userimage);
 
+    $userpanel = new RouterViewConfiguration('userpanel');
+//    $userpanel->setParent($gallery);
+    $this->registerView($userpanel);
+
 
     $this->attachRule(new MenuRules($this));
 		$this->attachRule(new StandardRules($this));
@@ -313,6 +317,25 @@ class DefaultRouter extends RouterView
 
     $segment = [(int) $id => $category->alias];
     return [(int) $id => $category->alias];
+  }
+
+  /**
+   * Method to get the segment(s) for an userimage
+   *
+   * @param   string  $id     ID of the category to retrieve the segments for
+   * @param   array   $query  The request that is built right now
+   *
+   * @return  array|string  The segments of this item
+   */
+  public function getUserimageSegment($id, $query)
+  {
+    if(!$id)
+    {
+      // Load empty form view
+      return array('');
+    }
+
+    return $this->getImageSegment($id, $query);
   }
 
   /**
@@ -523,6 +546,19 @@ class DefaultRouter extends RouterView
   }
 
   /**
+   * Method to get the segment(s) for an userimage
+   *
+   * @param   string  $segment  Segment of the userimage to retrieve the ID for
+   * @param   array   $query    The request that is parsed right now
+   *
+   * @return  mixed   The id of this item or false
+   */
+  public function getUserimageId($segment, $query)
+  {
+    return $this->getImageId($segment, $query);
+  }
+
+  /**
    * Method to get the segment(s) for a category
    *
    * @param   string  $segment  Segment of the category to retrieve the ID for
@@ -580,4 +616,56 @@ class DefaultRouter extends RouterView
 
 		return $this->categoryCache[$id];
 	}
+
+  /**
+   * Method to get categories from cache
+   *
+   * @param   int             $id         It of the category
+   * @param   string          $available  The property to make available in the category
+   *
+   * @return  CategoryTable   The category table object
+   *
+   * @since   4.0.0
+   * @throws  \UnexpectedValueException
+   */
+  private function getImage($id, $available = null, $root = true): CategoryTable
+  {
+    // Load the category table
+    if(!isset($this->categoryCache[$id]))
+    {
+      $table = $this->app->bootComponent('com_joomgallery')->getMVCFactory()->createTable('Category', 'administrator');
+      $table->load($id);
+      $this->categoryCache[$id] = $table;
+    }
+
+    // Make node tree available in cache
+    if(!\is_null($available) && !isset($this->categoryCache[$id]->{$available}))
+    {
+      switch ($available) {
+        case 'route_path':
+          $this->categoryCache[$id]->{$available} = $this->categoryCache[$id]->getRoutePath($root, 'route_path');
+          break;
+
+        case 'children':
+          $this->categoryCache[$id]->{$available} = $this->categoryCache[$id]->getNodeTree('children', true, $root);
+          break;
+
+        case 'parents':
+          $this->categoryCache[$id]->{$available} = $this->categoryCache[$id]->getNodeTree('children', true, $root);
+          break;
+
+        default:
+          throw new \UnexpectedValueException('Requested property ('.$available.') can to be made available in a category.');
+          break;
+      }
+    }
+
+    return $this->categoryCache[$id];
+  }
+
+
+
+
+
+
 }
