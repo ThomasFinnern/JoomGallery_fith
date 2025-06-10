@@ -157,7 +157,12 @@ class AccessOwn extends Access
     $result = null;
 
     $groupsOfUser = self::$identities[$userId];
-    $assetOwner   = \end($ancestors)->owner;
+
+    $assetOwner = null;
+    if (isset(\end($ancestors)->owner))
+    {
+      $assetOwner = \end($ancestors)->owner;
+    }
 
     foreach($ancestors as $key => $ancestor)
     {

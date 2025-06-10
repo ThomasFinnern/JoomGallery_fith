@@ -1,5 +1,5 @@
 ## Beitrag zum Projekt – Bugfixes & Features
-Letzte Änderungen: 20.04.2025
+Letzte Änderungen: 07.05.2025
 [Change to the english version](Contribution_en.md)
 
 Vielen Dank, dass du zu unserem Projekt beitragen möchtest!  
@@ -19,12 +19,11 @@ Der `master`-Branch wird regelmäßig für Bugfix-Releases verwendet (z. B. `4
    ```bash
    git checkout master
    git pull origin master
-   git checkout -b fix/<kurze-beschreibung>
+   git checkout -b fix-<kurze-beschreibung>
    ```
 3. Implementiere den Bugfix.
-4. Schreibe einen passenden Commit-Message (z. B. `Fix: fixes PHP error during upload`).
+4. Schreibe einen passenden Commit-Message (z. B. `fixes PHP error during upload`).
 5. Öffne einen Pull Request **gegen den `master`-Branch**.
-6. Optional: Wenn du weißt, dass der Bug auch in einem zukünftigen Feature-Branch (z. B. `4.1.0`) relevant ist, weise im PR darauf hin.
 
 ---
 
@@ -35,14 +34,14 @@ Der `master`-Branch wird regelmäßig für Bugfix-Releases verwendet (z. B. `4
 #### Schritte:
 
 1. Forke das Repository (falls noch nicht geschehen).
-2. Erstelle einen neuen Branch von `4.1.0`:
+2. Erstelle einen neuen Branch auf basis des `4.1.0` Branches:
    ```bash
    git checkout 4.1.0
    git pull origin 4.1.0
-   git checkout -b feat/<kurze-beschreibung>
+   git checkout -b feat-<kurze-beschreibung>
    ```
 3. Implementiere dein Feature.
-4. Schreibe einen passenden Commit-Message (z. B. `Feat: fügt Dark Mode hinzu`).
+4. Schreibe einen passenden Commit-Message (z. B. `Fügt Dark Mode hinzu`).
 5. Öffne einen Pull Request **gegen den `4.1.0`-Branch**.
 
 ---
@@ -67,7 +66,8 @@ Diese Konvention hilft uns, Branches schnell einzuordnen.
 - `master`: Nur für Bugfixes (Bugfix-Releases)
 - `4.1.0`, `4.2.0`, ...: Feature-Entwicklung für nächste Minor-Versionen
 - Bugfixes werden selektiv vom `master` in die Feature-Branches übernommen – du musst dich nicht darum kümmern.
-- Bitte **merke dir, gegen welchen Branch du deinen PR öffnest** – PRs gegen den falschen Branch verzögern das Review.
+- Bitte **überlege dir gut, gegen welchen Branch du deinen PR öffnest**
+- PRs gegen den falschen Branch verzögern das Review und können den übernehmen verunmöglichen.
 
 ---
 
