@@ -1,11 +1,11 @@
 <?php
+
 namespace Joomgallery\Component\Joomgallery\Administrator\CliCommand;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-//use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -42,7 +42,7 @@ class ImageList extends AbstractCommand
    *
    * @param   DatabaseInterface  $db  Database connector
    *
-   * @since   4.0.0
+   * @since  4.0.X
    */
 //  public function __construct(DatabaseInterface $db)
   public function __construct()
@@ -73,7 +73,7 @@ class ImageList extends AbstractCommand
    *
    * @return  void
    *
-   * @since   4.0.0
+   * @since  4.0.X
    */
   protected function configure(): void
   {
@@ -98,8 +98,7 @@ class ImageList extends AbstractCommand
     * You may filter on the user id of image using the <info>--owner</info> option.
     * You may filter on created_by of image using the <info>--created</info> option.
     * You may filter on the category id of image using the <info>--category</info> option.
-    Example: <info>php %command.full_name% --created_by=14</info>"
-    ;
+    Example: <info>php %command.full_name% --created_by=14</info>";
     $this->setDescription(Text::_('List all joomgallery images'));
     $this->setHelp($help);
   }
@@ -117,7 +116,7 @@ class ImageList extends AbstractCommand
 
 
     $created_by_id = $input->getOption('created') ?? '';
-    if ( empty ($created_by_id) )
+    if (empty ($created_by_id))
     {
       $created_by_id = $input->getOption('owner') ?? '';
     }
@@ -137,8 +136,7 @@ class ImageList extends AbstractCommand
 
     // Reshape the images into something humans can read.
     $images = array_map(
-      function (object $item): array
-      {
+      function (object $item): array {
         return [
           $item->id,
           $item->title,
@@ -159,7 +157,7 @@ class ImageList extends AbstractCommand
     // Display the images in a table and set the exit code to 0
     $this->ioStyle->table(
       [
-        'ID', 'Title', 'Published', 'Hidden', 'Created/Owner','Created','Modified by','Modified','Category',
+        'ID', 'Title', 'Published', 'Hidden', 'Created/Owner', 'Created', 'Modified by', 'Modified', 'Category',
       ],
       $images
     );
@@ -172,7 +170,7 @@ class ImageList extends AbstractCommand
    *
    * @return array
    *
-   * @since 4.0.0
+   * @since  4.0.X
    */
   private function getItemsFromDB(string $userId, string $cat_id): array
   {
@@ -182,12 +180,12 @@ class ImageList extends AbstractCommand
       ->select('*')
       ->from('#__joomgallery');
 
-    if ( ! empty ($userId) )
+    if (!empty ($userId))
     {
       $query->where($db->quoteName('created_by') . ' = ' . (int) $userId);
     }
 
-    if ( ! empty ($cat_id) )
+    if (!empty ($cat_id))
     {
       $query->where($db->quoteName('catid') . ' = ' . (int) $cat_id);
     }
@@ -198,8 +196,6 @@ class ImageList extends AbstractCommand
 
     return $images;
   }
-
-
 
 
 }

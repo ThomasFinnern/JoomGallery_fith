@@ -1,11 +1,11 @@
 <?php
+
 namespace Joomgallery\Component\Joomgallery\Administrator\CliCommand;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-//use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\Console\Command\AbstractCommand;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -42,7 +42,7 @@ class ConfigList extends AbstractCommand
    *
    * @param   DatabaseInterface  $db  Database connector
    *
-   * @since   4.0.0
+   * @since  4.0.X
    */
 //  public function __construct(DatabaseInterface $db)
   public function __construct()
@@ -73,7 +73,7 @@ class ConfigList extends AbstractCommand
    *
    * @return  void
    *
-   * @since   4.0.0
+   * @since  4.0.X
    */
   protected function configure(): void
   {
@@ -103,8 +103,7 @@ class ConfigList extends AbstractCommand
     $help = "<info>%command.name%</info>will list all joomgallery configurations (joomgallery table)
   Usage: <info>php %command.full_name%</info>
     * You may filter on the configuration id  using the <info>--id</info> option.
-    Example: <info>php %command.full_name% --created_by=14</info>"
-    ;
+    Example: <info>php %command.full_name% --created_by=14</info>";
     $this->setDescription(Text::_('List all joomgallery configurations'));
     $this->setHelp($help);
   }
@@ -121,7 +120,7 @@ class ConfigList extends AbstractCommand
     $this->ioStyle->title('JoomGallery Configuration list (joomgallery table)');
 
 
-    $id = $input->getOption('id') ?? '';
+    $id      = $input->getOption('id') ?? '';
     $configs = $this->getItemsFromDB($id);
 
 
@@ -135,8 +134,7 @@ class ConfigList extends AbstractCommand
 
     // Reshape the configs into something humans can read.
     $configs = array_map(
-      function (object $item): array
-      {
+      function (object $item): array {
         return [
           $item->id,
           $item->title,
@@ -163,7 +161,7 @@ class ConfigList extends AbstractCommand
     // Display the configs in a table and set the exit code to 0
     $this->ioStyle->table(
       [
-        'ID', 'Title', 'Published', 'Note', 'Group ID','Created by','Modified by','Modified','Filesystem','iagetypes','pathftpupload',
+        'ID', 'Title', 'Published', 'Note', 'Group ID', 'Created by', 'Modified by', 'Modified', 'Filesystem', 'iagetypes', 'pathftpupload',
       ],
       $configs
     );
@@ -176,7 +174,7 @@ class ConfigList extends AbstractCommand
    *
    * @return array
    *
-   * @since 4.0.0
+   * @since  4.0.X
    */
   private function getItemsFromDB(string $d): array
   {
@@ -191,7 +189,7 @@ class ConfigList extends AbstractCommand
 //      $query->where($db->quoteName('created_by') . ' = ' . (int) $userId);
 //    }
 
-    if ( ! empty ($id) )
+    if (!empty ($id))
     {
       $query->where($db->quoteName('id') . ' = ' . (int) $id);
     }
@@ -201,8 +199,6 @@ class ConfigList extends AbstractCommand
 
     return $configurations;
   }
-
-
 
 
 }
