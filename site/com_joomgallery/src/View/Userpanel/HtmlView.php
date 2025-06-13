@@ -81,6 +81,7 @@ class HtmlView extends JoomGalleryView
 
   protected $isUserCoreManager = false;
   protected $userId = 0;
+  protected $isDevelopSite = false;
 
   /**
    * Execute and display a template script.
@@ -113,6 +114,9 @@ class HtmlView extends JoomGalleryView
     $this->pagination    = $modImages->getPagination();
     $this->filterForm    = $modImages->getFilterForm();
     $this->activeFilters = $modImages->getActiveFilters();
+
+    $this->isDevelopSite = boolval($this->params['configs']->get('isDebugSite'))
+      || $this->app->input->getBool('isDevelop');
 
     // Check for errors.
     if(\count($errors = $this->get('Errors')))

@@ -52,6 +52,7 @@ class HtmlView extends JoomGalleryView
   protected $isUserHasCategory = false;
 
   protected $isUserCoreManager = false;
+  protected $isDevelopSite = false;
 
   protected $userId = 0;
 
@@ -79,7 +80,10 @@ class HtmlView extends JoomGalleryView
     $this->filterForm    = $model->getFilterForm();
     $this->activeFilters = $model->getActiveFilters();
 
-		// Check for errors.
+    $this->isDevelopSite = boolval($this->params['configs']->get('isDebugSite'))
+      || $this->app->input->getBool('isDevelop');
+
+    // Check for errors.
 		if(\count($errors = $this->get('Errors')))
 		{
 			throw new GenericDataException(\implode("\n", $errors), 500);
