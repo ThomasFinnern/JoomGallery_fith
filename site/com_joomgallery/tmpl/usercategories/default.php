@@ -271,8 +271,6 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
                     <?php endif; ?>
                     <?php
                     // ToDo: canEdit see userimages if ($canEdit):
-                    $itemId = $item->id;
-                    $title = $this->escape($item->title);
                     $route = Route::_($baseLink_CategoryEdit . (int) $item->id);
                     ?>
                     <a href="<?php echo $route; ?>">

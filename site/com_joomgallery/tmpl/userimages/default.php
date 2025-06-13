@@ -56,7 +56,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
 $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=editImg&id=';
 //$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_image=';
 
-
+$canDelete = false;
 ?>
 
 <?php if ($this->params['menu']->get('show_page_heading')) : ?>
@@ -241,8 +241,16 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
                   <?php endif; ?>
 
                   <td class="small d-none d-md-table-cell">
-                    <img class="jg_minithumb" src="<?php echo JoomHelper::getImg($item, 'thumbnail'); ?>"
-                         alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
+                    <!-- ToDo: fetch image anyhow as owner may see the imge -->
+                    <?php if ( $item->published): ?>
+                      <img class="jg_minithumb" src="<?php echo JoomHelper::getImg($item, 'thumbnail'); ?>"
+                           alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
+                    <?php else : ?>
+                      <span class="icon-unpublish" aria-hidden="true"></span>
+                      <span class="icon-unpublish" aria-hidden="true"></span>
+                      <span class="icon-unpublish" aria-hidden="true"></span>
+                      <i class="icon-<?php echo (int) $item->published ? 'check' : 'cancel'; ?>"></i>
+                    <?php endif; ?>
                   </td>
 
                   <td scope="row" class="has-context title-cell">
@@ -259,7 +267,13 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
                       $route = Route::_($baseLink_ImageEdit . (int) $item->id);
                     ?>
                     <a href="<?php echo $route; ?>">
-                      <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
+                      <?php echo $this->escape($item->title); ?>
+                      <?php
+                      if ($this->isDevelopSite)
+                      {
+                        echo '&nbsp;(' . $this->escape($item->id) . ')';
+                      }
+                      ?>
                     </a>
                   </td>
 
