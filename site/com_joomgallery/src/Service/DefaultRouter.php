@@ -189,11 +189,11 @@ class DefaultRouter extends RouterView
   {
     if (!\strpos($id, ':'))
     {
-//      if (!$id)
-//      {
-//        // Load empty form view
-//        return array('');
-//      }
+      if (!$id)
+      {
+        // Load empty form view
+        return array('');
+      }
 
       $id .= ':' . $this->getImageAliasDb($id);
     }
