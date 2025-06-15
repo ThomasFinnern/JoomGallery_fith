@@ -112,8 +112,32 @@ $canDelete = false;
 
   <?php else: ?>
 
+    <div class="form-group">
+
+      <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
+        <span class="icon-images"></span>
+        <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
+      </a>
+
+      <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
+        <span class="icon-upload"></span>
+        <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
+      </a>
+
+      <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+        <span class="icon-home"></span>
+        <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+      </a>
+
+    </div>
+
     <div class="row">
       <div class="col-md-12">
+
+
+
+
+
 
         <?php if (empty($this->items)) : ?>
           <div class="alert alert-info">
@@ -124,26 +148,6 @@ $canDelete = false;
         <?php else : ?>
 
 
-          <div class="form-group">
-
-              <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
-                <span class="icon-images"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
-              </a>
-
-              <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
-                <span class="icon-upload"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
-              </a>
-
-              <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
-                <span class="icon-home"></span>
-                <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-              </a>
-
-            </div>
-
-          </div>
 
           <?php if (!empty($this->filterForm))          {
             $test = "test";
