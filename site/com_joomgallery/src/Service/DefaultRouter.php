@@ -366,8 +366,10 @@ class DefaultRouter extends RouterView
       }
 
       $category = $this->getCategory((int) $query['id'], 'children', true);
-
-      $alias = $category->alias ?? "";
+      if (!empty ($category))
+      {
+        $id .= ':' . $category->alias;
+      }
     }
 
     if ($this->noIDs)
@@ -377,7 +379,7 @@ class DefaultRouter extends RouterView
       return [$void => $segment];
     }
 
-    return [(int) $id => $alias];
+    return [(int) $id => $id];
   }
 
   /**
