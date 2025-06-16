@@ -25,7 +25,7 @@ jobs:
 
       - name: Clean up unnecessary files
         run: |
-          rm -rf crowdin.yml docs tests .github
+          rm -rf crowdin.yml composer.json composer.lock docs tests .github .editorconfig
 
       - name: Get tag name
         id: get_tag
