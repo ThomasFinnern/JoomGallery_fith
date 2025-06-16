@@ -42,7 +42,7 @@ class RawView extends JoomGalleryView
     if($id !== 'null') {$id = $this->app->input->get('id', 0, 'int');}
 
     // Check access
-    if(!$this->access($id))
+    if(!$this->access($id, $type))
     {
       $this->app->redirect(Route::_('index.php', false), 403);
     }
@@ -129,11 +129,12 @@ class RawView extends JoomGalleryView
   /**
 	 * Check access to this image
 	 *
-	 * @param   int  $id    Image id
+	 * @param   int     $id    Image id
+   * @param   string  $type  Imagetype
 	 *
 	 * @return   bool    True on success, false otherwise
 	 */
-  protected function access($id)
+  protected function access($id, $type = 'thumbnail')
   {
     return true;
   }
