@@ -26,7 +26,7 @@ jobs:
 
       - name: Clean up unnecessary files
         run: |
-          rm -rf crowdin.yml docs tests .github
+          rm -rf crowdin.yml composer.json composer.lock docs tests .github .editorconfig
 
       - name: Sanitize PR title for filename
         id: pr
@@ -34,13 +34,9 @@ jobs:
           SAFE_TITLE=$(echo "${{ github.event.pull_request.title }}" | tr -cd '[:alnum:]._-')
           echo "SAFE_TITLE=${SAFE_TITLE}" >> $GITHUB_OUTPUT
 
-      - name: Zip the build
-        run: |
-          zip -r JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip . -x '*.git*'
-
-      - name: Upload ZIP as PR artifact
+      - name: Upload artifact (GitHub will zip it)
         uses: actions/upload-artifact@v4
         with:
           name: JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}
-          path: JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip
+          path: .
           retention-days: 60
