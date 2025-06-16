@@ -1,0 +1,46 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build Release Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # or your PHP version
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist
+
+      - name: Clean up unnecessary files
+        run: |
+          rm -rf crowdin.yml docs tests .github
+
+      - name: Get tag name
+        id: get_tag
+        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
+      - name: Zip the build
+        run: |
+          cd ..
+          zip -r JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip ./$(basename $GITHUB_REPOSITORY) -x '*.git*'
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ steps.get_tag.outputs.TAG_NAME }}
+          tag_name: ${{ steps.get_tag.outputs.TAG_NAME }}
+          files: ../JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
