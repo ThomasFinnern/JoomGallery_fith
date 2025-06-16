@@ -13,11 +13,13 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userpanel;
 //use Joomla\CMS\Factory;
 //use Joomla\CMS\Helper\TagsHelper;
 //use Joomla\CMS\Language\Multilanguage;
+use Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Router\Route;
 
 //use Joomla\Component\Contact\Administrator\Helper\ContactHelper;
 
@@ -42,7 +44,9 @@ class HtmlView extends JoomGalleryView
    * @var    object
    * @since  4.0.0
    */
-  protected $item;
+  protected $items;
+
+  protected $pagination;
 
   /**
    * @var    string
@@ -147,75 +151,94 @@ class HtmlView extends JoomGalleryView
     // $this->isUserCoreManager = $acl->checkACL('core.manage', 'com_joomgallery');
     $this->isUserCoreManager = $this->acl->checkACL('core.manage', 'com_joomgallery');
 
-//        // Check for errors.
-//        if (count($errors = $this->get('Errors'))) {
-//            $app->enqueueMessage(implode("\n", $errors), 'error');
+//    // Check if is userspace is enabled
+//    // Check access permission (ACL)
+//    if($this->params['configs']->get('jg_userspace', 1, 'int') == 0 || !$this->getAcl()->checkACL('manage', 'com_joomgallery'))
+//    {
+//      if($this->params['configs']->get('jg_userspace', 1, 'int') == 0)
+//      {
+//        $this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_IMAGES_VIEW_NO_ACCESS'), 'message');
+//      }
 //
-//            return false;
-//        }
+//      // Redirect to gallery view
+//      $this->app->redirect(Route::_(JoomHelper::getViewRoute('gallery')));
 //
-//        // Create a shortcut to the parameters.
-//        $this->params = $this->state->params;
-//
-//        // Escape strings for HTML output
-//        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx', ''));
-//
-//        // Override global params with contact specific params
-//        $this->params->merge($this->item->params);
-//
-//        // Propose current language as default when creating new contact
-//        if (empty($this->item->id) && Multilanguage::isEnabled()) {
-//            $lang = $this->getLanguage()->getTag();
-//            $this->form->setFieldAttribute('language', 'default', $lang);
-//        }
-//
-//        $this->_prepareDocument();
+//      return false;
+//    }
 
-    // $this->_prepareDocument();
+    $this->_prepareDocument();
 
     parent::display($tpl);
   }
 
-//    /**
-//     * Prepares the document
-//     *
-//     * @return  void
-//     *
-//     * @throws \Exception
-//     *
-//     * @since  4.0.0
-//     */
-//    protected function _prepareDocument()
-//    {
-//        $app = Factory::getApplication();
-//
-//        // Because the application sets a default page title,
-//        // we need to get it from the menu item itself
-//        $menu = $app->getMenu()->getActive();
-//
-//        if ($menu) {
-//            $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-//        } else {
-//            $this->params->def('page_heading', Text::_('COM_CONTACT_FORM_EDIT_CONTACT'));
-//        }
-//
-//        $title = $this->params->def('page_title', Text::_('COM_CONTACT_FORM_EDIT_CONTACT'));
-//
-//        $this->setDocumentTitle($title);
-//
-//        $pathway = $app->getPathWay();
-//        $pathway->addItem($title, '');
-//
-//        if ($this->params->get('menu-meta_description')) {
-//            $this->getDocument()->setDescription($this->params->get('menu-meta_description'));
-//        }
-//
-//        if ($this->params->get('menu-meta_keywords')) {
-//            $this->getDocument()->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
-//        }
-//
-//        if ($this->params->get('robots')) {
-//            $this->getDocument()->setMetaData('robots', $this->params->get('robots'));
-//        }
-//    }
+  /**
+   * Prepares the document
+   *
+   * @return void
+   *
+   * @throws \Exception
+   */
+  protected function _prepareDocument()
+  {
+    $menus = $this->app->getMenu();
+    $title = null;
+
+    // Because the application sets a default page title,
+    // we need to get it from the menu item itself
+    $menu = $menus->getActive();
+
+    if($menu)
+    {
+      $this->params['menu']->def('page_heading', $this->params['menu']->get('page_title', $menu->title));
+    }
+    else
+    {
+      $this->params['menu']->def('page_heading', Text::_('JoomGallery'));
+    }
+
+    $title = $this->params['menu']->get('page_title', '');
+
+    if(empty($title))
+    {
+      $title = $this->app->get('sitename');
+    }
+    elseif($this->app->get('sitename_pagetitles', 0) == 1)
+    {
+      $title = Text::sprintf('JPAGETITLE', $this->app->get('sitename'), $title);
+    }
+    elseif($this->app->get('sitename_pagetitles', 0) == 2)
+    {
+      $title = Text::sprintf('JPAGETITLE', $title, $this->app->get('sitename'));
+    }
+
+    $this->document->setTitle($title);
+
+    if($this->params['menu']->get('menu-meta_description'))
+    {
+      $this->document->setDescription($this->params['menu']->get('menu-meta_description'));
+    }
+
+    if($this->params['menu']->get('menu-meta_keywords'))
+    {
+      $this->document->setMetadata('keywords', $this->params['menu']->get('menu-meta_keywords'));
+    }
+
+    if($this->params['menu']->get('robots'))
+    {
+      $this->document->setMetadata('robots', $this->params['menu']->get('robots'));
+    }
+
+    if(!$this->isMenuCurrentView($menu))
+    {
+      // Add Breadcrumbs
+      $pathway = $this->app->getPathway();
+      $breadcrumbTitle = Text::_('COM_JOOMGALLERY_USER_IMAGES');
+
+      if(!\in_array($breadcrumbTitle, $pathway->getPathwayNames()))
+      {
+        $pathway->addItem($breadcrumbTitle, '');
+      }
+    }
+  }
+
 }

@@ -31,7 +31,13 @@ class HtmlView extends JoomGalleryView
 
 	protected $pagination;
 
-	/**
+  /**
+   * @var    \Joomla\Registry\Registry
+   * @since  4.0.0
+   */
+  protected $state;
+
+  /**
 	 * The page parameters
 	 *
 	 * @var    array
@@ -56,6 +62,7 @@ class HtmlView extends JoomGalleryView
 
   protected $userId = 0;
 
+
   /**
 	 * Display the view
 	 *
@@ -63,7 +70,7 @@ class HtmlView extends JoomGalleryView
 	 *
 	 * @return void
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -199,4 +206,5 @@ class HtmlView extends JoomGalleryView
 			}
 		}
 	}
+
 }

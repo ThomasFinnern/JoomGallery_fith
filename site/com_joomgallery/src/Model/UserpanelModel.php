@@ -12,7 +12,6 @@ namespace Joomgallery\Component\Joomgallery\Site\Model;
 // No direct access.
 defined('_JEXEC') or die;
 
-use \Joomgallery\Component\Joomgallery\Administrator\Model\CategoriesModel as AdminCategoriesModel;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
