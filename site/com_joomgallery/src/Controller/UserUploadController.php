@@ -58,7 +58,7 @@ class UseruploadController extends JoomFormController
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  \Joomgallery\Component\Joomgallery\Administrator\Controller\JoomFormController  The model.
+	 * @return  object  The model
 	 *
 	 * @since   1.6.4
 	 */

@@ -91,7 +91,7 @@ class UserimageController extends FormController
 	 * @throws  \Exception
 	 * @since   4.0.0
 	 */
-	public function save($key = NULL, $urlVar = NULL)
+	public function save($key = NULL, $urlVar = NULL):bool
 	{
 		// Check for request forgeries.
 		$this->checkToken();

@@ -24,7 +24,7 @@ use \Joomla\CMS\MVC\Controller\FormController;
  * @package JoomGallery
  * @since   4.0.0
  */
-class UserCategoryController extends FormController // ? JoomFormController
+class UsercategoryController extends FormController // ? JoomFormController
 {
   use RoutingTrait;
 

@@ -20,7 +20,7 @@ use \Joomla\CMS\MVC\Controller\FormController;
  * @package JoomGallery
  * @since   4.0.0
  */
-class UserImagesController extends FormController
+class UserimagesController extends FormController
 {
 
   /**
