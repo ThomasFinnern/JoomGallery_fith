@@ -36,12 +36,11 @@ jobs:
 
       - name: Zip the build
         run: |
-          cd ..
-          zip -r JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip ./$(basename $GITHUB_REPOSITORY) -x '*.git*'
+          zip -r JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip . -x '*.git*'
 
       - name: Upload ZIP as PR artifact
         uses: actions/upload-artifact@v4
         with:
           name: JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}
-          path: ../JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip
+          path: JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip
           retention-days: 60
