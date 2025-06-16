@@ -14,6 +14,7 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\Access\Base;
 
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Access\Access;
+use \Joomla\Database\DatabaseInterface;
 use \Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 
 /**
@@ -156,7 +157,12 @@ class AccessOwn extends Access
     $result = null;
 
     $groupsOfUser = self::$identities[$userId];
-    $assetOwner   = \end($ancestors)->owner;
+
+    $assetOwner = null;
+    if (isset(\end($ancestors)->owner))
+    {
+      $assetOwner = \end($ancestors)->owner;
+    }
 
     foreach($ancestors as $key => $ancestor)
     {
@@ -204,7 +210,7 @@ class AccessOwn extends Access
     if(empty(self::$viewLevelsList))
     {
       // Get a database object.
-      $db = Factory::getDbo();
+      $db = Factory::getContainer()->get(DatabaseInterface::class);
 
       // Build the base query.
       $query = $db->getQuery(true)

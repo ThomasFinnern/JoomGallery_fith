@@ -10,8 +10,8 @@ https://www.joomgalleryfriends.net/
 **Support-Forum:**
 https://www.forum.joomgalleryfriends.net
 
-**Project-Management:**
-https://www.forum.joomgalleryfriends.net/forum/index.php?thread/361-priorisierung/&postID=2056#post2056 (ToDo List)
+**Non-binding Release Plan:**
+https://www.forum.joomgalleryfriends.net/forum/index.php?thread/361-priorisierung/&postID=2056#post2056
 
 **Project Presentation:**
 https://docs.google.com/presentation/d/1kXGfGRrHswU0M3yh0zUvOwW1fYqB07cksHzNxzcEyxI

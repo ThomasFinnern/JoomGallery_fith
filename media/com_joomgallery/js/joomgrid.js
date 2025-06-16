@@ -4,8 +4,11 @@ const defaults = {
         pagination: 1,
         layout: 'masonry',
         num_columns: 3,
+        numb_images: 12,
+        reloaded_images: 3,
         lightbox: false,
         thumbnails: false,
+        zoom: false,
         lightbox_obj: {},
         lightbox_params: {container: 'lightgallery-0-0', selector: '.lightgallery-item'},
         gridclass: 'jg-category',
@@ -51,9 +54,10 @@ var callback = function() {
         thumbMargin: 5,
         thumbWidth: 75,
         thumbnail: settings.thumbnails,
+        zoom: settings.zoom,
         toggleThumb: true,
         speed: 500,
-        plugins: [lgThumbnail],
+        plugins: [lgThumbnail,lgZoom],
         preload: 1,
         loop: false,
         slideEndAnimation: false,
@@ -68,7 +72,7 @@ var callback = function() {
         licenseKey: '1111-1111-111-1111',
       });
       
-      if(lightbox) {
+      if(lightbox && settings.zoom === false) {
         window.joomGrid[itemid].lightbox_obj.outer.on('click', (e) => {
           const $item = window.joomGrid[itemid].lightbox_obj.outer.find('.lg-current .lg-image');
           if (
@@ -97,9 +101,18 @@ var callback = function() {
     // Infinity scroll or load more
     if(settings.pagination == 1 && grid || settings.pagination == 2 && grid)
     {
+      let maxImages;
+      let loadImages;
+      if(settings.pagination == 1) {
+          maxImages  = settings.num_columns * 2;
+          loadImages = settings.num_columns * 3;
+      }
+      if(settings.pagination == 2) {
+          maxImages  = settings.numb_images;
+          loadImages = settings.reloaded_images;
+      }
+
       const items        = Array.from(grid.getElementsByClassName('jg-image'));
-      const maxImages    = settings.num_columns * 2;
-      const loadImages   = settings.num_columns * 3;
       const hiddenClass  = 'hidden-jg-image';
       const hiddenImages = Array.from(document.getElementsByClassName(hiddenClass));
 
@@ -116,7 +129,7 @@ var callback = function() {
           rootMargin: '200px',
           threshold: 0
         };
-        
+
         function observerCallback(entries, observer) {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -140,22 +153,24 @@ var callback = function() {
         fadeElms.forEach(el => observer.observe(el));
       } else if(settings.pagination == 2) {
         // Load more button
-        const loadMore = document.getElementById(settings.loadmoreid);
-    
-        loadMore.addEventListener('click', function () {
-          [].forEach.call(document.querySelectorAll('.' + hiddenClass), function (
-            item,
-            index
-          ) {
-            if (index < loadImages) {
-              item.classList.remove(hiddenClass);
-            }
-            if (document.querySelectorAll('.' + hiddenClass).length === 0) {
-              loadMore.style.display = 'none';
-              noMore.classList.remove('hidden');
-            }
+        if(document.getElementById(settings.loadmoreid)) {
+          const loadMore = document.getElementById(settings.loadmoreid);
+
+          loadMore.addEventListener('click', function () {
+            [].forEach.call(document.querySelectorAll('.' + hiddenClass), function (
+              item,
+              index
+            ) {
+              if (index < loadImages) {
+                item.classList.remove(hiddenClass);
+              }
+              if (document.querySelectorAll('.' + hiddenClass).length === 0) {
+                loadMore.style.display = 'none';
+                noMore.classList.remove('hidden');
+              }
+            });
           });
-        });
+        }
       }
     }
 
