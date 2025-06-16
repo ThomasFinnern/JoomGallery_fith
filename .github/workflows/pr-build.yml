@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-pr-zip:
-    if: github.base_ref == 'master' || github.base_ref =~ '^v[0-9].*'
+    if: github.base_ref == 'master' || startsWith(github.base_ref, 'v')
     runs-on: ubuntu-latest
 
     steps:
