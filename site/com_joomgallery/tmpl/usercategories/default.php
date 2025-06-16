@@ -32,6 +32,7 @@ $listDirn  = $this->state->get('list.direction');
 $canAdd    = $this->getAcl()->checkACL('add', 'com_joomgallery.category', 0, 1, true);
 $canOrder  = $this->getAcl()->checkACL('editstate', 'com_joomgallery.category');
 $saveOrder = ($listOrder == 'a.lft' && strtolower($listDirn) == 'asc');
+//$saveOrder = ($listOrder == 'a.id' && strtolower($listDirn) == 'asc');
 
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
@@ -40,6 +41,7 @@ $isShowTitle = $menuParam->get('showTitle') ?? true;
 
 if ($saveOrder && !empty($this->items))
 {
+  //$saveOrderingUrl = 'index.php?option=com_joomgallery&task=    categories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
   $saveOrderingUrl = 'index.php?option=com_joomgallery&task=usercategories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
   HTMLHelper::_('draggablelist.draggable');
 }
@@ -137,19 +139,21 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
     <div class="row">
       <div class="col-md-12">
 
+        <?php if (!empty($this->filterForm)) {
+          echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+        } ?>
+
         <?php if (empty($this->items)) : ?>
           <div class="alert alert-info">
             <span class="icon-info-circle" aria-hidden="true"></span><span
               class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
             <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
           </div>
+
         <?php else : ?>
 
-          <?php if (!empty($this->filterForm)) {
-            echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-          } ?>
-
           <div class="clearfix"></div>
+
           <div class="table-responsive">
             <table class="table table-striped itemList" id="categoryList">
               <caption class="visually-hidden">

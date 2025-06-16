@@ -95,7 +95,7 @@ class HtmlView extends JoomGalleryView
       $this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_ACCESS_VIEW'), 'error');
     }
 
-		$this->_prepareDocument();
+		// $this->_prepareDocument();
 
 		parent::display($tpl);
 	}

@@ -130,7 +130,7 @@ class UsercategoriesModel extends CategoriesModel
    * @since   4.0.0
    */
 //	protected function populateState($ordering = 'a.lft', $direction = 'desc')
-  protected function populateState($ordering = 'a.id', $direction = 'asc')
+  protected function populateState($ordering = 'a.lft', $direction = 'asc')
   {
     // List state information.
     parent::populateState($ordering, $direction);

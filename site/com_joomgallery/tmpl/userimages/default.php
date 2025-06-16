@@ -148,6 +148,7 @@ $canDelete = false;
               class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
             <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
           </div>
+
         <?php else : ?>
 
           <div class="clearfix"></div>

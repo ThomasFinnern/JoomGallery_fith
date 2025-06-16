@@ -592,6 +592,8 @@ class DefaultRouter extends RouterView
    */
   public function getUsercategoryId($segment, $query)
   {
+    // ToDo: same alis but differnt parent  jBsp. Paris mit jahrnamen -> url hat jahr
+
     if ($this->noIDs)
     {
       // ToDo: manuel why is this used in other functions

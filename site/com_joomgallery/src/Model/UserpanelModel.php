@@ -96,6 +96,9 @@ class UserpanelModel extends ImagesModel
     $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
     $this->setState('filter.created_by.include', true);
 
+    // get state ... set state ... => limit
+
+
     $this->loadComponentParams();
 	}
 
