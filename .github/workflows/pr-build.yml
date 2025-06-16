@@ -1,0 +1,47 @@
+name: PR Build Artifact
+
+on:
+  pull_request:
+    branches:
+      - master
+      - 'v*'
+
+jobs:
+  build-pr-zip:
+    if: github.base_ref == 'master' || github.base_ref =~ '^v[0-9].*'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # or your PHP version
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist
+
+      - name: Clean up unnecessary files
+        run: |
+          rm -rf crowdin.yml docs tests .github
+
+      - name: Sanitize PR title for filename
+        id: pr
+        run: |
+          SAFE_TITLE=$(echo "${{ github.event.pull_request.title }}" | tr -cd '[:alnum:]._-')
+          echo "SAFE_TITLE=${SAFE_TITLE}" >> $GITHUB_OUTPUT
+
+      - name: Zip the build
+        run: |
+          cd ..
+          zip -r JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip ./$(basename $GITHUB_REPOSITORY) -x '*.git*'
+
+      - name: Upload ZIP as PR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}
+          path: ../JoomGallery-${{ steps.pr.outputs.SAFE_TITLE }}.zip
+          retention-days: 60
