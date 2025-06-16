@@ -132,7 +132,7 @@ class HtmlView extends JoomGalleryView
       return false;
     }
 
-		$this->_prepareDocument();
+//		$this->_prepareDocument();
 
 		parent::display($tpl);
 	}

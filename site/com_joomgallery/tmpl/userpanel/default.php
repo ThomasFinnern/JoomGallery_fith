@@ -138,6 +138,11 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
           <div class="card-body">
             <h5 class="card-title"><?php echo Text::_('COM_JOOMGALLERY_USER_PANEL_USER_IMAGES'); ?></h5>
 
+            <?php if(!empty($this->filterForm)) {
+              $test = "test";
+              echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+            } ?>
+
             <?php if (empty($this->items)) : ?>
               <div class="alert alert-info">
                 <span class="icon-info-circle" aria-hidden="true"></span><span
@@ -146,10 +151,6 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
               </div>
             <?php else : ?>
 
-              <?php if(!empty($this->filterForm)) {
-                $test = "test";
-                echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-              } ?>
 
               <div class="clearfix"></div>
 

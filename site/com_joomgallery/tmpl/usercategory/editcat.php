@@ -53,7 +53,7 @@ $isShowTitle = $menuParam->get('showTitle');
 //$returnURL = base64_encode('index.php?option=com_joomgallery&view=usercategory&layout=editCat&id='.$this->item->id);
 
 
-?>for close
+?>
 
 <div class="jg category-edit front-end-edit item-page">
 	<?php if (!$canEdit) : ?>

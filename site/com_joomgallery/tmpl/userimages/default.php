@@ -57,13 +57,15 @@ $baseLink_ImageEdit   = 'index.php?option=com_joomgallery&view=userimage&layout=
 //$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_image=';
 
 $canDelete = false;
+/**
+<?php if ($this->params['menu']->get('show_page_heading')) : ?>
+<div class="page-header page-title">
+<h1> <?php echo $this->escape($this->params['menu']->get('page_heading')); ?> </h1>
+</div>
+<?php endif; ?>
+ **/
 ?>
 
-<?php if ($this->params['menu']->get('show_page_heading')) : ?>
-  <div class="page-header page-title">
-    <h1> <?php echo $this->escape($this->params['menu']->get('page_heading')); ?> </h1>
-  </div>
-<?php endif; ?>
 
 <form class="jg-images"
       action="<?php echo Route::_('index.php?option=com_joomgallery&view=userimages'); ?>"
@@ -134,9 +136,10 @@ $canDelete = false;
     <div class="row">
       <div class="col-md-12">
 
-
-
-
+        <?php if (!empty($this->filterForm))          {
+          $test = "test";
+          echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+        } ?>
 
 
         <?php if (empty($this->items)) : ?>
@@ -146,13 +149,6 @@ $canDelete = false;
             <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
           </div>
         <?php else : ?>
-
-
-
-          <?php if (!empty($this->filterForm))          {
-            $test = "test";
-            echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-          } ?>
 
           <div class="clearfix"></div>
 
