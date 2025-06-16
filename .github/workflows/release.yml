@@ -33,14 +33,13 @@ jobs:
 
       - name: Zip the build
         run: |
-          cd ..
-          zip -r JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip ./$(basename $GITHUB_REPOSITORY) -x '*.git*'
+          zip -r JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip . -x '*.git*'
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.get_tag.outputs.TAG_NAME }}
           tag_name: ${{ steps.get_tag.outputs.TAG_NAME }}
-          files: ../JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip
+          files: JoomGallery-${{ steps.get_tag.outputs.TAG_NAME }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
