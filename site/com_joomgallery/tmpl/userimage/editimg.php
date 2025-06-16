@@ -45,8 +45,7 @@ $lang->load('joomla', JPATH_ADMINISTRATOR);
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-
-$isShowTitle = $menuParam->get('showTitle');
+$isShowTitle = $menuParam->get('showTitle') ?? true;
 
 $canEdit  = true;
 $canAdmin = true;

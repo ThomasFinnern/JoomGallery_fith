@@ -36,7 +36,7 @@ $saveOrder = ($listOrder == 'a.ordering' && strtolower($listDirn) == 'asc');
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('showTitle');
+$isShowTitle = $menuParam->get('showTitle') ?? true;
 
 if ($saveOrder && !empty($this->items))
 {

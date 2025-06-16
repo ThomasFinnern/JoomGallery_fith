@@ -46,7 +46,7 @@ $canAdmin = $this->getAcl()->checkACL('admin', 'com_joomgallery');
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('showTitle');
+$isShowTitle = $menuParam->get('showTitle') ?? true;
 
 // ToDo: may backfire for close, cancel usw ? save ?
 // return to userImage;

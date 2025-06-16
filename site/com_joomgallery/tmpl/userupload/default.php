@@ -45,7 +45,7 @@ $menuParam = $this->params['menu'];
 
 $isUseOrigFilename   = $config->get('jg_useorigfilename');
 $isUseFilenameNumber = $config->get('jg_filenamenumber');
-$isShowTitle = $menuParam->get('showTitle');
+$isShowTitle = $menuParam->get('showTitle') ?? true;
 
 $app = Factory::getApplication();
 

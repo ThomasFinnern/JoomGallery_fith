@@ -42,7 +42,7 @@ $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUse
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
 
-$isShowTitle = $menuParam->get('showTitle');
+$isShowTitle = $menuParam->get('showTitle') ?? true;
 
 $panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
 $uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
