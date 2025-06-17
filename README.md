@@ -10,10 +10,10 @@ https://www.joomgalleryfriends.net/
 **Support-Forum:**
 https://www.forum.joomgalleryfriends.net
 
-**Non-binding Release Plan:**
-https://www.forum.joomgalleryfriends.net/forum/index.php?thread/361-priorisierung/&postID=2056#post2056
+**Non-binding roadmap (DE):**
+https://www.forum.joomgalleryfriends.net/forum/index.php?thread/483-unverbindliche-roadmap/&postID=2880#post2880
 
-**Project Presentation:**
+**Project Presentation (DE):**
 https://docs.google.com/presentation/d/1kXGfGRrHswU0M3yh0zUvOwW1fYqB07cksHzNxzcEyxI
 
 ## Want to donate?
