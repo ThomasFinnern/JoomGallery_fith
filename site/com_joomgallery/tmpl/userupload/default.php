@@ -31,13 +31,13 @@ HTMLHelper::_('bootstrap.tooltip');
 
 $isHasAccess = $this->isUserLoggedIn && $this->isUserHasCategory && $this->isUserCoreManager;
 
-$panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
-$uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
-$categoriesView  = Route::_('index.php?option=com_joomgallery&view=usercategories');
-$imagesView      = Route::_('index.php?option=com_joomgallery&view=userimages');
+$panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
+$uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
+$categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
+$imagesView     = Route::_('index.php?option=com_joomgallery&view=userimages');
 
 // return to userPanel;
-$returnURL = base64_encode('index.php?option=com_joomgallery&view=userupload');
+$returnURL       = base64_encode('index.php?option=com_joomgallery&view=userupload');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
 
 $config    = $this->params['configs'];
@@ -45,7 +45,7 @@ $menuParam = $this->params['menu'];
 
 $isUseOrigFilename   = $config->get('jg_useorigfilename');
 $isUseFilenameNumber = $config->get('jg_filenamenumber');
-$isShowTitle = $menuParam->get('showTitle') ?? true;
+$isShowTitle         = $menuParam->get('showTitle') ?? true;
 
 $app = Factory::getApplication();
 
@@ -223,7 +223,6 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
       <?php endif; ?>
       <input type="hidden" name="id" value="0"/>
       <input type="hidden" name="return" value="<?php echo $returnURL; ?>"/>
-
 
       <?php echo HTMLHelper::_('form.token'); ?>
 

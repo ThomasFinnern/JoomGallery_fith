@@ -44,13 +44,13 @@ $menuParam = $this->params['menu'];
 
 $isShowTitle = $menuParam->get('showTitle') ?? true;
 
-$panelView       = Route::_('index.php?option=com_joomgallery&view=userpanel');
-$uploadView      = Route::_('index.php?option=com_joomgallery&view=userupload');
-$imagesView      = Route::_('index.php?option=com_joomgallery&view=userimages');
-$categoriesView  = Route::_('index.php?option=com_joomgallery&view=usercategories');
+$panelView      = Route::_('index.php?option=com_joomgallery&view=userpanel');
+$uploadView     = Route::_('index.php?option=com_joomgallery&view=userupload');
+$imagesView     = Route::_('index.php?option=com_joomgallery&view=userimages');
+$categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories');
 
 // return to userupload;
-$returnURL = base64_encode('index.php?option=com_joomgallery&view=userpanel');
+$returnURL       = base64_encode('index.php?option=com_joomgallery&view=userpanel');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
 
 $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=editImg&id=';
@@ -79,7 +79,7 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
             </div>
           </div>
-            </p>
+          </p>
 
         <?php else: ?>
 
@@ -138,7 +138,8 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
           <div class="card-body">
             <h5 class="card-title"><?php echo Text::_('COM_JOOMGALLERY_USER_PANEL_USER_IMAGES'); ?></h5>
 
-            <?php if(!empty($this->filterForm)) {
+            <?php if (!empty($this->filterForm))
+            {
               $test = "test";
               echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
             } ?>
@@ -244,7 +245,7 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
 
                       <td class="small d-none d-md-table-cell">
                         <!-- ToDo: fetch image anyhow as owner may see the imge -->
-                        <?php if ( $item->published): ?>
+                        <?php if ($item->published): ?>
                           <img class="jg_minithumb" src="<?php echo JoomHelper::getImg($item, 'thumbnail'); ?>"
                                alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
                         <?php else : ?>
@@ -258,14 +259,18 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                       <td scope="row" class="has-context title-cell">
                         <?php if ($canCheckin && $item->checked_out > 0) : ?>
                           <button class="js-grid-item-action tbody-icon" data-item-id="cb<?php echo $i; ?>"
-                              data-item-task="userimage.checkin">
+                                  data-item-task="userimage.checkin">
                             <span class="icon-checkedout" aria-hidden="true"></span>
                           </button>
                         <?php endif; ?>
-<!--                        <a-->
-<!--                          href="--><?php //echo Route::_(JoomHelper::getViewRoute('image', (int) $item->id, (int) $item->catid)); ?><!--">-->
-<!--                          --><?php //echo $this->escape($item->title); ?><!-- (--><?php //echo $this->escape($item->id); ?><!--)</a>-->
-<!--                        </a>-->
+                        <!--                        <a-->
+                        <!--                          href="-->
+                        <?php //echo Route::_(JoomHelper::getViewRoute('image', (int) $item->id, (int) $item->catid));
+                        ?><!--">-->
+                        <!--                          --><?php //echo $this->escape($item->title);
+                        ?><!-- (--><?php //echo $this->escape($item->id);
+                        ?><!--)</a>-->
+                        <!--                        </a>-->
                         <?php
                         $route = Route::_($baseLink_ImageEdit . (int) $item->id);
                         ?>
@@ -306,7 +311,9 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                               <span class="icon-edit" aria-hidden="true"></span>
                             </button-->
                             <?php
-                            $route = Route::_($baseLink_ImageEdit . (int) $item->id);
+                            //$route = Route::_($baseLink_ImageEdit . (int) $item->id);
+                            $linkWithReturn = $baseLink_ImageEdit . (int) $item->id . '&return=' . $returnURL;
+                            $route = Route::_($linkWithReturn);
                             ?>
                             <a href="<?php echo $route; ?>">
                               <span class="icon-edit" aria-hidden="true"></span>
@@ -329,7 +336,7 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                           <?php $statetask = ((int) $item->published) ? 'unpublish' : 'publish'; ?>
                           <button class="js-grid-item-action tbody-icon <?php echo $disabled; ?>"
                                   data-item-id="cb<?php echo $i; ?>"
-                              data-item-task="Userimage.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
+                                  data-item-task="Userimage.<?php echo $statetask; ?>" <?php echo $disabled; ?>>
                             <span class="icon-<?php echo (int) $item->published ? 'check' : 'cancel'; ?>"
                                   aria-hidden="true"></span>
                           </button>
@@ -356,8 +363,8 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
     <input type="hidden" name="return" value="<?php echo $returnURL; ?>"/>
     <input type="hidden" name="boxchecked" value="0"/>
     <input type="hidden" name="form_submited" value="1"/>
-        <input type="hidden" name="filter_order" value=""/>
-        <input type="hidden" name="filter_order_Dir" value=""/>
+    <input type="hidden" name="filter_order" value=""/>
+    <input type="hidden" name="filter_order_Dir" value=""/>
 
     <?php echo HTMLHelper::_('form.token'); ?>
   </form>
