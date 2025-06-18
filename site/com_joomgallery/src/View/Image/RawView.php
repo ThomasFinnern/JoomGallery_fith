@@ -171,11 +171,12 @@ class RawView extends AdminRawView
   /**
 	 * Check access to this image
 	 *
-	 * @param   int  $id    Image id
+	 * @param   int     $id    Image id
+   * @param   string  $type  Imagetype
 	 *
 	 * @return   bool    True on success, false otherwise
 	 */
-  protected function access($id)
+  protected function access($id, $type = 'thumbnail')
   {
     if($id === 'null') return true;
 
@@ -192,6 +193,13 @@ class RawView extends AdminRawView
 		{
 			$loaded = false;
 		}
+
+    // Check if the current user is the owner of the image
+    if($loaded && $type == 'thumbnail' && $this->item->created_by == $this->getCurrentUser()->id)
+    {
+      // Current user is the owner. Show thumbnails anyway.
+      return true;
+    }
 
     // Check if category is protected?
 		if($loaded && $model->getCategoryProtected())
