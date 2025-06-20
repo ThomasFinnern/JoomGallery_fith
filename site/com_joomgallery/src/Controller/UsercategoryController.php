@@ -288,8 +288,6 @@ class UsercategoryController extends FormController // ? JoomFormController
 
     // Redirect to the list screen.
     $returnPage = $this->getReturnPage();
-    //$itemAppend = $this->getItemAppend($recordId);
-    // $backLink = Route::_($returnPage . '&' . $itemAppend);
     $backLink = Route::_($returnPage);
     $this->setRedirect($backLink);
   }

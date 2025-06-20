@@ -270,7 +270,14 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_ca
                       $route = Route::_($baseLink_CategoryEdit . (int) $item->id);
                       ?>
                       <a href="<?php echo $route; ?>">
-                        <?php echo $this->escape($item->title); ?> (<?php echo $this->escape($item->id); ?>)</a>
+                        <?php echo $this->escape($item->title); ?>
+                        <?php
+                        if ($this->isDevelopSite)
+                        {
+                          echo '&nbsp;(' . $this->escape($item->id) . ')';
+                        }
+                        ?>
+                      </a>
                     </td>
 
                     <!--                  <td class="d-none d-lg-table-cell text-center">-->
