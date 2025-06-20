@@ -303,12 +303,16 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 	}
 
   /**
-   * @param   mixed  $config
+   * Reads php.ini values to determine the minimum size for upload
+   * The memory_limit for the php script was not reliable (0 on some sytems)
+   * so it is just shown
+   *
+   * @param   mixed  $joomGaleryConfig config of joom gallery
    *
    *
-   * @since version
+   * @since version 4.1
    */
-  public function limitsPhpConfig(mixed $config): void
+  public function limitsPhpConfig(mixed $joomGaleryConfig): void
   {
     $mediaHelper = new MediaHelper;
 
@@ -317,12 +321,9 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
     $this->postMaxSize = round($mediaHelper->toBytes(ini_get('post_max_size')) / (1024 * 1024));
     $this->memoryLimit = round($mediaHelper->toBytes(ini_get('memory_limit')) / (1024 * 1024));
 
-    $this->configSize = round($config->get('jg_maxfilesize') / (1024 * 1024));
+    $this->configSize = round($joomGaleryConfig->get('jg_maxfilesize') / (1024 * 1024));
 
     // Max size to be used (previously defined by joomla function but ...)
-
-    // memoryLimit on ionos server showed 0 therefore other calculation
-    // original: $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->memoryLimit, $this->configSize);
     $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->configSize);
   }
 
