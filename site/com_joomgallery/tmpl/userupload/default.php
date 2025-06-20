@@ -109,12 +109,12 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
             </div>
             </p>
           <?php else: ?>
-            <!--                  <div class="mb-2">-->
-            <!--                      <a class="btn btn-primary" href="--><?php //echo $panelView; ?><!--" role="button">-->
-            <!--                          <span class="icon-home"></span>-->
-            <!--                          --><?php //echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-            <!--                      </a>-->
-            <!--                  </div>-->
+            <!--  <div class="mb-2">-->
+            <!--      <a class="btn btn-primary" href="--><?php //echo $panelView; ?><!--" role="button">-->
+            <!--          <span class="icon-home"></span>-->
+            <!--          --><?php //echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+            <!--      </a>-->
+            <!--  </div>-->
 
             <?php if (!$this->isUserHasCategory): ?>
               <p>
@@ -233,20 +233,22 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
 
 <?php
 /**
- * Display system settings as collapsed
+ * Display system limits as collapsed
  *
- * @param   string  $title     The displayed title of the content
- * @param   array   $settings  Array with hold the data
+ * Parameter: limits in megabytes, created in viewhtml.php
+ * * @param   int  $UploadLimit  php setting 'upload_max_filesize'
+ * * @param   int  $PostMaxSize  php setting 'post_max_size'
+ * * @param   int  $MemoryLimit  php setting 'memory_limit'
+ * * @param   int  $configSize  upload limit by joomgallery configuraion
+ * * @param   int  $maxSize  Min of above
  *
  * @since 4.0.0
  */
 function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $configSize, $maxSize)
 {
-  // $title =  Text::sprintf('COM_JOOMGALLERY_UPLOAD_LIMIT_IS', $maxSize);
   $title  = Text::sprintf('COM_JOOMGALLERY_POST_MAX_SIZE_IS', $maxSize);
-  $id     = 127;
-  $itemId = 128;
-
+  $id     = 127000;
+  $itemId = 127001;
   ?>
 
   <div class="card">
@@ -263,8 +265,8 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
           <div class="accordion-body">
             <table class="table table-striped">
               <thead>
-              <tr>
-              </tr>
+                <tr>&nbsp;</tr>
+                <tr>&nbsp;</tr>
               </thead>
               <tbody>
               <tr>
@@ -272,8 +274,7 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
                   <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_UPLOAD_LIMIT_IS', $UploadLimit); ?>
                 </td>
                 <td class="d-md-table-cell">
-                  <?php // echo $value;
-                  ?>
+                  <strong><?php echo $UploadLimit; ?></strong>&nbsp;MB ('upload_max_filesize')"
                 </td>
               </tr>
 
@@ -282,8 +283,7 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
                   <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_POST_MAX_SIZE_IS', $PostMaxSize); ?>
                 </td>
                 <td class="d-md-table-cell">
-                  <?php // echo $value;
-                  ?>
+                  <strong><?php echo $PostMaxSize; ?></strong>&nbsp;MB ('post_max_size')
                 </td>
               </tr>
 
@@ -292,8 +292,7 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
                   <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_POST_MEMORY_LIMIT_IS', $MemoryLimit); ?>
                 </td>
                 <td class="d-md-table-cell">
-                  <?php // echo $value;
-                  ?>
+                  <strong><?php echo $MemoryLimit; ?></strong>&nbsp;MB ('memory_limit')
                 </td>
               </tr>
 
@@ -302,21 +301,18 @@ function DisplaySystemSettings($UploadLimit, $PostMaxSize, $MemoryLimit, $config
                   <?php echo Text::sprintf('COM_JOOMGALLERY_UPLOAD_CONFIG_LIMIT_IS', $configSize); ?>
                 </td>
                 <td class="d-md-table-cell">
-                  <?php // echo $value;
-                  ?>
+                  <strong><?php echo $configSize; ?></strong>&nbsp;MB
                 </td>
               </tr>
 
               </tbody>
             </table>
           </div>
-        </div><!--/accordion-collapse-->
-      </div><!--/accordion-item-->
-    </div><!--/accordion -->
-  </div><!--/card -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <?php return;
-
 }
-
-
+?>

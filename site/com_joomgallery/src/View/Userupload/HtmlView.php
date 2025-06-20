@@ -155,24 +155,9 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 
 	    $this->js_vars = $js_vars;
 
-      //--- Limits --------------------------------------------------------------------
+      //--- Limits php.ini, config ----------------------------------------------------------------
 
-      // Instantiate the media helper
-      $mediaHelper = new MediaHelper;
-
-      // Maximum allowed size in MB
-      $this->uploadLimit = round($mediaHelper->toBytes(ini_get('upload_max_filesize')) / (1024 * 1024));
-      $this->postMaxSize = round($mediaHelper->toBytes(ini_get('post_max_size')) / (1024 * 1024));
-      $this->memoryLimit = round($mediaHelper->toBytes(ini_get('memory_limit')) / (1024 * 1024));
-
-      // $js_vars
-      //$this->configSize = round($mediaHelper->toBytes($config->get('jg_maxfilesize')) / (1024 * 1024));
-      $this->configSize = round($config->get('jg_maxfilesize') / (1024 * 1024));
-
-      // Max size to be used (previously defined by joomla function but ...)
-      // j old: $max_size   = parseSize(ini_get('post_max_size'));
-      // j old: $upload_max = parseSize(ini_get('upload_max_filesize'));
-      $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->memoryLimit, $this->configSize);
+      $this->limitsPhpConfig($config);
 
 
 //
@@ -317,5 +302,28 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
 		return $tus_location;
 	}
 
+  /**
+   * @param   mixed  $config
+   *
+   *
+   * @since version
+   */
+  public function limitsPhpConfig(mixed $config): void
+  {
+    $mediaHelper = new MediaHelper;
+
+    // Maximum allowed size in MB
+    $this->uploadLimit = round($mediaHelper->toBytes(ini_get('upload_max_filesize')) / (1024 * 1024));
+    $this->postMaxSize = round($mediaHelper->toBytes(ini_get('post_max_size')) / (1024 * 1024));
+    $this->memoryLimit = round($mediaHelper->toBytes(ini_get('memory_limit')) / (1024 * 1024));
+
+    $this->configSize = round($config->get('jg_maxfilesize') / (1024 * 1024));
+
+    // Max size to be used (previously defined by joomla function but ...)
+
+    // memoryLimit on ionos server showed 0 therefore other calculation
+    // original: $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->memoryLimit, $this->configSize);
+    $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->configSize);
+  }
 
 } // class
