@@ -457,7 +457,6 @@
               min="1"
               step="1"
               showon="jg_userspace:1"
-              class="hidden"
               label="COM_JOOMGALLERY_CONFIG_MAX_USERCATS"
               description="COM_JOOMGALLERY_CONFIG_MAX_USERCATS_LONG" />
 
@@ -468,7 +467,6 @@
               min="1"
               step="1"
               showon="jg_userspace:1"
-              class="hidden"
               label="COM_JOOMGALLERY_CONFIG_MAX_USERIMGS"
               description="COM_JOOMGALLERY_CONFIG_MAX_USERIMGS_LONG" />
 
@@ -479,7 +477,6 @@
               step="1"
               default="0"
               showon="jg_userspace:1"
-              class="hidden"
               label="COM_JOOMGALLERY_CONFIG_MAX_USERIMGS_TIMESPAN"
               description="COM_JOOMGALLERY_CONFIG_MAX_USERIMGS_TIMESPAN_LONG" />
 
@@ -490,7 +487,6 @@
               min="1"
               step="1"
               showon="jg_userspace:1"
-              class="hidden"
               label="COM_JOOMGALLERY_CONFIG_MAX_FILESIZE"
               description="COM_JOOMGALLERY_CONFIG_MAX_FILESIZE_LONG" />
     </fieldset>
