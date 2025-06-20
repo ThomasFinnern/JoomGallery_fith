@@ -79,36 +79,29 @@ $canDelete = false;
 
     <?php if (empty($isHasAccess)): ?>
       <div>
-        <?php // ToDo: discuss link to 'goto login' ?>
         <?php if (!$this->isUserLoggedIn): ?>
-          <p>
           <div class="mb-2">
             <div class="alert alert-warning" role="alert">
               <span class="icon-key"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
             </div>
           </div>
-          </p>
 
         <?php else: ?>
 
           <?php if (!$this->isUserHasCategory): ?>
-            <p>
             <div class="alert alert-warning" role="alert">
               <span class="icon-images"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
             </div>
-            </p>
           <?php endif; ?>
           <?php if (!$this->isUserCoreManager): ?>
-            <p>
             <div class="alert alert-warning" role="alert">
               <span class="icon-lamp"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
             </div>
-            </p>
           <?php endif; ?>
         <?php endif; ?>
       </div>
@@ -117,32 +110,37 @@ $canDelete = false;
 
       <div class="form-group">
 
-        <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
-          <span class="icon-images"></span>
-          <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
-        </a>
+        <div class="mb-4">
+          <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
+            <span class="icon-images"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
+          </a>
 
-        <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
-          <span class="icon-upload"></span>
-          <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
-        </a>
+          <a class="btn btn-success" href="<?php echo $newCategoryView; ?>" role="button">
+            <span class="icon-plus"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_NEW_CATEGORY'); ?>
+          </a>
 
-        <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
-          <span class="icon-home"></span>
-          <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
-        </a>
+          <a class="btn btn-primary" href="<?php echo $uploadView; ?>" role="button">
+            <span class="icon-upload"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD'); ?>
+          </a>
+
+          <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
+            <span class="icon-home"></span>
+            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+          </a>
+        </div>
 
       </div>
 
-    <div class="card ">
-      <div class="card-body">
+      <div class="card ">
+        <div class="card-body">
 
           <?php if (!empty($this->filterForm))
           {
-            $test = "test";
             echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
           } ?>
-
 
           <?php if (empty($this->items)) : ?>
             <div class="alert alert-info">

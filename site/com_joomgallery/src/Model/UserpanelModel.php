@@ -91,13 +91,19 @@ class UserpanelModel extends ImagesModel
 		// List state information.
 		parent::populateState($ordering, $direction);
 
-		// Set filters based on how the view is used.
+//    // tried to use list_limit in menu for first limit but failed
+//    $params = $this->app->getParams();
+//    $limit = $this->app->getParams()->get('list_limit');
+//    $activeMenu = $this->app->getMenu()->getActive();
+//    $limit = $activeMenu->getParams()->get('list_limit');
+//    if( ! empty ($limit)) {
+//      $this->setState('list.limit', $limit);
+//    }
+
+    // Set filters based on how the view is used.
 		//  e.g. user list of categories:
     $this->setState('filter.created_by', Factory::getApplication()->getIdentity()->id);
     $this->setState('filter.created_by.include', true);
-
-    // get state ... set state ... => limit
-
 
     $this->loadComponentParams();
 	}

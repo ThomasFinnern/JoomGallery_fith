@@ -70,36 +70,29 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
 
     <?php if (empty($isHasAccess)): ?>
       <div>
-        <?php // ToDo: discuss link to 'goto login' ?>
         <?php if (!$this->isUserLoggedIn): ?>
-          <p>
           <div class="mb-2">
             <div class="alert alert-warning" role="alert">
               <span class="icon-key"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_PLEASE_LOGIN'); ?>
             </div>
           </div>
-          </p>
 
         <?php else: ?>
 
           <?php if (!$this->isUserHasCategory): ?>
-            <p>
             <div class="alert alert-warning" role="alert">
               <span class="icon-images"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_CATEGORY'); ?>
               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
             </div>
-            </p>
           <?php endif; ?>
           <?php if (!$this->isUserCoreManager): ?>
-            <p>
             <div class="alert alert-warning" role="alert">
               <span class="icon-lamp"></span>
               <?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_MISSING_RIGHTS'); ?>
               <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo Text::_('COM_JOOMGALLERY_USER_UPLOAD_CHECK_W_ADMIN'); ?>
             </div>
-            </p>
           <?php endif; ?>
         <?php endif; ?>
       </div>
@@ -108,7 +101,7 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
 
       <div class="form-group">
 
-        <div class="mb-2">
+        <div class="mb-4">
           <a class="btn btn-info" href="<?php echo $imagesView; ?>" role="button">
             <span class="icon-list"></span>
             <?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?>
@@ -140,7 +133,6 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
 
             <?php if (!empty($this->filterForm))
             {
-              $test = "test";
               echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
             } ?>
 
@@ -151,7 +143,6 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                 <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
               </div>
             <?php else : ?>
-
 
               <div class="clearfix"></div>
 
@@ -244,8 +235,8 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                       <?php endif; ?>
 
                       <td class="small d-none d-md-table-cell">
-                          <img class="jg_minithumb" src="<?php echo JoomHelper::getImg($item, 'thumbnail'); ?>"
-                               alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
+                        <img class="jg_minithumb" src="<?php echo JoomHelper::getImg($item, 'thumbnail'); ?>"
+                             alt="<?php echo Text::_('COM_JOOMGALLERY_THUMBNAIL'); ?>">
                       </td>
 
                       <td scope="row" class="has-context title-cell">
@@ -305,7 +296,7 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
                             <?php
                             //$route = Route::_($baseLink_ImageEdit . (int) $item->id);
                             $linkWithReturn = $baseLink_ImageEdit . (int) $item->id . '&return=' . $returnURL;
-                            $route = Route::_($linkWithReturn);
+                            $route          = Route::_($linkWithReturn);
                             ?>
                             <a href="<?php echo $route; ?>">
                               <span class="icon-edit" aria-hidden="true"></span>
