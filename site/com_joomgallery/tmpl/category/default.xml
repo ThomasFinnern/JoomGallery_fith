@@ -213,9 +213,9 @@
                 min="1"
                 max="9999"
                 step="1"
+                filter="integer"
                 label="COM_JOOMGALLERY_CONFIG_NUMB_IMAGES"
                 description="COM_JOOMGALLERY_CONFIG_NUMB_IMAGES_DESC"
-                filter="int"
                 showon="jg_category_view_pagination!:1"
             />
             <field
