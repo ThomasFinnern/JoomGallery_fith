@@ -56,7 +56,7 @@ $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&
 $returnURL = base64_encode('index.php?option=com_joomgallery&view=usercategories');
 
 $baseLink_CategoryEdit = 'index.php?option=com_joomgallery&view=usercategory&layout=editCat&id=';
-$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_category=';
+$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=userimages&filter_category=';
 
 ?>
 

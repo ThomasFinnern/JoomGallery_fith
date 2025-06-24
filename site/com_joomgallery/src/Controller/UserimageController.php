@@ -110,7 +110,7 @@ class UserimageController extends FormController
 		if(!$data)
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend(),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend(),false));
 
 			return false;
 		}
@@ -231,7 +231,7 @@ class UserimageController extends FormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId), false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($recordId), false));
 
 			return false;
 		}
@@ -241,8 +241,8 @@ class UserimageController extends FormController
 		$this->app->setUserState('com_joomgallery.edit.image.data', null);
 
 		// Redirect to the list screen.
-		$tmp = $this->getReturnPage().'&'.$this->getItemAppend($recordId);
-		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($recordId),false));
+		$tmp = $this->getReturnPage('userimages').'&'.$this->getItemAppend($recordId);
+		$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($recordId),false));
 	}
 
 	/**
@@ -275,7 +275,7 @@ class UserimageController extends FormController
 		if(!$removeId)
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend(),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend(),false));
 
 			return false;
 		}
@@ -285,7 +285,7 @@ class UserimageController extends FormController
 		if(!$this->acl->checkACL('delete', 'image', $removeId, $parent_id, true))
 		{
 			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId),false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($removeId),false));
 
 			return false;
 		}
@@ -297,7 +297,7 @@ class UserimageController extends FormController
 		if($model->delete($removeId) === false)
 		{
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_DELETE_FAILED', $model->getError()), 'error');
-			$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+			$this->app->redirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($removeId), false));
 
 			return false;
 		}
@@ -307,7 +307,7 @@ class UserimageController extends FormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($removeId), false));
 
 			return false;
 		}
@@ -318,7 +318,7 @@ class UserimageController extends FormController
 
 		// Redirect to the list screen.
 		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_DELETE_SUCCESSFUL'), 'success');
-		$this->app->redirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($removeId), false));
+		$this->app->redirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($removeId), false));
   }
 
   /**
@@ -387,7 +387,7 @@ class UserimageController extends FormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('images').'&'.$this->getItemAppend($id), false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id), false));
 
 			return false;
 		}
