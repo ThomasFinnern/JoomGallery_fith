@@ -53,7 +53,9 @@ $categoriesView = Route::_('index.php?option=com_joomgallery&view=usercategories
 $returnURL       = base64_encode('index.php?option=com_joomgallery&view=userimages');
 $newCategoryView = Route::_('index.php?option=com_joomgallery&view=usercategory&layout=editCat&return=' . $returnURL);
 
-$baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=editImg&id=';
+//$baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=editImg&id=';
+$baseLink_ImageEdit = 'index.php?option=com_joomgallery&task=userimage.edit&id=';
+
 //$baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=images&filter_image=';
 
 $canDelete = false;

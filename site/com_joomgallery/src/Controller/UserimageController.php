@@ -327,11 +327,63 @@ class UserimageController extends FormController
    * @throws \Exception
    */
   public function edit($key = null, $urlVar = null)
-  {
-//    throw new \Exception('Edit image not possible. Use image controller instead.', 503);
-    $test = 'Edit image not possible. Use image controller instead.';
+	{
+		// Get the previous edit id (if any) and the current edit id.
+		$previousId = (int) $this->app->getUserState(_JOOM_OPTION.'.edit.image.id');
+    $cid        = (array) $this->input->post->get('cid', [], 'int');
+    $boxchecked = (bool) $this->input->getInt('boxchecked', 0);
+    if($boxchecked)
+    {
+      $editId = (int) $cid[0];
+    }
+    else
+    {
+      $editId = $this->input->getInt('id', 0);
+    }
 
-    return parent::edit($key, $urlVar);
+    // ID check
+		if(!$editId)
+		{
+			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_ITEMID_MISSING'), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($editId),false));
+
+			return false;
+		}
+
+    // Access check
+		$parent_id = JoomHelper::getParent('image', $editId);
+		if(!$this->acl->checkACL('edit', 'image', $editId, $parent_id, true))
+		{
+			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($editId),false));
+
+			return false;
+		}
+
+		// Set the current edit id in the session.
+		$this->app->setUserState(_JOOM_OPTION.'.edit.image.id', $editId);
+
+		// Get the model.
+		$model = $this->getModel('Image', 'Site');
+
+		// Check out the item
+		if(!$model->checkout($editId))
+		{
+			// Check-out failed, display a notice but allow the user to see the record.
+			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()), 'error');
+			$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($editId),false));
+
+			return false;
+		}
+
+		// Check in the previous user.
+		if($previousId && $previousId !== $editId)
+		{
+			$model->checkin($previousId);
+		}
+
+		// Redirect to the form screen.
+    $this->setRedirect(Route::_('index.php?option='._JOOM_OPTION.'&view=userimage&layout=editImg&id=' . $editId . $this->getItemAppend()), false);
   }
 
 	/**
