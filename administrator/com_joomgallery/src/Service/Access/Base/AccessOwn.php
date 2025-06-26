@@ -14,6 +14,7 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\Access\Base;
 
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Access\Access;
+use \Joomla\Database\DatabaseInterface;
 use \Joomgallery\Component\Joomgallery\Administrator\Helper\JoomHelper;
 
 /**
@@ -157,38 +158,36 @@ class AccessOwn extends Access
 
     $groupsOfUser = self::$identities[$userId];
 
-    if (empty($ancestors)){
-      $Test = $action;
-    }
-    if (! empty($ancestors))
+    $assetOwner = null;
+    if (isset(\end($ancestors)->owner))
     {
       $assetOwner = \end($ancestors)->owner;
+    }
 
-      foreach ($ancestors as $key => $ancestor)
+    foreach($ancestors as $key => $ancestor)
+    {
+      // Get rules
+      $rules = \json_decode($ancestor->rules);
+      if(!\in_array($action, \array_keys(\get_object_vars($rules))))
       {
-        // Get rules
-        $rules = \json_decode($ancestor->rules);
-        if (!\in_array($action, \array_keys(\get_object_vars($rules))))
+        // This ancestor does not contain any rule for the current action
+        continue;
+      }
+    
+      if($assetOwner == $userId)
+      {
+        // User is owner of this ancestor
+        foreach($rules->{$action} as $groupId => $allowed)
         {
-          // This ancestor does not contain any rule for the current action
-          continue;
-        }
-
-        if ($assetOwner == $userId)
-        {
-          // User is owner of this ancestor
-          foreach ($rules->{$action} as $groupId => $allowed)
+          if(\in_array($groupId, $groupsOfUser))
           {
-            if (\in_array($groupId, $groupsOfUser))
-            {
-              // Usergroup is allowed to perform the action
-              $result = \boolval($allowed);
+            // Usergroup is allowed to perform the action
+            $result = \boolval($allowed);
 
-              // An explicit deny wins.
-              if ($result === false)
-              {
-                break;
-              }
+            // An explicit deny wins.
+            if($result === false)
+            {
+              break;
             }
           }
         }
@@ -211,7 +210,7 @@ class AccessOwn extends Access
     if(empty(self::$viewLevelsList))
     {
       // Get a database object.
-      $db = Factory::getDbo();
+      $db = Factory::getContainer()->get(DatabaseInterface::class);
 
       // Build the base query.
       $query = $db->getQuery(true)

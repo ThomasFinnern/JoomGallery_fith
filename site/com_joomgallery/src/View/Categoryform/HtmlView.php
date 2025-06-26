@@ -1,4 +1,5 @@
 <?php
+
 /**
 ******************************************************************************************
 **   @package    com_joomgallery                                                        **
@@ -68,44 +69,40 @@ class HtmlView extends JoomGalleryView
 	 */
 	public function display($tpl = null)
 	{
-		$this->app->enqueueMessage('Cat..Form ' . Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
+		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_NOT_YET_AVAILABLE'), 'warning');
 
-//		if(!$this->app->input->get('preview', 0))
-//		{
-//			return;
-//		}
-//
-		// Load state and params
-		$this->state  = $this->get('State');
-		$this->params = $this->get('Params');
-		$this->item   = $this->get('Item');
-
-    // ToDo: fix for empty Id: item->id=null
-    if (empty($this->item->id)) {
-      $this->item->id =0;
+    if(!$this->app->input->get('preview', 0))
+    {
+      return;
     }
 
-    $this->form		= $this->get('Form');
+    /** @var CategoryfromModel $model */
+    $model = $this->getModel();
+
+    $this->state  = $model->getState();
+    $this->params = $model->getParams();
+    $this->item   = $model->getItem();
+    $this->form   = $model->getForm();
 
     // Get return page
-    $this->return_page = $this->get('ReturnPage');		
+    $this->return_page = $model->getReturnPage();
 
     // Check access view level
-		if(!\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))
+    if(!\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))
     {
       $this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ERROR_ACCESS_VIEW'), 'error');
-			return;
+      return;
     }
-		
-		// Check for errors.
-		if(\count($errors = $this->get('Errors')))
-		{
-			throw new GenericDataException(\implode("\n", $errors), 500);
-		}
 
-		$this->_prepareDocument();
+    // Check for errors.
+    if(count($errors = $model->getErrors()))
+    {
+      throw new GenericDataException(implode("\n", $errors), 500);
+    }
 
-		parent::display($tpl);
+    $this->_prepareDocument();
+
+    parent::display($tpl);
 	}
 
 	/**

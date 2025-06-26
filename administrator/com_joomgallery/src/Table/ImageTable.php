@@ -33,7 +33,8 @@ class ImageTable extends Table implements VersionableTableInterface
 {
   use JoomTableTrait;
   use NoAssetTableTrait;
-	use MigrationTableTrait;
+  use MigrationTableTrait;
+  use LegacyDatabaseTrait;
 
 	/**
 	 * Constructor
@@ -64,7 +65,7 @@ class ImageTable extends Table implements VersionableTableInterface
 	protected function _getAssetParentId($table = null, $id = null)
 	{
 		// We will retrieve the parent-asset from the Asset-table
-		$assetTable = new Asset($this->getDbo());
+		$assetTable = new Asset($this->getDatabase());
 
 		if($this->catid)
 		{
@@ -180,7 +181,7 @@ class ImageTable extends Table implements VersionableTableInterface
 			}
 			else
 			{
-				if(Factory::getConfig()->get('unicodeslugs') == 1)
+				if(Factory::getApplication()->getConfig()->get('unicodeslugs') == 1)
 				{
 					$array['alias'] = OutputFilter::stringURLUnicodeSlug(trim($array['title']));
 				}
@@ -192,7 +193,7 @@ class ImageTable extends Table implements VersionableTableInterface
 		}
     else
     {
-      if(Factory::getConfig()->get('unicodeslugs') == 1)
+      if(Factory::getApplication()->getConfig()->get('unicodeslugs') == 1)
       {
         $array['alias'] = OutputFilter::stringURLUnicodeSlug(trim($array['alias']));
       }
@@ -516,18 +517,19 @@ class ImageTable extends Table implements VersionableTableInterface
     }
 		$checkedOutField = $this->getColumnAlias('checked_out');
 
+		$db = $this->getDatabase();
 		foreach ($pks as $pk)
 		{
 			// Update the publishing state for rows with the given primary keys.
-			$query = $this->_db->getQuery(true)
+			$query = $db->getQuery(true)
 				->update($this->_tbl)
-				->set($this->_db->quoteName($stateField) . ' = ' . (int) $state);
+				->set($db->quoteName($stateField) . ' = ' . (int) $state);
 
 			// If publishing, set published date/time if not previously set
 			if ($state && $this->hasField('publish_up') && (int) $this->publish_up == 0)
 			{
-				$nowDate = $this->_db->quote(Factory::getDate()->toSql());
-				$query->set($this->_db->quoteName($this->getColumnAlias('publish_up')) . ' = ' . $nowDate);
+				$nowDate = $db->quote(Factory::getDate()->toSql());
+				$query->set($db->quoteName($this->getColumnAlias('publish_up')) . ' = ' . $nowDate);
 			}
 
 			// Determine if there is checkin support for the table.
@@ -535,9 +537,9 @@ class ImageTable extends Table implements VersionableTableInterface
 			{
 				$query->where(
 					'('
-						. $this->_db->quoteName($checkedOutField) . ' = 0'
-						. ' OR ' . $this->_db->quoteName($checkedOutField) . ' = ' . (int) $userId
-						. ' OR ' . $this->_db->quoteName($checkedOutField) . ' IS NULL'
+						. $db->quoteName($checkedOutField) . ' = 0'
+						. ' OR ' . $db->quoteName($checkedOutField) . ' = ' . (int) $userId
+						. ' OR ' . $db->quoteName($checkedOutField) . ' IS NULL'
 					. ')'
 				);
 				$checkin = true;
@@ -550,11 +552,11 @@ class ImageTable extends Table implements VersionableTableInterface
 			// Build the WHERE clause for the primary keys.
 			$this->appendPrimaryKeys($query, $pk);
 
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
 
 			try
 			{
-				$this->_db->execute();
+				$db->execute();
 			}
 			catch (\RuntimeException $e)
 			{
@@ -565,7 +567,7 @@ class ImageTable extends Table implements VersionableTableInterface
 			}
 
 			// If checkin is supported and all rows were adjusted, check them in.
-			if ($checkin && (\count($pks) == $this->_db->getAffectedRows()))
+			if ($checkin && (\count($pks) == $db->getAffectedRows()))
 			{
 				$this->checkIn($pk);
 			}
