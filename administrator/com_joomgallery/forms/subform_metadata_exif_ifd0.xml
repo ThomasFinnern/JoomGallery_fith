@@ -2,19 +2,16 @@
 <form>
   <field name="ImageDescription"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_IMAGEDESCRIPTION"
          message="COM_JOOMGALLERY_IFD0_IMAGEDESCRIPTION_DESCRIPTION" />
 
   <field name="Make"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_MAKE"
          message="COM_JOOMGALLERY_IFD0_MAKE_DESCRIPTION" />
 
   <field name="Model"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_MODEL"
          message="COM_JOOMGALLERY_IFD0_MODEL_DESCRIPTION" />
 
@@ -59,7 +56,6 @@
 
   <field name="Software"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_SOFTWARE"
          message="COM_JOOMGALLERY_IFD0_SOFTWARE_DESCRIPTION" />
 
@@ -71,7 +67,6 @@
 
   <field name="Artist"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_ARTIST"
          message="COM_JOOMGALLERY_IFD0_ARTIST_DESCRIPTION" />
 
@@ -110,7 +105,6 @@
 
   <field name="Copyright"
          type="text"
-         pattern="^[\x20-\x7E]*$"
          label="COM_JOOMGALLERY_IFD0_COPYRIGHT"
          message="COM_JOOMGALLERY_IFD0_COPYRIGHT_DESCRIPTION" />
 </form>

@@ -310,7 +310,7 @@ class MetadataPHP extends BaseMetadata implements MetadataInterface
         if ($key == "2#025") {
           $keywords = "";
           foreach ($value as $tag) {
-            $keywords .= $tag . ", ";
+            $keywords .= str_replace("\0", "", $tag) . ", ";
           }
           $value[0] = substr($keywords, 0, -2);
         }
