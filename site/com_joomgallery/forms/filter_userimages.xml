@@ -23,6 +23,7 @@
               type="jgcategorydropdown"
               layout="joomla.form.field.list-fancy-select"
               label="COM_JOOMGALLERY_COMMON_ALL"
+              categoriesOfUser="true"
               onchange="this.form.submit();"
               show_root="false"
               multiple="true"
