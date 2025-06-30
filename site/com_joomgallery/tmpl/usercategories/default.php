@@ -116,7 +116,7 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=userimages&filte
           </a>
 
           <a class="btn btn-info" href="<?php echo $imagesView; ?>" role="button">
-            <span class="icon-list"></span>
+            <span class="icon-images"></span>
             <?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?>
           </a>
 

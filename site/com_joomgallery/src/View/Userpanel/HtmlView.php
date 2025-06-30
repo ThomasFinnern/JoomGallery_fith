@@ -232,7 +232,7 @@ class HtmlView extends JoomGalleryView
     {
       // Add Breadcrumbs
       $pathway = $this->app->getPathway();
-      $breadcrumbTitle = Text::_('COM_JOOMGALLERY_USER_IMAGES');
+      $breadcrumbTitle = Text::_('COM_JOOMGALLERY_USER_PANEL');
 
       if(!\in_array($breadcrumbTitle, $pathway->getPathwayNames()))
       {

@@ -114,7 +114,7 @@ $canDelete = false;
 
         <div class="mb-4">
           <a class="btn btn-info" href="<?php echo $categoriesView; ?>" role="button">
-            <span class="icon-images"></span>
+            <span class="icon-folder"></span>
             <?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?>
           </a>
 
