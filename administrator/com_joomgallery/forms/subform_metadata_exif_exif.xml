@@ -15,9 +15,10 @@
     
     <field name="ExposureProgram"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_EXPOSUREPROGRAM"
            description="COM_JOOMGALLERY_SUBIFD_EXPOSUREPROGRAM_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="0">COM_JOOMGALLERY_SUBIFD_EXPOSUREPROGRAM_0</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_EXPOSUREPROGRAM_1</option>
         <option value="2">COM_JOOMGALLERY_SUBIFD_EXPOSUREPROGRAM_2</option>
@@ -100,9 +101,10 @@
     
     <field name="MeteringMode"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_METERINGMODE"
            description="COM_JOOMGALLERY_SUBIFD_METERINGMODE_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="0">COM_JOOMGALLERY_SUBIFD_METERINGMODE_0</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_METERINGMODE_1</option>
         <option value="2">COM_JOOMGALLERY_SUBIFD_METERINGMODE_2</option>
@@ -115,9 +117,10 @@
     
     <field name="LightSource"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_LIGHTSOURCE"
            description="COM_JOOMGALLERY_SUBIFD_LIGHTSOURCE_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="0">COM_JOOMGALLERY_SUBIFD_LIGHTSOURCE_0</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_LIGHTSOURCE_1</option>
         <option value="2">COM_JOOMGALLERY_SUBIFD_LIGHTSOURCE_2</option>
@@ -143,9 +146,10 @@
     
     <field name="Flash"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_FLASH"
            description="COM_JOOMGALLERY_SUBIFD_FLASH_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="0">COM_JOOMGALLERY_SUBIFD_FLASH_0</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_FLASH_1</option>
         <option value="5">COM_JOOMGALLERY_SUBIFD_FLASH_5</option>
@@ -217,9 +221,10 @@
     
     <field name="FocalPlaneResolutionUnit"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_FOCALPLANERESOLUTIONUNIT"
            description="COM_JOOMGALLERY_SUBIFD_FOCALPLANERESOLUTIONUNIT_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_FOCALPLANERESOLUTIONUNIT_1</option>
         <option value="2">COM_JOOMGALLERY_SUBIFD_FOCALPLANERESOLUTIONUNIT_2</option>
         <option value="3">COM_JOOMGALLERY_SUBIFD_FOCALPLANERESOLUTIONUNIT_3</option>
@@ -233,9 +238,10 @@
     
     <field name="SensingMethod"
            type="list"
-           default="1"
+           default=""
            label="COM_JOOMGALLERY_SUBIFD_SENSINGMETHOD"
            description="COM_JOOMGALLERY_SUBIFD_SENSINGMETHOD_DESCRIPTION">
+        <option value="">JOPTION_DO_NOT_USE</option>
         <option value="1">COM_JOOMGALLERY_SUBIFD_SENSINGMETHOD_1</option>
         <option value="2">COM_JOOMGALLERY_SUBIFD_SENSINGMETHOD_2</option>
         <option value="3">COM_JOOMGALLERY_SUBIFD_SENSINGMETHOD_3</option>

@@ -17,9 +17,10 @@
 
   <field name="Orientation"
          type="list"
-         default="1"
+         default=""
          label="COM_JOOMGALLERY_IFD0_ORIENTATION"
          description="COM_JOOMGALLERY_IFD0_ORIENTATION_DESCRIPTION">
+      <option value="">JOPTION_DO_NOT_USE</option>
       <option value="1">COM_JOOMGALLERY_IFD0_ORIENTATION_1</option>
       <option value="2">COM_JOOMGALLERY_IFD0_ORIENTATION_2</option>
       <option value="3">COM_JOOMGALLERY_IFD0_ORIENTATION_3</option>
@@ -44,9 +45,10 @@
 
   <field name="ResolutionUnit"
          type="list"
-         default="1"
+         default=""
          label="COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT"
          description="COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_DESCRIPTION">
+      <option value="">JOPTION_DO_NOT_USE</option>
       <option value="1">COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_1</option>
       <option value="2">COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_2</option>
       <option value="3">COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_3</option>
@@ -90,9 +92,10 @@
 
   <field name="YCbCrPositioning"
          type="list"
-         default="1"
+         default=""
          label="COM_JOOMGALLERY_IFD0_YCBCRPOSITIONING"
          description="COM_JOOMGALLERY_IFD0_YCBCRPOSITIONING_DESCRIPTION">
+      <option value="">JOPTION_DO_NOT_USE</option>
       <option value="1">COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_1</option>
       <option value="2">COM_JOOMGALLERY_IFD0_RESOLUTIONUNIT_2</option>
   </field>
