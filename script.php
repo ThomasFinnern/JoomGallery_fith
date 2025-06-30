@@ -332,6 +332,16 @@ class com_joomgalleryInstallerScript extends InstallerScript
     $new_version = explode('.',$this->new_code);
 
     $update_message = $this->getInstallerMSG($act_version, $new_version, 'update');
+
+    $popupOptions = ['popupType'  => 'ajax',
+                     'textHeader' => Text::sprintf('COM_JOOMGALLERY_CHANGELOG_VERSION', $parent->getManifest()->version),
+                     'src'        => Route::_('index.php?option=com_installer&task=manage.loadChangelogRaw&eid=' . $parent->extension->extension_id . '&source=manage&format=raw', false),
+                     'width'      => '800px',
+                     'height'     => 'fit-content',
+                    ];
+    /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+    $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+    $wa->useScript('joomla.dialog-autocreate');
     ?>
 
     <div class="text-center">
@@ -340,7 +350,7 @@ class com_joomgalleryInstallerScript extends InstallerScript
       <div class="alert alert-light">
         <h3><?php echo Text::sprintf('COM_JOOMGALLERY_SUCCESS_UPDATE', $parent->getManifest()->version); ?></h3>
         <p>
-          <button class="btn btn-small btn-info" data-toggle="modal" data-target="#jg-changelog-popup"><i class="icon-list"></i> <?php echo Text::_('COM_JOOMGALLERY_CHANGELOG'); ?></button>
+          <button type="button" class="btn btn-small btn-info" data-joomla-dialog="<?php echo htmlspecialchars(json_encode($popupOptions, JSON_UNESCAPED_SLASHES), ENT_QUOTES, 'UTF-8'); ?>"><i class="icon-list"></i> <?php echo Text::_('COM_JOOMGALLERY_CHANGELOG'); ?></button>
         </p>
         <p><?php echo Text::_('COM_JOOMGALLERY_SUCCESS_INSTALL_TXT'); ?></p>
         <p>
@@ -351,24 +361,6 @@ class com_joomgalleryInstallerScript extends InstallerScript
         <?php endif; ?>
       </div>
     </div>
-
-    <div id="jg-changelog-popup" class="modal fade" tabindex="-1" aria-labelledby="PopupChangelogModalLabel">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="PopupChangelogModalLabel" class="modal-title"><?php echo Text::_('COM_JOOMGALLERY_CHANGELOG'); ?></h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="<?php echo Text::_('JTOOLBAR_CLOSE'); ?>">&times;</button>
-          </div>
-          <div class="modal-body">
-            <iframe class="iframe" frameborder="0" src="<?php echo Route::_('index.php?option=com_joomgallery&controller=changelog&tmpl=component'); ?>" height="400px" width="100%"></iframe>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-dismiss="modal"><?php echo Text::_('JTOOLBAR_CLOSE'); ?></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <?php
 	}
 
