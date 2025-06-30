@@ -65,7 +65,7 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=userimages&filte
   <form class="jg-categories"
         action="<?php echo $categoriesView; ?>"
         method="post" name="adminForm" id="adminForm"
-        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USERPANEL', true); ?>">
+        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USER_PANEL', true); ?>">
 
     <?php if ($isShowTitle): ?>
       <h3><?php echo Text::_('COM_JOOMGALLERY_USER_CATEGORIES'); ?></h3>
@@ -122,7 +122,7 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=userimages&filte
 
           <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
             <span class="icon-home"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_PANEL'); ?>
           </a>
         </div>
 
@@ -201,6 +201,12 @@ $baseLink_ImagesFilter = 'index.php?option=com_joomgallery&view=userimages&filte
                   $canChange = $this->getAcl()->checkACL('editstate', 'com_joomgallery.category', $item->id);
                   $canCheckin = $canChange || $item->checked_out == Factory::getUser()->id;
                   $disabled = ($item->checked_out > 0) ? 'disabled' : '';
+
+                  // user may not delete his root gallery
+                  if ((!empty($item->id)) && $item->parent_id == 1)
+                  {
+                    $canDelete = false;
+                  }
 
                   // Get the parents of item for sorting
                   if ($item->level > 1)

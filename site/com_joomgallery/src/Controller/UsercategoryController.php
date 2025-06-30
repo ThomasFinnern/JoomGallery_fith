@@ -342,7 +342,17 @@ class UsercategoryController extends FormController // ? JoomFormController
     // 2025.06.04		$model = $this->getModel('Categoryform', 'Site');
     $model = $this->getModel('Usercategory', 'Site');
 
-		// Attempt to delete the record.
+    // user may not delete his root gallery
+    $isUserRootCategory = $model->isUserRootCategory($removeId);
+    if($isUserRootCategory)
+    {
+      $this->setMessage(Text::_('COM_JOOMGALLERY_ERROR_NO_DEL_USER_ROOT_CAT'), 'error');
+      $this->setRedirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend(),false));
+
+      return false;
+    }
+
+    // Attempt to delete the record.
 		if($model->delete($removeId) === false)
 		{
 			$this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_DELETE_FAILED', $model->getError()), 'error');

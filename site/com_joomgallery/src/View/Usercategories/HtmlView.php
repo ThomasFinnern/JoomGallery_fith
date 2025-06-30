@@ -132,7 +132,7 @@ class HtmlView extends JoomGalleryView
       $this->ordering[$item->parent_id][] = $item->id;
     }
 
-//    $this->_prepareDocument();
+    $this->_prepareDocument();
 
     parent::display($tpl);
   }

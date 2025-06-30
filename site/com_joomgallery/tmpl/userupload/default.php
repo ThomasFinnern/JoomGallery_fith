@@ -109,7 +109,7 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
           <!--  <div class="mb-2">-->
           <!--      <a class="btn btn-primary" href="--><?php //echo $panelView; ?><!--" role="button">-->
           <!--          <span class="icon-home"></span>-->
-          <!--          --><?php //echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+          <!--          --><?php //echo Text::_('COM_JOOMGALLERY_USER_PANEL'); ?>
           <!--      </a>-->
           <!--  </div>-->
 
@@ -150,7 +150,7 @@ $wa->addInlineScript('window.uppyVars = JSON.parse(\'' . json_encode($this->js_v
 
           <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
             <span class="icon-home"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_PANEL'); ?>
           </a>
         </div>
 

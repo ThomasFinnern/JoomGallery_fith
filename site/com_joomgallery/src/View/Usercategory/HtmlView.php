@@ -110,7 +110,7 @@ class HtmlView extends JoomGalleryView
 			throw new GenericDataException(\implode("\n", $errors), 500);
 		}
 
-//		$this->_prepareDocument();
+		$this->_prepareDocument();
 
 		parent::display($tpl);
 	}

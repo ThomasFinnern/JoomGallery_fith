@@ -61,10 +61,10 @@ $baseLink_ImageEdit = 'index.php?option=com_joomgallery&view=userimage&layout=ed
   <form class="jg-images"
         action="<?php echo $panelView; ?>"
         method="post" name="adminForm" id="adminForm"
-        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USERPANEL', true); ?>">
+        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USER_PANEL', true); ?>">
 
     <?php if ($isShowTitle): ?>
-      <h3><?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?></h3>
+      <h3><?php echo Text::_('COM_JOOMGALLERY_USER_PANEL'); ?></h3>
       <hr>
     <?php endif; ?>
 

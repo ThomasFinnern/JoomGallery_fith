@@ -72,7 +72,7 @@ $canDelete = false;
   <form class="jg-images"
         action="<?php echo Route::_('index.php?option=com_joomgallery&view=userimages'); ?>"
         method="post" name="adminForm" id="adminForm"
-        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USERPANEL', true); ?>">
+        novalidate aria-label="<?php echo Text::_('COM_JOOMGALLERY_USER_PANEL', true); ?>">
 
     <?php if ($isShowTitle): ?>
       <h3><?php echo Text::_('COM_JOOMGALLERY_USER_IMAGES'); ?></h3>
@@ -130,7 +130,7 @@ $canDelete = false;
 
           <a class="btn btn-primary" href="<?php echo $panelView; ?>" role="button">
             <span class="icon-home"></span>
-            <?php echo Text::_('COM_JOOMGALLERY_USERPANEL'); ?>
+            <?php echo Text::_('COM_JOOMGALLERY_USER_PANEL'); ?>
           </a>
         </div>
 
