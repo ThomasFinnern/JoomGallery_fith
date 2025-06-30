@@ -391,7 +391,26 @@ abstract class Uploader implements UploaderInterface
       // Replace target with metadata value
       if($replaceinfo->target == 'tags')
       {
-        //TODO: Add tags based on metadata
+        // Get tags
+        $tags = \array_unique(\array_map('trim', \explode(',', $filter->clean($source_value, 'string'))));
+
+        // Get existing tags
+        $tags_model     = $this->component->getMVCFactory()->createModel('Tags', 'administrator');
+        $existing_tags = [];
+        foreach($tags_model->getItemsInList($tags) as $tag)
+        {
+          $existing_tags[$tag->title] = $tag->id;
+        }
+
+        // Add #new# prefix to new tags
+        $data['tags'] = \array_map(function($tag) use ($existing_tags)
+        {
+          return isset($existing_tags[$tag]) ? $existing_tags[$tag] : '#new#' . $tag;
+        }, $tags);
+
+        // Write debug info
+        $this->component->addWarning(Text::_('COM_JOOMGALLERY_SERVICE_DEBUG_REPLACE_' . \strtoupper('tags')));
+        $this->component->addLog(Text::_('COM_JOOMGALLERY_SERVICE_DEBUG_REPLACE_' . \strtoupper('tags')), 'warning', 'jerror');
       }
       elseif($replaceinfo->target == 'title')
       {
