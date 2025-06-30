@@ -191,7 +191,7 @@
            label="COM_JOOMGALLERY_SUBIFD_USERCOMMENT"
            message="COM_JOOMGALLERY_SUBIFD_USERCOMMENT_DESCRIPTION" />
     
-    <field name="ExifImageWidth"
+    <field name="PixelXDimension"
            type="number"
            min="0"
            max="4294967295"
@@ -199,7 +199,7 @@
            label="COM_JOOMGALLERY_SUBIFD_EXIFIMAGEWIDTH"
            description="COM_JOOMGALLERY_SUBIFD_EXIFIMAGEWIDTH_DESCRIPTION" />
     
-    <field name="ExifImageLength"
+    <field name="PixelYDimension"
            type="number"
            min="0"
            max="4294967295"
