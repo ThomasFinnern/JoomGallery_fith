@@ -476,6 +476,32 @@ class TagsModel extends JoomListModel
   }
 
   /**
+   * Build an SQL query to load a list of all items given in a list.
+   * 
+   * @param   array  $list  A list of titles to be looked for
+   *
+   * @return  DatabaseQuery
+   *
+   * @since   4.1.0
+   */
+  protected function getListedListQuery($list)
+  {
+    // Create a new query object.
+    $db    = $this->getDatabase();
+    $query = $db->getQuery(true);
+
+    // Select the required fields from the table.
+    $query->select('a.*');
+    $query->from($db->quoteName(_JOOM_TABLE_TAGS, 'a'));
+
+    // Make the selection
+    $quotedList = \array_map([$db, 'quote'], $list);
+    $query->where($db->quoteName('a.title') . ' IN (' . implode(',', $quotedList) . ')');
+
+    return $query;
+  }
+
+  /**
 	 * Get an array of data items mapped to an an image.
    * 
    * @param   int  $img_id  ID of the mapped image
@@ -490,6 +516,34 @@ class TagsModel extends JoomListModel
     {
       // Load the list items
       $query = $this->getMappedListQuery($img_id);
+      $items = $this->_getList($query);
+    }
+    catch(\RuntimeException $e)
+    {
+      $this->setError($e->getMessage());
+      $this->component->addLog($e->getMessage(), 'error', 'jerror');
+
+      return false;
+    }
+
+    return $items;
+  }
+
+  /**
+	 * Get an array of data items which titles are present in the given list.
+   * 
+   * @param  array  $list   A list of titles to be looked for
+	 *
+	 * @return mixed  Array of data items on success, false on failure.
+   * 
+   * @since   4.1.0
+	 */
+  public function getItemsInList($list)
+  {
+    try
+    {
+      // Load the list items
+      $query = $this->getListedListQuery($list);
       $items = $this->_getList($query);
     }
     catch(\RuntimeException $e)
