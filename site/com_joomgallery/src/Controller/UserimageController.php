@@ -513,14 +513,14 @@ class UserimageController extends FormController
 		{
 			// Check-in failed, go back to the record and display a notice.
 			$this->setMessage(Text::sprintf('COM_JOOMGALLERY_ITEM_STATE_ERROR', $model->getError()), 'error');
-			$this->setRedirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend($id), false));
+			$this->setRedirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id), false));
 
 			return false;
 		}
 
     // Redirect to the list screen.
 		$this->app->enqueueMessage(Text::_('COM_JOOMGALLERY_ITEM_'.\strtoupper($task).'_SUCCESSFUL'), 'success');
-		$this->app->redirect(Route::_($this->getReturnPage('usercategories').'&'.$this->getItemAppend($id), false));
+		$this->app->redirect(Route::_($this->getReturnPage('userimages').'&'.$this->getItemAppend($id), false));
   }
 
   /**

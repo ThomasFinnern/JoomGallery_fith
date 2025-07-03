@@ -64,6 +64,7 @@ class JoomgalleryConsole extends CMSPlugin implements SubscriberInterface
     ImageList::class,
     ImageMetadata::class,
     ImageParams::class,
+    // CategoryAdd::class,
   ];
 
   /**
