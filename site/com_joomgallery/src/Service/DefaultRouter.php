@@ -87,8 +87,6 @@ class DefaultRouter extends RouterView
 
   public function __construct(SiteApplication $app, AbstractMenu $menu, ?CategoryFactoryInterface $categoryFactory, DatabaseInterface $db, $skipSelf = false)
   {
-    parent::__construct($app, $menu);
-
     // Get router config value
     // ToDO: why not         $this->noIDs = (bool) $params->get('sef_ids'); or combination ?
     $this->noIDs = (bool) $app->bootComponent('com_joomgallery')->getConfig()->get('jg_router_ids', '0');
@@ -131,7 +129,6 @@ class DefaultRouter extends RouterView
     $this->registerView($imageform);
 
     $userpanel = new RouterViewConfiguration('userpanel');
-    // $userpanel->setKey('id');
     $this->registerView($userpanel);
 
     $userupload = new RouterViewConfiguration('userupload');
@@ -139,7 +136,6 @@ class DefaultRouter extends RouterView
     $this->registerView($userupload);
 
     $usercategories = new RouterViewConfiguration('usercategories');
-    //$usercategories->setKey('id');
     $this->registerView($usercategories);
 
     $usercategory = new RouterViewConfiguration('usercategory');
@@ -147,17 +143,14 @@ class DefaultRouter extends RouterView
     $this->registerView($usercategory);
 
     $userimages = new RouterViewConfiguration('userimages');
-//    $userimages->setParent($gallery);
+//    $userimages->setParent($usercategory);
     $this->registerView($userimages);
 
     $userimage = new RouterViewConfiguration('userimage');
     $userimage->setKey('id');
     $this->registerView($userimage);
 
-    $userpanel = new RouterViewConfiguration('userpanel');
-//    $userpanel->setParent($gallery);
-    $this->registerView($userpanel);
-
+    parent::__construct($app, $menu);
 
     $this->attachRule(new MenuRules($this));
     $this->attachRule(new StandardRules($this));

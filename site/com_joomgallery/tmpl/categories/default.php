@@ -80,11 +80,11 @@ if($saveOrder && !empty($this->items))
 									</th>
 
 									<th scope="col" class="w-3 d-none d-lg-table-cell text-center">
-                    <?php echo HTMLHelper::_('grid.sort',  'COM_JOOMGALLERY_IMAGES', 'a.img_count', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort',  'COM_JOOMGALLERY_IMAGES', 'img_count', $listDirn, $listOrder); ?>
                   </th>
 
 									<th scope="col" style="min-width:180px" class="w-3 d-none d-lg-table-cell text-center">
-										<?php echo HTMLHelper::_('grid.sort',  'COM_JOOMGALLERY_PARENT_CATEGORY', 'a.parent_title', $listDirn, $listOrder); ?>
+										<?php echo HTMLHelper::_('grid.sort',  'COM_JOOMGALLERY_PARENT_CATEGORY', 'parent_title', $listDirn, $listOrder); ?>
 									</th>
 
 									<th scope="col" class="w-3 d-none d-lg-table-cell text-center">
