@@ -13,6 +13,7 @@ namespace Joomgallery\Component\Joomgallery\Site\View\Userupload;
 //use Joomla\CMS\Helper\TagsHelper;
 //use Joomla\CMS\Language\Multilanguage;
 use Joomgallery\Component\Joomgallery\Administrator\View\JoomGalleryView;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
@@ -93,6 +94,7 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
   protected $postMaxSize;
   protected $memoryLimit;
   protected $maxSize;
+  protected $mediaSize;
   protected $configSize;
 
   /**
@@ -307,12 +309,12 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
    * The memory_limit for the php script was not reliable (0 on some sytems)
    * so it is just shown
    *
-   * @param   mixed  $joomGaleryConfig config of joom gallery
+   * @param   mixed  $joomGalleryConfig config of joom gallery
    *
    *
    * @since version 4.1
    */
-  public function limitsPhpConfig(mixed $joomGaleryConfig): void
+  public function limitsPhpConfig(mixed $joomGalleryConfig): void
   {
     $mediaHelper = new MediaHelper;
 
@@ -321,10 +323,20 @@ class HtmlView extends JoomGalleryView // BaseHtmlView
     $this->postMaxSize = round($mediaHelper->toBytes(ini_get('post_max_size')) / (1024 * 1024));
     $this->memoryLimit = round($mediaHelper->toBytes(ini_get('memory_limit')) / (1024 * 1024));
 
-    $this->configSize = round($joomGaleryConfig->get('jg_maxfilesize') / (1024 * 1024));
+    $mediaParams        = ComponentHelper::getParams('com_media');
+    $mediaUploadMaxsize = $mediaParams->get('upload_maxsize', 0);
+    $this->mediaSize    = $mediaUploadMaxsize;
 
-    // Max size to be used (previously defined by joomla function but ...)
-    $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->configSize);
+    $this->configSize = round($joomGalleryConfig->get('jg_maxfilesize') / (1024 * 1024));
+
+    //--- Max size to be used (previously defined by joomla function but ...) -------------------------
+
+    // $uploadMaxSize=0 for no limit
+    if (empty($mediaUploadMaxsize)) {
+      $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->configSize);
+    } else {
+      $this->maxSize = min($this->uploadLimit, $this->postMaxSize, $this->configSize, $mediaUploadMaxsize);
+    }
   }
 
 } // class
