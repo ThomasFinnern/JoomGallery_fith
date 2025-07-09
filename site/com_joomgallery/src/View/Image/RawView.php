@@ -171,39 +171,50 @@ class RawView extends AdminRawView
   /**
 	 * Check access to this image
 	 *
-	 * @param   int  $id    Image id
+	 * @param   int     $id    Image id
+   * @param   string  $type  Imagetype
 	 *
 	 * @return   bool    True on success, false otherwise
 	 */
-  protected function access($id)
+  protected function access($id, $type = 'thumbnail')
   {
     if($id === 'null') return true;
 
     $loaded = true;
     $access = true;
 
+    /** @var ImageModel $model */
+    $model = $this->getModel();
+
 		try {
-			$this->item = $this->get('Item');
+			$this->item = $model->getItem();
 		}
 		catch (\Exception $e)
 		{
 			$loaded = false;
 		}
 
+    // Check if the current user is the owner of the image
+    if($loaded && $type == 'thumbnail' && $this->item->created_by == $this->getCurrentUser()->id)
+    {
+      // Current user is the owner. Show thumbnails anyway.
+      return true;
+    }
+
     // Check if category is protected?
-		if($loaded && $this->get('CategoryProtected'))
+		if($loaded && $model->getCategoryProtected())
 		{
       $access = false;
 		}
 
     // Check published state
-		if(!$loaded || !$this->get('CategoryPublished') || $this->item->published !== 1 || $this->item->approved !== 1)
+		if(!$loaded || !$model->getCategoryPublished() || $this->item->published !== 1 || $this->item->approved !== 1)
 		{
 			$access = false;
 		}
 
     // Check access view level
-		if(!$this->get('CategoryAccess') || !\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))
+		if(!$model->getCategoryAccess() || !\in_array($this->item->access, $this->getCurrentUser()->getAuthorisedViewLevels()))
     {
       $access = false;
     }

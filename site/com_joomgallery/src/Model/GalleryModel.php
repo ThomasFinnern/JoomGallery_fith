@@ -65,6 +65,10 @@ class GalleryModel extends JoomItemModel
       $this->item->id = 1;
 		}
 
+    // Get Gallery description
+    $params = $this->getParams();
+    $this->item->description = $params['configs']->get('jg_gallery_view_description','', 'STRING');
+
 		return $this->item;
 	}
 
@@ -197,7 +201,7 @@ class GalleryModel extends JoomItemModel
     {
       // Get query variables sent by the images form
       $imgform_list = $this->app->input->get('list', array());
-      $imgform_limitstart = $this->app->getInput()->get('limitstart', 0, 'int');
+      $imgform_limitstart = $this->app->getUserStateFromRequest('joom.galleryview.limitstart', 'limitstart', 0, 'uint');
     }
 
     // Load the number of images defined in the configuration

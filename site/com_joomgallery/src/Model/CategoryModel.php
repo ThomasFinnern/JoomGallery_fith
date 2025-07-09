@@ -472,12 +472,12 @@ class CategoryModel extends JoomItemModel
     }
 
     $imgform_list = array();
-    $imgform_limitstart = $this->app->getUserState('joom.categoryview.image.limitstart', 0);
+    $imgform_limitstart = $this->app->getUserState('joom.categoryview.'.$this->item->id.'.image.limitstart', 0);
     if($this->app->input->get('contenttype', '') == 'image')
     {
       // Get query variables sent by the images form
       $imgform_list = $this->app->input->get('list', array());
-      $imgform_limitstart = $this->app->getUserStateFromRequest('joom.categoryview.image.limitstart', 'limitstart', 0, 'uint');
+      $imgform_limitstart = $this->app->getUserStateFromRequest('joom.categoryview.'.$this->item->id.'.image.limitstart', 'limitstart', 0, 'uint');
     }
 
     // Override number of images being loaded
@@ -542,12 +542,12 @@ class CategoryModel extends JoomItemModel
     }
 
     $catform_list = array();
-    $catform_limitstart = $this->app->getUserState('joom.categoryview.category.limitstart', 0);
+    $catform_limitstart = $this->app->getUserState('joom.categoryview.'.$this->item->id.'.category.limitstart', 0);
     if($this->app->input->get('contenttype', '') == 'category')
     {
       // Get query variables sent by the subcategories form
       $catform_list = $this->app->input->get('list', array());
-      $catform_limitstart = $this->app->getUserStateFromRequest('joom.categoryview.category.limitstart', 'limitstart', 0, 'uint');
+      $catform_limitstart = $this->app->getUserStateFromRequest('joom.categoryview.'.$this->item->id.'.category.limitstart', 'limitstart', 0, 'uint');
     }
 
     // Override number of subcategories being loaded
@@ -610,7 +610,7 @@ class CategoryModel extends JoomItemModel
    * @since   4.0.0
    * @throws Exception
    */
-  public function getUnpublishedParents(int $pk = null, bool $approved = false): array
+  public function getUnpublishedParents(?int $pk = null, bool $approved = false): array
   {
     if(\is_null($pk) && !\is_null($this->item) && isset($this->item->id))
     {
@@ -627,7 +627,7 @@ class CategoryModel extends JoomItemModel
     }
 
     // Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
     $query->select('id');
     $query->from($db->quoteName(_JOOM_TABLE_CATEGORIES));
@@ -675,7 +675,7 @@ class CategoryModel extends JoomItemModel
    *
    * @since   4.0.0
    */
-  public function getProtectedParents(int $pk = null): array
+  public function getProtectedParents(?int $pk = null): array
   {
     if(\is_null($pk) && !\is_null($this->item) && isset($this->item->id))
     {
@@ -692,7 +692,7 @@ class CategoryModel extends JoomItemModel
     }
 
     // Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
     $query->select('id');
     $query->from($db->quoteName(_JOOM_TABLE_CATEGORIES));
@@ -732,7 +732,7 @@ class CategoryModel extends JoomItemModel
    *
    * @since   4.0.0
    */
-  public function getAccessibleParents(int $pk = null): array
+  public function getAccessibleParents(?int $pk = null): array
   {
     if(\is_null($pk) && !\is_null($this->item) && isset($this->item->id))
     {
@@ -752,7 +752,7 @@ class CategoryModel extends JoomItemModel
     $user  = $this->app->getIdentity();
 
     // Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
     $query->select('id');
     $query->from($db->quoteName(_JOOM_TABLE_CATEGORIES));

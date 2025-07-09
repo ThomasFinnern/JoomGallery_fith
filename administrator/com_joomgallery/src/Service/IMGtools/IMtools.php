@@ -12,8 +12,8 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools;
 // No direct access
 \defined('_JEXEC') or die;
 
-use \Joomla\CMS\Filesystem\File;
-use \Joomla\CMS\Filesystem\Path;
+use \Joomla\Filesystem\File;
+use \Joomla\Filesystem\Path;
 use \Joomla\CMS\Language\Text;
 use \Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools\IMGtoolsInterface;
 use \Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools\IMGtools as BaseIMGtools;
@@ -386,7 +386,7 @@ class IMtools extends BaseIMGtools implements IMGtoolsInterface
       // Perform watermarking
       $wtm_files = $this->execWatermarking($file, $file);
 
-      if(!File::exists($wtm_files['dst_file']))
+      if(!\is_file(Path::clean($wtm_files['dst_file'])))
       {
         $this->component->addDebug(Text::_('COM_JOOMGALLERY_SERVICE_ERROR_WATERMARKING'));
         $this->component->addLog(Text::_('COM_JOOMGALLERY_SERVICE_ERROR_WATERMARKING'), 'error', 'jerror');
@@ -402,13 +402,13 @@ class IMtools extends BaseIMGtools implements IMGtoolsInterface
     $this->component->addDebug(Text::_('COM_JOOMGALLERY_SERVICE_MANIPULATION_SUCCESSFUL'));
 
     // Delete watermarked temp file if existing
-    if($this->watermarking && File::exists($wtm_files['dst_file']) && \strpos($wtm_files['dst_file'], 'tmp_wtm_img') !== false)
+    if($this->watermarking && \is_file(Path::clean($wtm_files['dst_file'])) && \strpos($wtm_files['dst_file'], 'tmp_wtm_img') !== false)
     {
       File::delete($wtm_files['dst_file']);
     }
 
     // Delete resized watermark file
-    if($this->watermarking && File::exists($wtm_files['wtm_file']))
+    if($this->watermarking && \is_file(Path::clean($wtm_files['wtm_file'])))
     {
       File::delete($wtm_files['wtm_file']);
     }
@@ -453,11 +453,11 @@ class IMtools extends BaseIMGtools implements IMGtoolsInterface
 
     // Temporary remove '[0]' from src_file
     $first_frame_only = false;
-    if(\strpos($this->src_file, '[0]') !== false)
+    if(\is_string($this->src_file) && \strpos($this->src_file, '[0]') !== false)
     {
       $this->src_file = \str_replace('[0]','',$this->src_file);
       $first_frame_only = true;
-    }    
+    }
 
     // Define temporary image file to be created
     $tmp_folder   = $this->app->get('tmp_path');
@@ -933,7 +933,7 @@ class IMtools extends BaseIMGtools implements IMGtoolsInterface
     }
 
     // Checks if watermark file is existent
-    if(!File::exists($wtm_file))
+    if(!\is_file(Path::clean($wtm_file)))
     {
       $this->component->addDebug(Text::_('COM_JOOMGALLERY_SERVICE_ERROR_WATERMARK_NOT_EXIST'));
       $this->component->addLog(Text::_('COM_JOOMGALLERY_SERVICE_ERROR_WATERMARK_NOT_EXIST'), 'error', 'jerror');

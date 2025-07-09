@@ -186,11 +186,11 @@ class CategoriesModel extends JoomListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select($this->getState('list.select', 'DISTINCT a.*'));
+		$query->select($this->getState('list.select', 'a.*'));
     $query->from($db->quoteName('#__joomgallery_categories', 'a'));
 
 		// Join over the users for the checked out user
@@ -215,14 +215,18 @@ class CategoriesModel extends JoomListModel
     $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('a.parent_id'));
 
     // Get img_count
-		$query->select('COUNT(`img`.id) AS `img_count`');
-    $query->join('LEFT', $db->quoteName('#__joomgallery', 'img'), $db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
-    $query->group($db->quoteName('a.id'));
+    $imgQuery = $db->getQuery(true);
+    $imgQuery->select('COUNT(`img`.id)')
+             ->from($db->quoteName('#__joomgallery', 'img'))
+             ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+    $query->select('(' . $imgQuery->__toString() . ') AS ' . $db->quoteName('img_count'));
 
     // Get child_count
-		$query->select('COUNT(`child`.id) AS `child_count`');
-    $query->join('LEFT', $db->quoteName('#__joomgallery_categories', 'child'), $db->quoteName('child.parent_id') . ' = ' . $db->quoteName('a.id'));
-    $query->group($db->quoteName('child.parent_id'));
+    $subQuery = $db->getQuery(true);
+    $subQuery->select('COUNT(`child`.id)')
+             ->from($db->quoteName('#__joomgallery_categories', 'child'))
+             ->where($db->quoteName('child.parent_id') . ' = ' . $db->quoteName('a.id'));
+    $query->select('(' . $subQuery->__toString() . ') AS ' . $db->quoteName('child_count'));
 
     // Join over the language fields 'language_title' and 'language_image'
 		$query->select(array($db->quoteName('l.title', 'language_title'), $db->quoteName('l.image', 'language_image')));
@@ -312,9 +316,15 @@ class CategoriesModel extends JoomListModel
     $showempty = (bool) $this->getState('filter.showempty');
 
     if(!$showempty)
-		{
-      $query->having('img_count > 0');
-		}
+    {
+      // Add EXISTS subquery
+      $existsQuery = $db->getQuery(true);
+      $existsQuery->select('1')
+                  ->from($db->quoteName('#__joomgallery', 'img'))
+                  ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+
+      $query->where('EXISTS (' . $existsQuery->__toString() . ')');
+    }
 
     // Filter by categories and by level
 		$categoryId = $this->getState('filter.category', array());
@@ -384,6 +394,173 @@ class CategoriesModel extends JoomListModel
 		return $query;
 	}
 
+  /**
+   * Build an SQL query to load the list data for counting.
+   *
+   * @return  DatabaseQuery
+   *
+   * @since   4.1.0
+   */
+  protected function getCountListQuery()
+  {
+    // Create a new query object.
+    $db    = $this->getDbo();
+    $query = $db->getQuery(true);
+
+    // Select only COUNT(*)
+    $query->select('COUNT(*)');
+    $query->from($db->quoteName('#__joomgallery_categories', 'a'));
+
+    // Filter by access level.
+    $access = $this->getState('filter.access');
+
+    if(!empty($access))
+    {
+      if(is_numeric($access))
+      {
+        $access = (int) $access;
+        $query->where($db->quoteName('a.access') . ' = :access')
+          ->bind(':access', $access, ParameterType::INTEGER);
+      }
+      elseif(is_array($access))
+      {
+        $access = ArrayHelper::toInteger($access);
+        $query->whereIn($db->quoteName('a.access'), $access);
+      }
+    }
+
+    // Filter by owner
+    $userId = $this->getState('filter.created_by');
+
+    if(!empty($userId))
+    {
+      if(is_numeric($userId))
+      {
+        $userId = (int) $userId;
+        $type = $this->getState('filter.created_by.include', true) ? ' = ' : ' <> ';
+        $query->where($db->quoteName('a.created_by') . $type . ':userId')
+          ->bind(':userId', $userId, ParameterType::INTEGER);
+      }
+      elseif(is_array($userId))
+      {
+        $userId = ArrayHelper::toInteger($userId);
+        $query->whereIn($db->quoteName('a.created_by'), $userId);
+      }
+    }
+
+    // Filter by search
+    $search = $this->getState('filter.search');
+
+    if(!empty($search))
+    {
+      if(stripos($search, 'id:') === 0)
+      {
+        $search = (int) substr($search, 3);
+        $query->where($db->quoteName('a.id') . ' = :search')
+          ->bind(':search', $search, ParameterType::INTEGER);
+      }
+      else
+      {
+        $search = '%' . str_replace(' ', '%', trim($search)) . '%';
+        $query->where(
+          '(' . $db->quoteName('a.title') . ' LIKE :search1 OR ' . $db->quoteName('a.alias') . ' LIKE :search2'
+            . ' OR ' . $db->quoteName('a.description') . ' LIKE :search3)'
+        )
+          ->bind([':search1', ':search2', ':search3'], $search);
+      }
+    }
+
+    // Filter by published state
+    $published = (string) $this->getState('filter.published');
+
+    if($published !== '*')
+    {
+      if(is_numeric($published))
+      {
+        $state = (int) $published;
+        $query->where($db->quoteName('a.published') . ' = :state')
+          ->bind(':state', $state, ParameterType::INTEGER);
+      }
+    }
+
+    // Filter by hidden categories
+    $showhidden = (bool) $this->getState('filter.showhidden');
+
+    if(!$showhidden)
+    {
+      $query->where($db->quoteName('a.hidden') . ' = 0');
+    }
+
+    // Filter by empty categories
+    $showempty = (bool) $this->getState('filter.showempty');
+
+    if(!$showempty)
+    {
+      // Add EXISTS subquery
+      $existsQuery = $db->getQuery(true);
+      $existsQuery->select('1')
+                  ->from($db->quoteName('#__joomgallery', 'img'))
+                  ->where($db->quoteName('img.catid') . ' = ' . $db->quoteName('a.id'));
+
+      $query->where('EXISTS (' . $existsQuery->__toString() . ')');
+    }
+
+    // Filter by categories and by level
+    $categoryId = $this->getState('filter.category', array());
+    $level      = (int) $this->getState('filter.level');
+
+    if(!is_array($categoryId))
+    {
+      $categoryId = $categoryId ? array($categoryId) : array();
+    }
+
+    // Case: Using both categories filter and by level filter
+    if(count($categoryId))
+    {
+      $this->categoriesFilterQuery($query, $categoryId, $level);
+    }
+    // Case: Using only the by level filter
+    elseif($level = (int) $level)
+    {
+      $query->where($db->quoteName('a.level') . ' <= :level')
+        ->bind(':level', $level, ParameterType::INTEGER);
+    }
+
+    // Filter: Exclude categories
+    $excludeId = $this->getState('filter.exclude', array());
+    if(!is_array($excludeId))
+    {
+      $excludeId = $excludeId ? array($excludeId) : array();
+    }
+
+    // Case: Exclude categories filter
+    if(count($excludeId))
+    {
+      $this->categoriesFilterQuery($query, $excludeId, false, true);
+    }
+
+    // Filter self (remove the filtered category)
+    $showself = (bool) $this->getState('filter.showself');
+
+    if(count($categoryId) && !$showself)
+    {
+      foreach($categoryId as $catId)
+      {
+        $query->where($db->quoteName('a.id'). ' != :catid')
+          ->bind(':catid', $catId, ParameterType::INTEGER);
+      }
+    }
+
+    // Filter on the language.
+    if($language = $this->getState('filter.language'))
+    {
+      $query->where($db->quoteName('a.language') . ' = :language')
+        ->bind(':language', $language);
+    }
+
+    return $query;
+  }
+
 	/**
 	 * Get an array of data items
 	 *
@@ -403,7 +580,7 @@ class CategoriesModel extends JoomListModel
 	 */
   protected function categoriesFilterQuery(&$query, $categoryId, $level=false, $exclude=false)
   {
-    $db = $this->getDbo();
+    $db = $this->getDatabase();
 
     $categoryId = ArrayHelper::toInteger($categoryId);
     $categoryTable = $this->getMVCFactory()->createTable('Category', 'administrator');

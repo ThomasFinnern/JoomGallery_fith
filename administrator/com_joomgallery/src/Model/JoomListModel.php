@@ -67,6 +67,22 @@ abstract class JoomListModel extends ListModel
   protected $type = 'image';
 
   /**
+   * An internal cache for the last count query used.
+   *
+   * @access  protected
+   * @var    QueryInterface|string
+   */
+  protected $countQuery = [];
+
+  /**
+   * The cache ID used when last populating $this->countQuery
+   *
+   * @access  protected
+   * @var   null|string
+   */
+  protected $lastCountQueryStoreId = null;
+
+  /**
    * Constructor
    * 
    * @param   array  $config  An optional associative array of configuration settings.
@@ -142,6 +158,69 @@ abstract class JoomListModel extends ListModel
 		$configs     = new Registry($configArray);
 
 		$this->setState('parameters.configs', $configs);
+  }
+
+  /**
+   * Method to get the total number of items for the data set.
+   *
+   * @return  integer  The total number of items available in the data set.
+   *
+   * @since   4.1.0
+   */
+  public function getTotal()
+  {
+    // Get a storage key.
+    $store = $this->getStoreId('getTotal');
+
+    // Try to load the data from internal storage.
+    if(isset($this->cache[$store]))
+    {
+      return $this->cache[$store];
+    }
+
+    // For record types including a group, merge, querySet or having statement in the list query
+    // Add a _getCountListQuery method without them to speed up the record counting
+    $getListQuery = '_getListQuery';
+    if(\method_exists($this, 'getCountListQuery'))
+    {
+      $getListQuery = '_getCountListQuery';
+    }
+
+    try
+    {
+      // Load the total and add the total to the internal cache.
+      $this->cache[$store] = (int) $this->_getListCount($this->{$getListQuery}());
+    }
+    catch(\RuntimeException $e)
+    {
+      $this->setError($e->getMessage());
+
+      return false;
+    }
+
+    return $this->cache[$store];
+  }
+
+  /**
+   * Method to cache the last count query constructed.
+   *
+   * @return  QueryInterface  An object implementing the QueryInterface interface
+   *
+   * @since   4.1.0
+   */
+  protected function _getCountListQuery()
+  {
+    // Compute the current store id.
+    $currentStoreId = $this->getStoreId('count');
+
+    // If the last store id is different from the current, refresh the query.
+    if($this->lastCountQueryStoreId !== $currentStoreId || empty($this->countQuery))
+    {
+      $this->lastCountQueryStoreId = $currentStoreId;
+      $this->countQuery            = $this->getCountListQuery();
+    }
+
+    return $this->countQuery;
   }
 
   /**

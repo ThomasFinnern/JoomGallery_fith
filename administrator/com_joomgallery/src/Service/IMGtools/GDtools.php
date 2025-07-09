@@ -12,8 +12,8 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools;
 // No direct access
 \defined('_JEXEC') or die;
 
-use \Joomla\CMS\Filesystem\File;
-use \Joomla\CMS\Filesystem\Path;
+use \Joomla\Filesystem\File;
+use \Joomla\Filesystem\Path;
 use \Joomla\CMS\Language\Text;
 use \Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools\GifFrameExtractor;
 use \Joomgallery\Component\Joomgallery\Administrator\Service\IMGtools\GifCreator;
@@ -287,7 +287,8 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
     }
 
     // Define image type to write
-    $type = \strtoupper(File::getExt($file));
+    $filesystem = JoomHelper::getService('Filesystem');
+    $type = \strtoupper($filesystem->getExt($file));
     if(!empty($type))
     {
       if(\in_array($type, $this->supported_types))
@@ -337,7 +338,7 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
     }
     else
     {
-      if(File::exists($file))
+      if(\is_file(Path::clean($file)))
       {
         $bak_file = $file.'bak';
         $success  = File::copy($file, $bak_file);
@@ -377,7 +378,7 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
       }
       else
       {
-        if(File::exists($file))
+        if(\is_file(Path::clean($file)))
         {
           $bak_file = $file.'bak';
           $success  = File::copy($file, $bak_file);
@@ -433,7 +434,10 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
           $quelle = $this->src_file;
         }
 
-        $meta_success = $this->copyMetadata($quelle, $file, $this->src_type, $this->dst_type, $new_orient, false);
+        // Create the Metadata service
+        $this->component->createMetadata($this->component->getConfig()->get('jg_metaprocessor', 'php'));
+
+        $meta_success = $this->component->getMetadata()->copyMetadata($quelle, $file, $this->src_type, $this->dst_type, $new_orient, false);
 
         if(!$meta_success)
         {
@@ -464,7 +468,10 @@ class GDtools extends BaseIMGtools implements IMGtoolsInterface
           }
         }
 
-        $meta_success = $this->copyMetadata($file, $file, $this->src_type, $this->dst_type, $new_orient, false);
+        // Create the Metadata service
+        $this->component->createMetadata($this->component->getConfig()->get('jg_metaprocessor', 'php'));
+
+        $meta_success = $this->component->getMetadata()->copyMetadata($file, $file, $this->src_type, $this->dst_type, $new_orient, false);
 
         if(!$meta_success)
         {

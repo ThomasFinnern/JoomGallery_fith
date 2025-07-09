@@ -12,7 +12,7 @@ namespace Joomgallery\Component\Joomgallery\Administrator\Model;
 // No direct access.
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\Factory;
+use \Joomla\Database\ParameterType;
 
 /**
  * Methods supporting a list of Configs records.
@@ -134,11 +134,11 @@ class ConfigsModel extends JoomListModel
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select($this->getState('list.select', 'DISTINCT a.*'));
+		$query->select($this->getState('list.select', 'a.*'));
     $query->from($db->quoteName('#__joomgallery_configs', 'a'));
 
 		// Join over the users for the checked out user
@@ -202,6 +202,60 @@ class ConfigsModel extends JoomListModel
 		return $query;
 	}
 
+  /**
+	 * Build an SQL query to load the list data for counting.
+	 *
+	 * @return  DatabaseQuery
+	 *
+	 * @since   4.1.0
+	 */
+	protected function getCountListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+
+		// Select the required fields from the table.
+		$query->select('COUNT(*)');
+    $query->from($db->quoteName('#__joomgallery_configs', 'a'));
+
+		// Filter by search
+		$search = $this->getState('filter.search');
+
+		if(!empty($search))
+		{
+			if(stripos($search, 'id:') === 0)
+			{
+				$search = (int) substr($search, 3);
+				$query->where($db->quoteName('a.id') . ' = :search')
+					->bind(':search', $search, ParameterType::INTEGER);
+			}
+			else
+			{
+        $search = '%' . str_replace(' ', '%', trim($search)) . '%';
+				$query->where(
+					'(' . $db->quoteName('a.title') . ' LIKE :search1 OR ' . $db->quoteName('a.note') . ' LIKE :search2)'
+				)
+					->bind([':search1', ':search2'], $search);
+			}
+		}
+
+    // Filter by published state
+		$published = (string) $this->getState('filter.published');
+
+		if($published !== '*')
+		{
+			if(is_numeric($published))
+			{
+				$state = (int) $published;
+				$query->where($db->quoteName('a.published') . ' = :state')
+					->bind(':state', $state, ParameterType::INTEGER);
+			}
+		}
+
+		return $query;
+	}
+
 	/**
 	 * Get an array of data items
 	 *
@@ -222,7 +276,7 @@ class ConfigsModel extends JoomListModel
 				{
 					if(!empty($value))
 					{
-						$db = Factory::getDbo();
+						$db = $this->getDatabase();
 						$query = "SELECT id, title FROM #__usergroups HAVING id LIKE '" . $value . "'";
 						$db->setQuery($query);
 						$results = $db->loadObject();

@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
 // Image params
@@ -22,8 +23,10 @@ $image_class             = $this->params['configs']->get('jg_gallery_view_image_
 $justified_height        = $this->params['configs']->get('jg_gallery_view_justified_height', 200, 'INT');
 $justified_gap           = $this->params['configs']->get('jg_gallery_view_justified_gap', 5, 'INT');
 $image_link              = $this->params['configs']->get('jg_gallery_view_image_link', 'defaultview', 'STRING');
-$lightbox_image          = $this->params['configs']->get('jg_category_view_lightbox_image', 'detail', 'STRING'); // Same as category view
 $browse_categories_link  = $this->params['configs']->get('jg_gallery_view_browse_categories_link', 1, 'INT');
+$lightbox_image          = $this->params['configs']->get('jg_lightbox_image', 'detail', 'STRING');
+$lightbox_thumbnails     = $this->params['configs']->get('jg_lightbox_thumbnails', 0, 'INT');
+$lightbox_zoom           = $this->params['configs']->get('jg_lightbox_zoom', 0, 'INT');
 
 // Import CSS & JS
 $wa = $this->document->getWebAssetManager();
@@ -48,21 +51,25 @@ if($image_link == 'lightgallery')
 
   $wa->useScript('com_joomgallery.lightgallery');
   $wa->useScript('com_joomgallery.lg-thumbnail');
+  $wa->useScript('com_joomgallery.lg-zoom');
   $wa->useStyle('com_joomgallery.lightgallery-bundle');
 }
 
 // Add and initialize the grid script
-$iniJS  = 'window.joomGrid = {';
-$iniJS .= '  itemid: ' . $this->item->id . ',';
+$iniJS  = 'window.joomGrid["1-'.$this->item->id.'"] = {';
+$iniJS .= '  itemid: "1-' . $this->item->id . '",';
 $iniJS .= '  pagination: 0,';
 $iniJS .= '  layout: "' . $gallery_class . '",';
 $iniJS .= '  num_columns: ' . $num_columns . ',';
 $iniJS .= '  lightbox: ' . ($lightbox ? 'true' : 'false') . ',';
+$iniJS .= '  lightbox_params: {container: "lightgallery-1-'.$this->item->id.'", selector: ".lightgallery-item"},';
+$iniJS .= '  thumbnails: ' . ($lightbox_thumbnails ? 'true' : 'false') . ',';
+$iniJS .= '  zoom: ' . ($lightbox_zoom ? 'true' : 'false') . ',';
 $iniJS .= '  justified: {height: '.$justified_height.', gap: '.$justified_gap.'}';
 $iniJS .= '};';
 
-$wa->addInlineScript($iniJS, ['position' => 'before'], [], ['com_joomgallery.joomgrid']);
 $wa->useScript('com_joomgallery.joomgrid');
+$wa->addInlineScript($iniJS, ['position' => 'after'], [], ['com_joomgallery.joomgrid']);
 ?>
 
 <div class="com-joomgallery-gallery">
@@ -71,6 +78,10 @@ $wa->useScript('com_joomgallery.joomgrid');
       <h1> <?php echo $this->escape($this->params['menu']->get('page_heading')); ?> </h1>
     </div>
   <?php endif; ?>
+
+  <div class="gallery-header">
+    <?php echo HTMLHelper::_('content.prepare', $this->item->description, '', 'com_joomgallery.gallery'); ?>
+  </div>
 
   <?php // Link to category overview ?>
   <?php if($browse_categories_link == '1') : ?>
@@ -86,7 +97,7 @@ $wa->useScript('com_joomgallery.joomgrid');
     <p><?php echo Text::_('COM_JOOMGALLERY_GALLERY_NO_IMAGES') ?></p>
   <?php else: ?>
     <?php // Display data array for grid layout
-    $imgsData = [ 'id' => (int) $this->item->id, 'layout' => $gallery_class, 'items' => $this->item->images->items, 'num_columns' => (int) $num_columns,
+    $imgsData = [ 'id' => '1-'.$this->item->id, 'layout' => $gallery_class, 'items' => $this->item->images->items, 'num_columns' => (int) $num_columns,
                   'caption_align' => 'center', 'image_class' => $image_class, 'image_type' => $image_type, 'lightbox_type' => $lightbox_image, 'image_link' => $image_link,
                   'image_title' => false, 'title_link' => 'defaultview', 'image_desc' => false, 'image_date' => false,
                   'image_author' => false, 'image_tags' => false
@@ -107,17 +118,15 @@ $wa->useScript('com_joomgallery.joomgrid');
       </a></p>
     </div>
   <?php endif; ?>
-
-  <script>
-    if(window.joomGrid.layout != 'justified') {
-      var loadImg = function() {
-        this.closest('.' + window.joomGrid.imgboxclass).classList.add('loaded');
-      }
-
-      let images = Array.from(document.getElementsByClassName(window.joomGrid.imgclass));
-      images.forEach(image => {
-        image.addEventListener('load', loadImg);
-      });
-    }
-  </script>
 </div>
+
+<script>
+  // Add event listener to images
+  let loadImg = function() {
+    this.closest('.jg-image').classList.add('loaded');
+  }
+  let images = Array.from(document.getElementsByClassName('jg-image-thumb'));
+  images.forEach(image => {
+    image.addEventListener('load', loadImg);
+  });
+</script>
