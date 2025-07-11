@@ -121,6 +121,7 @@ class ConfigSet extends AbstractCommand
     // $isDoVerify = true/false, 0/1;
     $isDoVerify = $this->isTrue($veryfyIn);
 
+    // list of parameter with values
     $configurationAssoc = $this->getItemAssocFromDB($configId);
 
     if (empty ($configurationAssoc))
@@ -130,6 +131,7 @@ class ConfigSet extends AbstractCommand
       return Command::FAILURE;
     }
 
+    // validate option for existence
     if (!\array_key_exists($option, $configurationAssoc))
     {
       $this->ioStyle->error("Can't find option '$option' in configuration list");
@@ -138,7 +140,11 @@ class ConfigSet extends AbstractCommand
     }
 
 	// ToDo: Make it sql save ....
+
+    // Sanitize for boolean. Boolean result is either '1' or '0'
     $sanitizeValue = $this->sanitizeValue($value);
+
+    echo "\$sanitizeValue: '{$sanitizeValue}'" . "\r\n";
 
     $isUpdated = $this->writeOptionToDB($configId, $option, $sanitizeValue);
     if ($isUpdated)
@@ -196,7 +202,7 @@ class ConfigSet extends AbstractCommand
 
 
   /**
-   * Sanitize the options array for boolean
+   * Sanitize the value for boolean. Boolean result is either '1' or '0'
    *
    * @param   array  $option  Options array
    *
@@ -206,18 +212,14 @@ class ConfigSet extends AbstractCommand
    */
   private function sanitizeValue($value)
   {
-    switch (strtolower($value))
-    {
-      case $value === 'false':
-        $value = false;
-        break;
-      case $value === 'true':
-        $value = true;
-        break;
-      case $value === 'null':
-        $value = null;
-        break;
-    }
+    echo "value in: '{$value}'" . "\r\n";
+
+    $value = $value === 'false' ? 0 : $value;
+    $value = $value === 'true' ? 1 : $value;
+    // $value = $value === 'null' ? null : $value;
+
+    echo "value out: '" . json_encode($value) . "'" . "\r\n";
+    echo "value out: '" . $value. "'" . "\r\n";
 
     return $value;
   }
@@ -326,6 +328,9 @@ class ConfigSet extends AbstractCommand
 
     return $isTrue;
   }
+
+
+
 
 
 }
