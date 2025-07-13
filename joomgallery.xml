@@ -80,7 +80,6 @@
   <api>
     <files folder="api/components/com_joomgallery">
       <folder>src</folder>
-      <folder>src</folder>
     </files>
   </api>
   <plugins>

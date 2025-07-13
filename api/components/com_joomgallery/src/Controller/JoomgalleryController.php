@@ -44,8 +44,41 @@ class JoomgalleryController extends ApiController
      */
     protected $default_view = 'joomgallery';
 
+  public function version()
+  {
+    $viewType   = $this->app->getDocument()->getType();
+    $viewName   = $this->input->get('view', $this->default_view);
+    $viewLayout = $this->input->get('layout', 'default', 'string');
 
-	public function displayItem($id = null)
+    echo "test" . "\r\n";
+    echo "\$viewType $viewType " . "\r\n";
+
+
+    try {
+      /** @var JsonApiView $view */
+      $view = $this->getView(
+        $viewName,
+        $viewType,
+        '',
+        ['base_path' => $this->basePath, 'layout' => $viewLayout, 'contentType' => $this->contentType]
+      );
+    } catch (\Exception $e) {
+      throw new \RuntimeException($e->getMessage());
+    }
+
+    $view->setDocument($this->app->getDocument());
+
+    $view->displayJGVersion();
+
+//    $data['versionText'] = "Version=xxxx"; //     $versionText = "Version=xxxx";
+//
+//    return $data;
+
+    return $this;
+  }
+
+
+  public function displayItem($id = null)
 	{
 		$viewType   = $this->app->getDocument()->getType();
 		$viewName   = $this->input->get('view', $this->default_view);

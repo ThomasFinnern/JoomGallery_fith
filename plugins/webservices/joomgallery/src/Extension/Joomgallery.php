@@ -7,7 +7,7 @@
 **   @license    GNU General Public License version 3 or later                          **
 *****************************************************************************************/
 
-namespace Joomgallery\Plugin\WebServices\Joomowner\Extension;
+namespace Joomgallery\Plugin\WebServices\Joomgallery\Extension;
 
 use Joomla\CMS\Event\Application\BeforeApiRouteEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -60,9 +60,13 @@ final class Joomgallery extends CMSPlugin implements SubscriberInterface
 //		    new Route(['GET'], 'v1/example/items/:slug', 'item.displayItem',
 //			    ['slug' => '(.*)'], ['option' => 'com_example']),
 
-	    $router->addRoutes([
-		    new Route(['GET'], 'v1/joomgallery', 'joomgallery.displayItem', [], $getDefaults),
-	    ]);
+      $router->addRoutes([
+        new Route(['GET'], 'v1/joomgallery/version', 'joomgallery.version', [], $getDefaults),
+      ]);
+
+//      $router->addRoutes([
+//		    new Route(['GET'], 'v1/joomgallery', 'joomgallery.displayItem', [], $getDefaults),
+//	    ]);
 
         // $router->createCRUDRoutes(
 			// 'v1/joomgallery/project',

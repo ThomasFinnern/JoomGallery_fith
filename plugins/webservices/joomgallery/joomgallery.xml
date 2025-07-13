@@ -13,9 +13,9 @@
     
     <files>
         <folder plugin="joomgallery">src</folder>
-        <folder>src</folder>
         <folder>language</folder>
         <folder>services</folder>
+        <folder>src</folder>
 		<file>joomgallery.xml</file>
     </files>
 </extension>

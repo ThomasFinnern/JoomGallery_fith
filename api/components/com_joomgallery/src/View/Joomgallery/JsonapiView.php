@@ -7,7 +7,7 @@
 **   @license    GNU General Public License version 3 or later                          **
 *****************************************************************************************/
 
-namespace Joomgallery\Component\Joomgallery\Api\View\Lang4dev;
+namespace Joomgallery\Component\Joomgallery\Api\View\Joomgallery;
 
 use Joomgallery\Component\Joomgallery\Api\Helper\Lang4devHelper;
 use Joomgallery\Component\Joomgallery\Api\Serializer\Lang4devSerializer;
@@ -31,7 +31,22 @@ use Joomla\Registry\Registry;
  */
 class JsonapiView extends BaseApiView
 {
-	/**
+
+  public function displayJGVersion()
+  {
+    $versionText = "Version=xxxx";
+
+    // Serializing the output
+    //$result = json_encode($this->_output);
+    $result = json_encode($versionText);
+
+    // Pushing output to the document
+    $this->getDocument()->setBuffer($result);
+
+    return $this->getDocument()->render();
+  }
+
+ /**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
