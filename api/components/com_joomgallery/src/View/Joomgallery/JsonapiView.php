@@ -9,8 +9,8 @@
 
 namespace Joomgallery\Component\Joomgallery\Api\View\Joomgallery;
 
-use Joomgallery\Component\Joomgallery\Api\Helper\Lang4devHelper;
-use Joomgallery\Component\Joomgallery\Api\Serializer\Lang4devSerializer;
+use Joomgallery\Component\Joomgallery\Api\Helper\JoomgalleryHelper;
+use Joomgallery\Component\Joomgallery\Api\Serializer\JoomgallerySerializer;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
@@ -25,7 +25,7 @@ use Joomla\Registry\Registry;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * The projects view
+ * The joomgallery view
  *
  * @since  4.0.0
  */
@@ -57,11 +57,11 @@ class JsonapiView extends BaseApiView
 	 */
 	public function displayItem($tpl = null)
 	{
-		$testLang4devText = "testLang4devText";
+		$testJoomgalleryText = "testJoomgalleryText";
 
 		// Serializing the output
 		//$result = json_encode($this->_output);
-		$result = json_encode($testLang4devText);
+		$result = json_encode($testJoomgalleryText);
 
 		// Pushing output to the document
 		$this->getDocument()->setBuffer($result);
@@ -71,13 +71,13 @@ class JsonapiView extends BaseApiView
 
 	public function display($tpl = null)
 	{
-		$testLang4devText = "testLang4devText";
+		$testJoomgalleryText = "testJoomgalleryText";
 
 //		zzzz();
 
 		// Serializing the output
 		//$result = json_encode($this->_output);
-		$result = json_encode($testLang4devText);
+		$result = json_encode($testJoomgalleryText);
 
 		// Pushing output to the document
 		$this->getDocument()->setBuffer($result);

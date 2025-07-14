@@ -68,30 +68,30 @@ final class Joomgallery extends CMSPlugin implements SubscriberInterface
 //		    new Route(['GET'], 'v1/joomgallery', 'joomgallery.displayItem', [], $getDefaults),
 //	    ]);
 
-        // $router->createCRUDRoutes(
-			// 'v1/joomgallery/project',
-			// 'project',
-			// ['component' => 'com_joomgallery'],
-	        // true // ToDo: Remove when tests finished
-		// );
+         $router->createCRUDRoutes(
+			 'v1/joomgallery/categories',
+			 'categories',
+			 ['component' => 'com_joomgallery'],
+	         true // ToDo: Remove when tests finished
+		 );
 	
-        // $router->createCRUDRoutes(
-			// 'v1/joomgallery/projects',
-			// 'projects',
-			// ['component' => 'com_joomgallery'],
-	        // true // ToDo: Remove when tests finished
-		// );
+         $router->createCRUDRoutes(
+			 'v1/joomgallery/images',
+			 'images',
+			 ['component' => 'com_joomgallery'],
+	         true // ToDo: Remove when tests finished
+		 );
 	
-        // $router->createCRUDRoutes(
-			// 'v1/joomgallery/subprojects',
-			// 'subprojects',
-			// ['component' => 'com_joomgallery'],
-	        // true // ToDo: Remove when tests finished
-		// );
+         $router->createCRUDRoutes(
+			 'v1/joomgallery/configs',
+			 'configs',
+			 ['component' => 'com_joomgallery'],
+	         true // ToDo: Remove when tests finished
+		 );
 	
         $this->createFieldsRoutes($router);
 
-        $this->createContentHistoryRoutes($router);
+  //      $this->createContentHistoryRoutes($router);
 	}
 
     /**

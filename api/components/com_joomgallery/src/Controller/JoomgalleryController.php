@@ -21,7 +21,7 @@ use Joomla\String\Inflector;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * The projects controller
+ * The joomgallery controller
  *
  * @since  4.0.0
  */
@@ -33,7 +33,6 @@ class JoomgalleryController extends ApiController
      * @var    string
      * @since  4.0.0
      */
-//    protected $contentType = 'joomgallery.projects';
     protected $contentType = 'joomgallery';
 
     /**

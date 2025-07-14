@@ -8,10 +8,10 @@
  * @license     
  */
 
-namespace Finnern\Component\Lang4dev\Api\View\Subprojects;
+namespace Joomgallery\Component\Joomgallery\Api\View\Images;
 
-use Finnern\Component\Lang4dev\Api\Helper\Lang4devHelper;
-use Finnern\Component\Lang4dev\Api\Serializer\Lang4devSerializer;
+use Joomgallery\Component\Joomgallery\Api\Helper\JoomgalleryHelper;
+use Joomgallery\Component\Joomgallery\Api\Serializer\JoomgallerySerializer;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
@@ -26,7 +26,7 @@ use Joomla\Registry\Registry;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * The projects view
+ * The images view
  *
  * @since  4.0.0
  */
@@ -40,46 +40,44 @@ class JsonapiView extends BaseApiView
      */
     protected $fieldsToRenderItem = [
 	    'id',
-	    'title',
+	    'catid',
 	    'alias',
-	    'id',
 	    'title',
-	    'alias',
-	    'prjId',
+	    'description',
+	    'author',
 
-	    'subPrjType',
-	    'root_path',
+	    'date',
+	    'imgmetadata',
 
-	    'langIdPrefix',
-	    'notes',
-	    'isLangAtStdJoomla',
+	    'published',
+	    'filename',
+	    'filesystem',
 
-	    'prjXmlPathFilename',
-	    'installPathFilename',
+	    'hits',
+	    'downloads',
 
-	    'parent_id',
-//	    'twin_id',
-//
-//	    'lang_path_type',
-//	    'lang_ids',
-//	    'params',
-//	    'ordering',
-//
-//	    'checked_out',
-//	    'checked_out_time',
-//	    'created',
-//	    'created_by',
-//	    'created_by_alias',
-//	    'modified',
-//	    'modified_by',
-//
-//	    'published',
-//
-//	    'approved',
-//	    'asset_id',
-//	    'access',
-//
-//	    'version',
+	    'votes',
+	    'votesum',
+	    'approved',
+	    'useruploaded',
+	    'access',
+	    'hidden',
+
+      'featured',
+      'ordering',
+      'params',
+      'language',
+      
+      'created_time',
+      'created_by',
+      'modified_time',
+	    'modified_by',
+	    'checked_out',
+	    'checked_out_time',
+
+	    'metadesc',
+	    'metakey',
+	    'robots',
     ];
 
     /**
@@ -152,7 +150,7 @@ class JsonapiView extends BaseApiView
     public function __construct($config = [])
     {
         if (\array_key_exists('contentType', $config)) {
-            $this->serializer = new Lang4devSerializer($config['contentType']);
+            $this->serializer = new JoomgallerySerializer($config['contentType']);
         }
 
         parent::__construct($config);
@@ -169,7 +167,7 @@ class JsonapiView extends BaseApiView
      */
     public function displayList(?array $items = null)
     {
-        foreach (FieldsHelper::getFields('com_lang4dev.subprojects') as $field) {
+        foreach (FieldsHelper::getFields('com_joomgallery.images') as $field) {
             $this->fieldsToRenderList[] = $field->name;
         }
 
@@ -189,7 +187,7 @@ class JsonapiView extends BaseApiView
     {
         $this->relationship[] = 'modified_by';
 
-        foreach (FieldsHelper::getFields('com_lang4dev.subproject') as $field) {
+        foreach (FieldsHelper::getFields('com_joomgallery.subproject') as $field) {
             $this->fieldsToRenderItem[] = $field->name;
         }
 
@@ -218,11 +216,11 @@ class JsonapiView extends BaseApiView
 
         $item->text = $item->introtext . ' ' . $item->fulltext;
 
-        // Process the lang4dev plugins.
-        PluginHelper::importPlugin('lang4dev');
-        Factory::getApplication()->triggerEvent('onContentPrepare', ['com_lang4dev.subproject', &$item, &$item->params]);
+        // Process the joomgallery plugins.
+        PluginHelper::importPlugin('joomgallery');
+        Factory::getApplication()->triggerEvent('onContentPrepare', ['com_joomgallery.subproject', &$item, &$item->params]);
 
-        foreach (FieldsHelper::getFields('com_lang4dev.subproject', $item, true) as $field) {
+        foreach (FieldsHelper::getFields('com_joomgallery.subproject', $item, true) as $field) {
             $item->{$field->name} = $field->apivalue ?? $field->rawvalue;
         }
 
@@ -247,7 +245,7 @@ class JsonapiView extends BaseApiView
         } else {
             $item->tags = [];
             $tags       = new TagsHelper();
-            $tagsIds    = $tags->getTagIds($item->id, 'com_lang4dev.subproject');
+            $tagsIds    = $tags->getTagIds($item->id, 'com_joomgallery.subproject');
 
             if (!empty($tagsIds)) {
                 $tagsIds    = explode(',', $tagsIds);
@@ -260,11 +258,11 @@ class JsonapiView extends BaseApiView
 //            $item->images = $registry->toArray();
 //
 //            if (!empty($item->images['image_intro'])) {
-//                $item->images['image_intro'] = Lang4devHelper::resolve($item->images['image_intro']);
+//                $item->images['image_intro'] = JoomgalleryHelper::resolve($item->images['image_intro']);
 //            }
 //
 //            if (!empty($item->images['image_fulltext'])) {
-//                $item->images['image_fulltext'] = Lang4devHelper::resolve($item->images['image_fulltext']);
+//                $item->images['image_fulltext'] = JoomgalleryHelper::resolve($item->images['image_fulltext']);
 //            }
 //        }
 
