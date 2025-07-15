@@ -10,7 +10,7 @@
 
 namespace Joomgallery\Component\Joomgallery\Api\View\Images;
 
-use Joomgallery\Component\Joomgallery\Api\Helper\JoomgalleryHelper;
+//use Joomgallery\Component\Joomgallery\Api\Helper\JoomgalleryHelper;
 use Joomgallery\Component\Joomgallery\Api\Serializer\JoomgallerySerializer;
 
 use Joomla\CMS\Factory;

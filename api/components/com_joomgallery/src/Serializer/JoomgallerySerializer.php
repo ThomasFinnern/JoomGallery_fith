@@ -26,7 +26,7 @@ use Tobscure\JsonApi\Resource;
  *
  * @since  4.0.0
  */
-class Joomgallery extends JoomlaSerializer
+class JoomgallerySerializer extends JoomlaSerializer
 {
 //    use TagApiSerializerTrait;
 //
