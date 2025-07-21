@@ -34,7 +34,7 @@ $returnURL = base64_encode(JoomHelper::getListRoute('categories', null, $this->g
 
 if($saveOrder && !empty($this->items))
 {
-	$saveOrderingUrl = 'index.php?option=com_joomgallery&task=images.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+	$saveOrderingUrl = Route::_('index.php?option=com_joomgallery&task=images.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1');
 	HTMLHelper::_('draggablelist.draggable');
 }
 ?>

@@ -31,7 +31,6 @@ $listDirn  = $this->state->get('list.direction');
 $canAdd    = $this->getAcl()->checkACL('add', 'com_joomgallery.category', 0, 1, true);
 $canOrder  = $this->getAcl()->checkACL('editstate', 'com_joomgallery.category');
 $saveOrder = ($listOrder == 'a.lft' && strtolower($listDirn) == 'asc');
-//$saveOrder = ($listOrder == 'a.id' && strtolower($listDirn) == 'asc');
 
 $config    = $this->params['configs'];
 $menuParam = $this->params['menu'];
@@ -40,8 +39,8 @@ $isShowTitle = $menuParam->get('showTitle') ?? true;
 
 if ($saveOrder && !empty($this->items))
 {
-  //$saveOrderingUrl = 'index.php?option=com_joomgallery&task=    categories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
-  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=usercategories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+  //$saveOrderingUrl = Route::_('index.php?option=com_joomgallery&task=    categories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1');
+  $saveOrderingUrl = Route::_('index.php?option=com_joomgallery&task=usercategories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1');
   HTMLHelper::_('draggablelist.draggable');
 }
 

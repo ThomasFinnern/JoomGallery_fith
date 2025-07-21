@@ -40,7 +40,7 @@ $isShowTitle = $menuParam->get('showTitle') ?? true;
 
 if ($saveOrder && !empty($this->items))
 {
-  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=userimages.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+  $saveOrderingUrl = Route::_('index.php?option=com_joomgallery&task=userimages.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1');
   HTMLHelper::_('draggablelist.draggable');
 }
 

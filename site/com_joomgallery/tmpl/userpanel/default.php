@@ -33,7 +33,7 @@ $saveOrder = ($listOrder == 'a.ordering' && strtolower($listDirn) == 'asc');
 
 if ($saveOrder && !empty($this->items))
 {
-  $saveOrderingUrl = 'index.php?option=com_joomgallery&task=userpanel.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+  $saveOrderingUrl = Route::_('index.php?option=com_joomgallery&task=userpanel.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1');
   HTMLHelper::_('draggablelist.draggable');
 }
 
