@@ -88,7 +88,7 @@ final class Joomgallery extends CMSPlugin implements SubscriberInterface
 			 ['component' => 'com_joomgallery'],
 	         true // ToDo: Remove when tests finished
 		 );
-	
+
         $this->createFieldsRoutes($router);
 
   //      $this->createContentHistoryRoutes($router);

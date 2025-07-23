@@ -88,7 +88,8 @@ class JoomGalleryView extends BaseHtmlView
 
     $this->app       = Factory::getApplication('administrator');
     $this->component = $this->app->bootComponent(_JOOM_OPTION);
-    $this->user      = $this->component->getMVCFactory()->getIdentity();
+	  //$this->user      = $this->component->getMVCFactory()->getIdentity();
+	  $this->user      = Factory::getApplication()->getIdentity();
     $this->document  = $this->app->getDocument();
 
     if( \stripos($this->component->version, 'dev') ||

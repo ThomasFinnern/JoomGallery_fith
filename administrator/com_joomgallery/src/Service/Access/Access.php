@@ -132,7 +132,8 @@ class Access implements AccessInterface
     }
 
     // Set current user
-    $this->user = $this->component->getMVCFactory()->getIdentity();
+	  //$this->user      = $this->component->getMVCFactory()->getIdentity();
+	  $this->user      = Factory::getApplication()->getIdentity();
 
     // Set acl map for components with advanced rules
     $mapPath = JPATH_ADMINISTRATOR.'/components/'.$this->option.'/includes/rules.php';

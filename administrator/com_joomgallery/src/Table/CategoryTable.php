@@ -120,8 +120,9 @@ class CategoryTable extends MultipleAssetsTable implements VersionableTableInter
   {
     $res  = parent::load($keys, $reset);
     $comp = Factory::getApplication('administrator')->bootComponent(_JOOM_OPTION);
-    $user = $comp->getMVCFactory()->getIdentity();
-    $comp->createAccess();
+    //$user = $comp->getMVCFactory()->getIdentity();
+	$user = Factory::getApplication()->getIdentity();
+	$comp->createAccess();
 
     // Get all unlocked categories of this user from session
     $unlockedCats = Factory::getApplication()->getUserState(_JOOM_OPTION.'unlockedCategories', array(0));
