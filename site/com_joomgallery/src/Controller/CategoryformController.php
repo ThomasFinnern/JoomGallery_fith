@@ -186,9 +186,6 @@ class CategoryformController extends JoomFormController // FormController
 
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_JOOMGALLERY_ITEM_SAVE_SUCCESSFUL'));
-    // ToDo: check
-    $returnPage = $this->getReturnPage();
-    $test = Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false);
 		$this->setRedirect(Route::_($this->getReturnPage().'&'.$this->getItemAppend($data->id),false));
 	}
 

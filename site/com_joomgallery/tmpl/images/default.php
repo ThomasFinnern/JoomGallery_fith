@@ -57,7 +57,6 @@ if($saveOrder && !empty($this->items))
       <?php else : ?>
 
         <?php if(!empty($this->filterForm)) {
-          $test = "test";
           echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
         } ?>
 
