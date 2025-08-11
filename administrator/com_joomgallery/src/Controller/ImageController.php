@@ -262,9 +262,7 @@ class ImageController extends JoomFormController
       if($this->input->get('layout', 'edit', 'cmd') == 'replace')
       {
         // Redirect to the edit screen.
-        $this->setRedirect(
-          Route::_('index.php?option=' . $this->option . '&view=image&layout=edit&id=' . $this->input->getInt('id'), false)
-        );
+        $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=image&layout=edit&id=' . $this->input->getInt('id'), false));
       }
     }
 }
