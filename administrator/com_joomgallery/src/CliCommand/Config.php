@@ -1,26 +1,26 @@
 <?php
 /**
- ******************************************************************************************
- **   @package    com_joomgallery                                                        **
- **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
- **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
- **   @license    GNU General Public License version 3 or later                          **
- *****************************************************************************************/
+******************************************************************************************
+**   @package    com_joomgallery                                                        **
+**   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+**   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+**   @license    GNU General Public License version 3 or later                          **
+*****************************************************************************************/
 
 namespace Joomgallery\Component\Joomgallery\Administrator\CliCommand;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\Console\Command\AbstractCommand;
-use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\Database\DatabaseInterface;
+use \Joomla\Database\DatabaseAwareTrait;
+use \Joomla\Console\Command\AbstractCommand;
+use \Symfony\Component\Console\Command\Command;
+use \Symfony\Component\Console\Input\InputOption;
+use \Symfony\Component\Console\Style\SymfonyStyle;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
 
 class Config extends AbstractCommand
 {
@@ -48,7 +48,7 @@ class Config extends AbstractCommand
    *
    * @param   DatabaseInterface  $db  Database connector
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   public function __construct()
   {
@@ -78,7 +78,7 @@ class Config extends AbstractCommand
    *
    * @return  void
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   protected function configure(): void
   {
@@ -102,7 +102,7 @@ class Config extends AbstractCommand
    *
    * @return  integer  The command exit code
    *
-   * @since   4.0.0
+   * @since   4.2.0
    */
   protected function doExecute(InputInterface $input, OutputInterface $output): int
   {
@@ -146,7 +146,7 @@ class Config extends AbstractCommand
    *
    * @return array
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   private function getItemAssocFromDB(string $configId): array|null
   {
@@ -171,7 +171,7 @@ class Config extends AbstractCommand
    *
    * @return array
    *
-   * @since version
+   * @since   4.2.0
    */
   private function assoc2DefinitionList(array $configurationAssoc, $max_len = 70)
   {

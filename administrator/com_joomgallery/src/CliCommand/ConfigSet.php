@@ -1,27 +1,27 @@
 <?php
 /**
- ******************************************************************************************
- **   @package    com_joomgallery                                                        **
- **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
- **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
- **   @license    GNU General Public License version 3 or later                          **
- *****************************************************************************************/
+******************************************************************************************
+**   @package    com_joomgallery                                                        **
+**   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+**   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+**   @license    GNU General Public License version 3 or later                          **
+*****************************************************************************************/
 
 namespace Joomgallery\Component\Joomgallery\Administrator\CliCommand;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\Console\Command\AbstractCommand;
-use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\Database\DatabaseInterface;
+use \Joomla\Database\DatabaseAwareTrait;
+use \Joomla\Console\Command\AbstractCommand;
+use \Symfony\Component\Console\Command\Command;
+use \Symfony\Component\Console\Input\InputOption;
+use \Symfony\Component\Console\Style\SymfonyStyle;
+use \Symfony\Component\Console\Input\InputArgument;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
 
 class ConfigSet extends AbstractCommand
 {
@@ -49,7 +49,7 @@ class ConfigSet extends AbstractCommand
    *
    * @param   DatabaseInterface  $db  Database connector
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   public function __construct()
   {
@@ -79,14 +79,14 @@ class ConfigSet extends AbstractCommand
    *
    * @return  void
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   protected function configure(): void
   {
     $this->addArgument('option', InputArgument::REQUIRED, 'Name of the option');
     $this->addArgument('value', null, 'Value of the option');
     $this->addOption('id', null, InputOption::VALUE_OPTIONAL, 'configuration ID', 1);
-    $this->addOption('verify', null, InputOption::VALUE_OPTIONAL, 'configuration ID', false);
+    $this->addOption('verify', null, InputOption::VALUE_OPTIONAL, 'check result from DB with requested', false);
 
     $help = "<info>%command.name%</info> set the value for a JoomGallery configuration option (Table)
   Usage: <info>php %command.full_name%</info> <option> <value>
@@ -106,7 +106,7 @@ class ConfigSet extends AbstractCommand
    *
    * @return  integer  The command exit code
    *
-   * @since   4.0.0
+   * @since   4.2.0
    */
   protected function doExecute(InputInterface $input, OutputInterface $output): int
   {
@@ -116,10 +116,10 @@ class ConfigSet extends AbstractCommand
     $option   = $this->cliInput->getArgument('option');
     $value    = $this->cliInput->getArgument('value');
     $configId = $input->getOption('id') ?? '1';
-    $veryfyIn = $input->getOption('verify') ?? 'false';
+    $verifyIn = $input->getOption('verify') ?? 'false';
 
     // $isDoVerify = true/false, 0/1;
-    $isDoVerify = $this->isTrue($veryfyIn);
+    $isDoVerify = $this->isTrue($verifyIn);
 
     // list of parameter with values
     $configurationAssoc = $this->getItemAssocFromDB($configId);
@@ -158,6 +158,7 @@ class ConfigSet extends AbstractCommand
       return Command::FAILURE;
     }
 
+    $this->ioStyle->note('\$isDoVerify: ' . $isDoVerify);
     if ($isDoVerify)
     {
       $verifiedValue = $this->getOptionFromDB($configId, $option);
@@ -183,7 +184,7 @@ class ConfigSet extends AbstractCommand
    *
    * @return array
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   private function getItemAssocFromDB(string $configId): array|null
   {
@@ -208,7 +209,7 @@ class ConfigSet extends AbstractCommand
    *
    * @return array
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   private function sanitizeValue($value)
   {
@@ -233,7 +234,7 @@ class ConfigSet extends AbstractCommand
    *
    * @return bool
    *
-   * @since version
+   * @since   4.2.0
    */
   private function writeOptionToDB(mixed $configId, string $option, $value): bool
   {
@@ -275,7 +276,7 @@ class ConfigSet extends AbstractCommand
    *
    * @return array
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   private function getOptionFromDB(string $configId, string $option)
   {
@@ -296,31 +297,31 @@ class ConfigSet extends AbstractCommand
   /**
    * Check string input for true (1)
    *
-   * @param   mixed  $veryfyIn
+   * @param   mixed  $value
    *
    * @return bool
    *
-   * @since version
+   * @since   4.2.0
    */
-  private function isTrue(mixed $veryfyIn)
+  private function isTrue(mixed $value)
   {
     $isTrue = false;
 
-    if (!empty ($veryfyIn))
+    if (!empty ($value))
     {
 
-      if (strtolower($veryfyIn) == 'true')
+      if (strtolower($value) == 'true')
       {
         $isTrue = true;
       }
 
-      if (strtolower($veryfyIn) == 'on')
+      if (strtolower($value) == 'on')
       {
         $isTrue = true;
       }
 
       // ToDo: positive ?
-      if ($veryfyIn == '1')
+      if ($value == '1')
       {
         $isTrue = true;
       }
@@ -328,9 +329,6 @@ class ConfigSet extends AbstractCommand
 
     return $isTrue;
   }
-
-
-
 
 
 }

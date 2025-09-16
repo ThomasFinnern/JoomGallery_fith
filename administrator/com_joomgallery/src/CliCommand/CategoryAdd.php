@@ -1,11 +1,11 @@
 <?php
 /**
- ******************************************************************************************
- **   @package    com_joomgallery                                                        **
- **   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
- **   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
- **   @license    GNU General Public License version 3 or later            ToDo: Format  **
- *****************************************************************************************/
+******************************************************************************************
+**   @package    com_joomgallery                                                        **
+**   @author     JoomGallery::ProjectTeam <team@joomgalleryfriends.net>                 **
+**   @copyright  2008 - 2025  JoomGallery::ProjectTeam                                  **
+**   @license    GNU General Public License version 3 or later                          **
+*****************************************************************************************/
 
 // WIP: in development, but can not be called from caommand line (plugin)
 
@@ -13,19 +13,19 @@ namespace Joomgallery\Component\Joomgallery\Administrator\CliCommand;
 
 defined('_JEXEC') or die;
 
-use Joomgallery\Component\Joomgallery\Administrator\Model\CategoryModel;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
-use Joomla\Console\Command\AbstractCommand;
-use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
-use Joomla\Filter\InputFilter;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use \Joomla\CMS\Factory;
+use \Joomla\CMS\Language\Text;
+use \Joomla\Filter\InputFilter;
+use \Joomla\Database\DatabaseInterface;
+use \Joomla\Database\DatabaseAwareTrait;
+use \Joomla\Console\Command\AbstractCommand;
+use \Symfony\Component\Console\Command\Command;
+use \Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
+use \Symfony\Component\Console\Input\InputOption;
+use \Symfony\Component\Console\Style\SymfonyStyle;
+use \Symfony\Component\Console\Input\InputInterface;
+use \Symfony\Component\Console\Output\OutputInterface;
+use \Joomgallery\Component\Joomgallery\Administrator\Model\CategoryModel;
 
 class CategoryAdd extends AbstractCommand
 {
@@ -94,7 +94,7 @@ class CategoryAdd extends AbstractCommand
   /**
    * Instantiate the command.
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   public function __construct()
   {
@@ -149,7 +149,7 @@ class CategoryAdd extends AbstractCommand
    *
    * @return  integer  The command exit code
    *
-   * @since   4.0.0
+   * @since   4.2.0
    */
   protected function doExecute(InputInterface $input, OutputInterface $output): int
   {
@@ -368,7 +368,7 @@ class CategoryAdd extends AbstractCommand
    *
    * @return  string
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   protected function getStringFromOption($option, $question): string
   {
@@ -389,7 +389,7 @@ class CategoryAdd extends AbstractCommand
    *
    * @return  object
    *
-   * @since  4.0.X
+   * @since   4.2.0
    */
   protected function getUserId($username)
   {
