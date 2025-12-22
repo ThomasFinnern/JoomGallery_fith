@@ -116,10 +116,6 @@ class DefaultRouter extends RouterView
     $category->setKey('id')->setNestable()->setParent($gallery);
     $this->registerView($category);
 
-    $categoryform = new RouterViewConfiguration('categoryform');
-    $categoryform->setKey('id');
-    $this->registerView($categoryform);
-
     $images = new RouterViewConfiguration('images');
     $images->setParent($gallery);
     $this->registerView($images);
@@ -128,30 +124,22 @@ class DefaultRouter extends RouterView
     $image->setKey('id')->setParent($images);
     $this->registerView($image);
 
-    $imageform = new RouterViewConfiguration('imageform');
-    $imageform->setKey('id');
-    $this->registerView($imageform);
-
     $userpanel = new RouterViewConfiguration('userpanel');
     $this->registerView($userpanel);
-
-    $userupload = new RouterViewConfiguration('userupload');
-    //$userupload->setKey('id');
-    $this->registerView($userupload);
 
     $usercategories = new RouterViewConfiguration('usercategories');
     $this->registerView($usercategories);
 
     $usercategory = new RouterViewConfiguration('usercategory');
-    $usercategory->setKey('id');
+    $usercategory->setKey('id')->setNestable()->setParent($userpanel);
     $this->registerView($usercategory);
 
     $userimages = new RouterViewConfiguration('userimages');
-//    $userimages->setParent($usercategory);
+    $userimages->setParent($userpanel);
     $this->registerView($userimages);
 
     $userimage = new RouterViewConfiguration('userimage');
-    $userimage->setKey('id');
+    $userimage->setKey('id')->setParent($userimages);
     $this->registerView($userimage);
 
     parent::__construct($app, $menu);
