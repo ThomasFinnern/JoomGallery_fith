@@ -89,7 +89,7 @@ class Image extends AbstractCommand
     // ToDo: Full with all items automatically
 
     $this->addOption('id', null, InputOption::VALUE_REQUIRED, 'image ID');
-    $this->addOption('max_line_length', null, InputOption::VALUE_OPTIONAL, 'trim lenght of variable for item keeps in one line');
+    $this->addOption('max_line_length', null, InputOption::VALUE_OPTIONAL, 'trim length of variable for item keeps in one line');
 
     $help = '<info>%command.name%</info> list variables of one image
   Usage: <info>php %command.full_name%</info>
